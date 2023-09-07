@@ -82,7 +82,8 @@ class _resetPasswordState extends State<resetPassword> {
           //email textfield
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0), //
-            child: TextField(
+            child: TextFormField(
+              textAlign: TextAlign.right,
               controller: _emailController,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
