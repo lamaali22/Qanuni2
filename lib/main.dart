@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:qanuni/reset_Password.dart';
+import 'package:qanuni/viewListOfLawyers.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -39,7 +40,8 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: resetPassword()
+        home: LawyersList()
+        //  resetPassword()
         // const MyHomePage(title: 'Flutter Demo Home Page'),
         );
   }
