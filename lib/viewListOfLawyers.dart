@@ -1,43 +1,7 @@
-/*import 'package:flutter/material.dart';
-
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: LawyersList(),
-    );
-  }
-}
-
-class LawyersList extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Lawyers'),
-      ),
-      body: ListView.builder(
-        itemCount: 5,
-        itemBuilder: (context, index) {
-          return ListTile(
-            // leading: /* Lawyer's photo */,
-            title: Text("/* Lawyer's name */"),
-            subtitle: Text("/* Lawyer's specialties */"),
-            trailing: Text("/* Price of consultation */"),
-            onTap: () {
-              // Navigate to LawyerProfile with lawyer details
-            },
-          );
-        },
-      ),
-    );
-  }
-}*/
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:qanuni/viewLawyerProfilePage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -56,6 +20,7 @@ class MyApp extends StatelessWidget {
 }
 
 class LawyersList extends StatelessWidget {
+  String riyal = "ريال";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,30 +42,89 @@ class LawyersList extends StatelessWidget {
               itemCount: lawyers.length,
               itemBuilder: (context, index) {
                 Lawyer lawyer = lawyers[index];
-                return ListTile(
-                  trailing: Image.network(
-                      lawyer.photoURL), // Use the lawyer's photo URL
-                  title: Text(
-                    '${lawyer.firstName} ${lawyer.lastName}',
-                    textAlign: TextAlign.right, // Align text to the right
+                return Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.grey, // Adjust the border color
+                      width: 1.0, // Adjust the border width
+                    ),
                   ),
-                  subtitle: Text(
-                    lawyer.specialties.join('، '),
-                    textAlign: TextAlign.right, // Align text to the right
+                  child: ListTile(
+                    leading: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.star,
+                          color: Colors.yellow,
+                        ),
+                        SizedBox(width: 4), // Adjust spacing as needed
+                        Text(
+                          '3.8', // Replace with the actual number
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    trailing: ClipOval(
+                        child: Image.network(
+                      lawyer.photoURL,
+                      width: 60,
+                      height: 60,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          'assets/default_photo.jpg',
+                          width: 60,
+                          height: 60,
+                          fit: BoxFit.cover,
+                        );
+                      },
+                    )),
+                    title: Text(
+                      '${lawyer.firstName} ${lawyer.lastName}',
+                      textAlign: TextAlign.right, // Align text to the right
+                    ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Align(
+                          alignment: Alignment
+                              .centerRight, // Align specialties text to the right
+                          child: Text(
+                            lawyer.specialties.join(', '),
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Colors.teal,
+                                borderRadius: BorderRadius.circular(25.0),
+                              ),
+                              padding: EdgeInsets.all(3.0),
+                              child: Text(
+                                '${riyal}${lawyer.consultationPrice}',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => viewLawyerProfilePage(lawyer),
+                        ),
+                      );
+                    },
                   ),
-                  leading: Text(
-                    ' ${lawyer.consultationPrice}',
-                    textAlign: TextAlign.end, // Align text to the right
-                  ),
-                  onTap: () {
-                    /*
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => LawyerProfile(lawyer),
-                      ),
-                    );*/
-                  },
                 );
               },
             );
@@ -131,7 +155,8 @@ class Lawyer {
   final String lastName;
   final List<String> specialties;
   final int consultationPrice;
-  final String photoURL; // URL to the lawyer's photo
+  final String photoURL;
+  final String bio; // URL to the lawyer's photo
 
   Lawyer({
     required this.ID,
@@ -140,6 +165,7 @@ class Lawyer {
     required this.specialties,
     required this.consultationPrice,
     required this.photoURL,
+    required this.bio,
   });
 
   factory Lawyer.fromMap(Map<String, dynamic> map) {
@@ -150,6 +176,7 @@ class Lawyer {
       specialties: List<String>.from(map['specialties']),
       consultationPrice: map['consultationPrice'],
       photoURL: map['photoURL'],
+      bio: map['bio'],
     );
   }
 }

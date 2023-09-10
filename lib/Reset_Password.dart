@@ -1,6 +1,3 @@
-import 'dart:ffi';
-//import 'dart:js';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -62,70 +59,71 @@ class _resetPasswordState extends State<resetPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('إعادة ضبط كلمة المرور'),
-        centerTitle: true,
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25.0),
-            child: Text(
-              ' ادخل بريدك الالكتروني لارسال رابط تغيير كلمة المرور',
-              textAlign: TextAlign.right,
-              style: TextStyle(fontSize: 15),
-            ),
-          ),
-
-          SizedBox(height: 15),
-          //email textfield
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0), //
-            child: TextFormField(
-              textAlign: TextAlign.right,
-              controller: _emailController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'البريد الالكتروني',
-                alignLabelWithHint: true,
-                labelStyle: TextStyle(
-                  color: Colors.black,
+        appBar: AppBar(
+          title: const Text('إعادة ضبط كلمة المرور'),
+          centerTitle: true,
+        ),
+        body: Directionality(
+          textDirection: TextDirection.rtl,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: Text(
+                  ' ادخل بريدك الالكتروني لارسال رابط تغيير كلمة المرور',
+                  style: TextStyle(fontSize: 15),
                 ),
-                isDense: true,
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.teal),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                hintText: 'البريد الالكتروني',
-                fillColor: Colors.grey[200],
-                filled: true,
               ),
-            ),
-          ),
 
-          SizedBox(height: 30),
+              SizedBox(height: 15),
 
-          MaterialButton(
-            onPressed: (passwordReset),
-            child: Text(
-              'اعادة ضبط كلمة المرور',
-              style: TextStyle(
-                  fontSize: 18, fontFamily: 'poppins', color: Colors.white),
-            ),
-            color: Colors.teal,
-            shape: RoundedRectangleBorder(
-                //to set border radius to button
-                borderRadius: BorderRadius.circular(12)),
-            height: 50,
-            minWidth: 325,
+              // Email textfield
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: TextFormField(
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'البريد الالكتروني',
+                    alignLabelWithHint: true,
+                    labelStyle: TextStyle(
+                      color: Colors.black,
+                    ),
+                    isDense: true,
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.teal),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    hintText: 'البريد الالكتروني',
+                    fillColor: Colors.grey[200],
+                    filled: true,
+                  ),
+                ),
+              ),
+
+              SizedBox(height: 30),
+
+              MaterialButton(
+                onPressed: (passwordReset),
+                child: Text(
+                  'اعادة ضبط كلمة المرور',
+                  style: TextStyle(
+                      fontSize: 18, fontFamily: 'poppins', color: Colors.white),
+                ),
+                color: Colors.teal,
+                shape: RoundedRectangleBorder(
+                    //to set border radius to button
+                    borderRadius: BorderRadius.circular(12)),
+                height: 50,
+                minWidth: 325,
+              ),
+            ],
           ),
-        ],
-      ),
-    );
+        ));
   }
 }
