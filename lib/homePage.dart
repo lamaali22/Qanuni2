@@ -1,66 +1,64 @@
-/*import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-
-
-class homePage extends StatelessWidget{
-  get signUserOut => null;
-
-
-  //Sign user out method
-  void SignUserOut() {
-  //FirebaseAuth auth = FirebaseAuth.instance;
- FirebaseAuth.instance.signOut();
-  }
-
-  void logout() {
-  // Add code here to perform logout actions
-}
+class HomeScreen extends StatefulWidget{
+  const HomeScreen ({super.key});
 
   @override 
+  State<HomeScreen> createState() => _HomeScreenState();
+
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override 
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-        IconButton(
-          onPressed: signUserOut,
-           icon: Icon(Icons.logout),
-           )
+final ap = Provider.of<AuthProvider>(context, listen: false);
+
+return Scaffold(
+appBar: AppBar(
+  backgroundColor: Colors.teal ,
+  title: const Text("FlutterPhone Auth"),
+  actions: [
+    IconButton(onPressed: () {}, icon: icon)
       ],
-      ),
-      body: Center(child: Text("LOGGED IN!")),
-    );
-  }
-}*/
+     ),
+      );
 
-import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
-class HomePage extends StatelessWidget {
-  // Sign user out method
-  void signUserOut() async {
-    try {
-      await FirebaseAuth.instance.signOut();
-      // You can add any additional logout actions here
-    } catch (e) {
-      print("Error signing out: $e");
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: signUserOut,
-            icon: Icon(Icons.logout),
-          )
-        ],
-      ),
-      body: Center(child: Text("LOGGED IN!")),
-    );
   }
 }
 
 
+/*class HomePage extends StatelessWidget{
+const HomePage({Key? key}) : super(key: key ): 
 
+ @override 
+State<HomePage> createState() => _HomePageState();
+}
+
+
+ class _HomePageState extends State<HomePage>{
+final user = FirebaseAuth.instanceFor.currentUser! ;
+
+@override
+ Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('signde in as:'+user.email!),
+          MaterialButton(
+            onPressed: (){
+              FirebaseAuth.instance.signOut();
+            } ,
+            color: Colors.green, 
+            child: Text('sign out'),
+          )
+          ],
+          ),
+
+      ),
+    );
+
+ }*/
