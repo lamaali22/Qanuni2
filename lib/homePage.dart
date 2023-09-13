@@ -20,12 +20,18 @@ appBar: AppBar(
   backgroundColor: Colors.teal ,
   title: const Text("FlutterPhone Auth"),
   actions: [
-    IconButton(onPressed: () {}, icon: icon)
+    IconButton(
+      onPressed: () {},
+       icon: Icon (Icons.exit_to_app),
+    ),
       ],
      ),
       );
 
   }
+}
+
+mixin AuthProvider {
 }
 
 
