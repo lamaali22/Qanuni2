@@ -3,6 +3,11 @@ import 'package:flutter/material.dart';
 import '../viewListOfLawyers.dart';
 
 class viewLawyerProfilePage extends StatelessWidget {
+
+  String riyal = "ريال";
+  final Lawyer lawyer; // Pass the lawyer object
+
+  //navigation bar method
   void _navigateToScreen(BuildContext context, int index) {
     switch (index) {
       case 0:
@@ -40,9 +45,6 @@ class viewLawyerProfilePage extends StatelessWidget {
     }
   }
 
-  String riyal = "ريال";
-  final Lawyer lawyer; // Pass the lawyer object
-
   viewLawyerProfilePage(this.lawyer);
 
   @override
@@ -62,11 +64,11 @@ class viewLawyerProfilePage extends StatelessWidget {
             },
           ),],
           flexibleSpace: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment(20,0),
-          colors: [Color(0x21008080), Colors.white.withOpacity(0)],
+            decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment(20,0),
+              colors: [Color(0x21008080), Colors.white.withOpacity(0)],
           ),
         ),
       ),
