@@ -127,6 +127,8 @@ class LoginScreen extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                          
+                          
                             Text(
                               'لا تملك حساب؟ قم بإنشاء',
                               style: TextStyle(
@@ -143,6 +145,9 @@ class LoginScreen extends StatelessWidget {
                                   fontWeight: FontWeight.w500,
                                   color: ColorConstants.primaryColor),
                             ),
+                          
+                            
+                            
                           ],
                         ),
                       ),

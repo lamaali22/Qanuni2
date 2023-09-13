@@ -1,4 +1,4 @@
-#Wed Sep 13 07:52:31 GMT+03:00 2023
+#Wed Sep 13 10:44:52 GMT+03:00 2023
 base.0=C\:\\swe444\\Archive\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
 base.1=C\:\\swe444\\Archive\\build\\app\\intermediates\\dex\\debug\\mergeLibDexDebug\\0\\classes.dex
 base.2=C\:\\swe444\\Archive\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
