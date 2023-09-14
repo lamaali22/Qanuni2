@@ -21,10 +21,48 @@ class MyApp extends StatelessWidget {
 
 class LawyersList extends StatelessWidget {
   String riyal = "ريال";
+   //navigation bar method
+  void _navigateToScreen(BuildContext context, int index) {
+    switch (index) {
+      case 0:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LawyersList(),
+          ),
+        );
+        break;
+      case 1:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LawyersList(),
+          ),
+        );
+        break;
+      case 2:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LawyersList(),
+          ),
+        );
+        break;
+      case 3:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LawyersList(),
+          ),
+        );
+        break;
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text("المحامين" ,
           style: TextStyle(
             fontFamily: 'Cairo',
@@ -33,6 +71,32 @@ class LawyersList extends StatelessWidget {
             ),
         centerTitle: true,
         
+      ),
+      //navigation Bar
+       bottomNavigationBar: BottomNavigationBar(  
+        selectedItemColor: Color(0x7F008080),
+        unselectedItemColor: Colors.black,
+        showUnselectedLabels: true,
+        onTap: (index) => _navigateToScreen(context, index),
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined),
+            label: 'الصفحةالرئيسية',
+            
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.message_outlined),
+            label: 'الرسائل',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_month_outlined),
+            label: 'استشاراتي',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_2_outlined),
+            label: 'حسابي',
+          ),
+        ],
       ),
       
       body: FutureBuilder(
@@ -62,20 +126,54 @@ class LawyersList extends StatelessWidget {
                     leading: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(
-                          Icons.star,
-                          color: Colors.yellow,
+                        Container(
+                          width: 42,
+                          height: 18,
+                          child: Stack(
+                          children: [
+                            Positioned(
+                              left: 0,
+                              top: 0,
+                              child: Container(
+                                width: 42,
+                                height: 18,
+                                decoration: ShapeDecoration(
+                                  color: Color(0x26FFC126),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(6)),
+                                ),
+                              ),
+                            ),
+                           Positioned(
+                          left: 2.0,
+                          top: 0,
+                          child: Icon(
+                            Icons.star,
+                            size: 17.0,
+                            color: Colors.amber[400],
+                             ),
+                           ),
+                            Positioned(
+                          left: 20.40,
+                          top: 2.40,
+                          child: Text(
+                            '3.8',
+                            textAlign: TextAlign.right,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 13.02,
+                              fontFamily: 'Cairo',
+                              fontWeight: FontWeight.w400,
+                              height: 1,
+                            ),
+                          ),
                         ),
-                        SizedBox(width: 4), // Adjust spacing as needed
-                        Text(
-                          '3.8', // Replace with the actual number
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Cairo'
+                          ],
                           ),
                         ),
                       ],
                     ),
+                    
                     trailing: ClipOval(
                         child: Image.network(
                       lawyer.photoURL,
