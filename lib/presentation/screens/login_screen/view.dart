@@ -130,10 +130,10 @@ class LoginScreen extends StatelessWidget {
                             Text(
                               '     انشاء حساب جديد',
                               style: TextStyle(
-                                decoration: TextDecoration.underline,
+                                  decoration: TextDecoration.underline,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
-                                  color:ColorConstants.primaryColor),
+                                  color: ColorConstants.primaryColor),
                             ),
                             3.horizontalSpace,
                             Text(
