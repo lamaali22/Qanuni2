@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qanuni_app/utils/colors.dart';
+import 'package:qanuni/utils/colors.dart';
 
 class CustomRadioButton extends StatelessWidget {
   final int value, groupValue;

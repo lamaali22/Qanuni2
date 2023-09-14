@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:qanuni_app/utils/colors.dart';
+import 'package:qanuni/utils/colors.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final String hinttext;

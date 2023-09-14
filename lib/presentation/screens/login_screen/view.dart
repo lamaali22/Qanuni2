@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:oktoast/oktoast.dart';
-import 'package:qanuni_app/presentation/widgets/custom_text_form_field.dart';
+import 'package:qanuni/presentation/widgets/custom_text_form_field.dart';
 
 import '../../../providers/auth/login/cubit/login_cubit.dart';
 import '../../../utils/colors.dart';
@@ -128,15 +128,16 @@ class LoginScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'لا تملك حساب؟ قم بإنشاء',
+                              '     انشاء حساب جديد',
                               style: TextStyle(
+                                decoration: TextDecoration.underline,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
-                                  color: Colors.black),
+                                  color:ColorConstants.primaryColor),
                             ),
                             3.horizontalSpace,
                             Text(
-                              'حساب جديد',
+                              'اعادة تعيين كلمة المرور',
                               style: TextStyle(
                                   decoration: TextDecoration.underline,
                                   fontSize: 16,

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:qanuni_app/presentation/screens/boarding_screen/widgets/custom_radio.dart';
-import 'package:qanuni_app/presentation/screens/landing_screen/view.dart';
-import 'package:qanuni_app/presentation/screens/login_screen/view.dart';
-import 'package:qanuni_app/presentation/widgets/custom_button.dart';
-import 'package:qanuni_app/providers/boarding/cubit/boarding_cubit.dart';
-import 'package:qanuni_app/utils/colors.dart';
-import 'package:qanuni_app/utils/images.dart';
+import 'package:qanuni/presentation/screens/boarding_screen/widgets/custom_radio.dart';
+import 'package:qanuni/presentation/screens/landing_screen/view.dart';
+import 'package:qanuni/presentation/screens/login_screen/view.dart';
+import 'package:qanuni/presentation/widgets/custom_button.dart';
+import 'package:qanuni/providers/boarding/cubit/boarding_cubit.dart';
+import 'package:qanuni/utils/colors.dart';
+import 'package:qanuni/utils/images.dart';
 
 class BoardingScreen extends StatelessWidget {
   const BoardingScreen({Key? key}) : super(key: key);
