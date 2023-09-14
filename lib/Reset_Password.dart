@@ -33,21 +33,47 @@ class _resetPasswordState extends State<resetPassword> {
       print(e);
       String formatMsg = "البريد الالكتروني الذي أدخلته غير صحيح";
       String existMsg = "البريد الكتروني الذي ادخلته غير مسجّل ";
+      String emptyfield = "يرجى ادخال البريد الالكتروني";
       if (e.message.toString() == "The email address is badly formatted.") {
         showDialog(
-          context: this.context,
+          context: context,
           builder: (context) {
-            return AlertDialog(
-              content: Text(formatMsg),
+            return Center(
+              child: SizedBox(
+                width: 350, // Adjust the width as needed
+                child: AlertDialog(
+                  content: Text(formatMsg),
+                ),
+              ),
+            );
+          },
+        );
+      } else if (e.message.toString() ==
+          "Unable to establish connection on channel.") {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return Center(
+              child: SizedBox(
+                width: 300, // Adjust the width as needed
+                child: AlertDialog(
+                  content: Text(emptyfield),
+                ),
+              ),
             );
           },
         );
       } else {
         showDialog(
-          context: this.context,
+          context: context,
           builder: (context) {
-            return AlertDialog(
-              content: Text(existMsg),
+            return Center(
+              child: SizedBox(
+                width: 350, // Adjust the width as needed
+                child: AlertDialog(
+                  content: Text(existMsg),
+                ),
+              ),
             );
           },
         );
