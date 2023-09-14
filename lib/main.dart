@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         home: LawyersList()
-        // resetPassword()
+        //resetPassword()
         // const MyHomePage(title: 'Flutter Demo Home Page'),
         );
   }
