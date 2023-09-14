@@ -3,6 +3,44 @@ import 'package:flutter/material.dart';
 import '../viewListOfLawyers.dart';
 
 class viewLawyerProfilePage extends StatelessWidget {
+  void _navigateToScreen(BuildContext context, int index) {
+    switch (index) {
+      case 0:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LawyersList(),
+          ),
+        );
+        break;
+      case 1:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LawyersList(),
+          ),
+        );
+        break;
+      case 2:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LawyersList(),
+          ),
+        );
+        break;
+      case 3:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LawyersList(),
+          ),
+        );
+        break;
+    }
+  }
+
+  String riyal = "ريال";
   final Lawyer lawyer; // Pass the lawyer object
 
   viewLawyerProfilePage(this.lawyer);
@@ -12,147 +50,213 @@ class viewLawyerProfilePage extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
+          
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+          actions: [IconButton(
+            padding: EdgeInsets.only(right: 30),
+            alignment: Alignment.centerRight,
+            icon: Icon(Icons.arrow_forward, color: Colors.teal ),
             onPressed: () {
               Navigator.pop(context); // Navigate back to the previous page
             },
+          ),],
+          flexibleSpace: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment(20,0),
+          colors: [Color(0x21008080), Colors.white.withOpacity(0)],
           ),
         ),
-        backgroundColor: Colors.white,
-        body: SafeArea(
-          child: Column(
+      ),
+        ),
+      
+      //navigation Bar
+       bottomNavigationBar: BottomNavigationBar(  
+        selectedItemColor: Color(0x7F008080),
+        unselectedItemColor: Colors.black,
+        showUnselectedLabels: true,
+        onTap: (index) => _navigateToScreen(context, index),
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined),
+            label: 'الصفحةالرئيسية',
+            
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.message_outlined),
+            label: 'الرسائل',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_month_outlined),
+            label: 'استشاراتي',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_2_outlined),
+            label: 'حسابي',
+          ),
+        ],
+      ),
+
+        body: Container(
+        decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment(0, -1),
+          end: Alignment(0, 0),
+          colors: [Color(0x21008080), Colors.white.withOpacity(0)],
+        ),
+      ),
+      
+      child: SafeArea(
+          child: ListView(
             children: [
-              ClipOval(
-                  child: Image.network(
-                lawyer.photoURL,
-                width: 80,
-                height: 80,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Image.asset(
-                    'assets/default_photo.jpg',
-                    width: 90,
-                    height: 90,
-                    fit: BoxFit.cover,
-                  );
-                },
-              )),
-              Text(
-                '${lawyer.firstName} ${lawyer.lastName}',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Cairo',
-                  fontSize: 25.0,
-                  fontWeight: FontWeight.bold,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ClipOval(
+                        child: Image.network(
+                      lawyer.photoURL,
+                      width: 120,
+                      height: 120,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          'assets/default_photo.jpg',
+                          width: 120,
+                          height: 120,
+                          fit: BoxFit.cover,
+                        );
+                      },
+                    )),
+                ],
               ),
-              Text(
-                "grnder",
-                textAlign: TextAlign.right,
-                style: TextStyle(
-                  color: Colors.black.withOpacity(0.699999988079071),
-                  fontSize: 14.0,
-                  fontFamily: 'Cairo',
-                  fontWeight: FontWeight.w400,
-                  height: 1,
-                ),
+              
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '${lawyer.firstName} ${lawyer.lastName}',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'Cairo',
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '${riyal}${lawyer.consultationPrice}',
+                    textAlign: TextAlign.right,
+                    style: TextStyle(
+                      color: Colors.black.withOpacity(0.699999988079071),
+                      fontSize: 14.0,
+                      fontFamily: 'Cairo',
+                      fontWeight: FontWeight.w400,
+                      height: 1,
+                    ),
+                  ),
+                ],
               ),
               SizedBox(
                 height: 5.0,
               )
 
               //rating box
-
               ,
-              Container(
-                width: 42,
-                height: 18,
-                child: Stack(
-                  children: [
-                    Positioned(
-                      left: 0,
-                      top: 0,
-                      child: Container(
-                        width: 42,
-                        height: 18,
-                        decoration: ShapeDecoration(
-                          color: Color(0x26FFC126),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 42,
+                    height: 18,
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          left: 0,
+                          top: 0,
+                          child: Container(
+                            width: 42,
+                            height: 18,
+                            decoration: ShapeDecoration(
+                              color: Color(0x26FFC126),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(6)),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                    Positioned(
-                      left: 2.0,
-                      top: 0,
-                      child: Icon(
-                        Icons.star,
-                        size: 17.0,
-                        color: Colors.amber[400],
-                      ),
-                    ),
-                    Positioned(
-                      left: 20.40,
-                      top: 2.40,
-                      child: Text(
-                        '4.8',
-                        textAlign: TextAlign.right,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 13.02,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w400,
-                          height: 1,
+                        Positioned(
+                          left: 2.0,
+                          top: 0,
+                          child: Icon(
+                            Icons.star,
+                            size: 17.0,
+                            color: Colors.amber[400],
+                          ),
                         ),
-                      ),
+                        Positioned(
+                          left: 20.40,
+                          top: 2.40,
+                          child: Text(
+                            '3.8',
+                            textAlign: TextAlign.right,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 13.02,
+                              fontFamily: 'Cairo',
+                              fontWeight: FontWeight.w400,
+                              height: 1,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
+
               SizedBox(
                 height: 15.0,
               )
 
               //specality box
+              ,Column(
+                children: [
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: lawyer.specialties.map((specialty) {
+                        return Container(
 
-              ,
-              Container(
-                width: 88.36,
-                height: 24,
-                padding: const EdgeInsets.only(
-                  top: 2,
-                  left: 10.68,
-                  right: 9.68,
-                  bottom: 8,
-                ),
-                decoration: ShapeDecoration(
-                  color: Color(0x7F008080),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(11.74),
+                          width: lawyer.specialties.length * 30.0,
+                          height: 24,
+                          margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          padding: EdgeInsets.symmetric(horizontal: 5),
+                          decoration: BoxDecoration(
+                            color: Color(0x7F008080),
+                            borderRadius: BorderRadius.circular(11.74),
+                          ),
+                          child: Text(
+                            specialty,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontFamily: 'Cairo',
+                              fontWeight: FontWeight.w500,
+                              height: 0,
+                            ),
+                          ),
+                        );
+                      }).toList(),
                   ),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      'قانون تجاري ',
-                      textAlign: TextAlign.right,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14.41,
-                        fontFamily: 'Manrope',
-                        fontWeight: FontWeight.w500,
-                        height: 1,
-                      ),
-                    ),
-                  ],
-                ),
+                ],
               ),
+              //end specality box
+
               SizedBox(
                 height: 15.0,
               ),
@@ -206,6 +310,7 @@ class viewLawyerProfilePage extends StatelessWidget {
                           padding: EdgeInsets.only(right: 20),
                           child: Text(
                             '${lawyer.bio}',
+                            textAlign: TextAlign.right,
                             style: TextStyle(
                               fontFamily: 'Cairo',
                               fontSize: 16,
@@ -227,11 +332,19 @@ class viewLawyerProfilePage extends StatelessWidget {
                       ),
 
                       Card(
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                            color: Color(0xFF008080),
+                            width: 0.5,
+                          ),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        
                         margin: EdgeInsets.all(8.0),
                         child: ListTile(
                           trailing: CircleAvatar(
                             backgroundImage:
-                                AssetImage('images/user-avatar.png'),
+                                AssetImage('assets/default_photo.jpg'),
                           ),
                           title: Text(
                             'مح*****',
@@ -241,9 +354,7 @@ class viewLawyerProfilePage extends StatelessWidget {
                           subtitle: Column(
                             children: [
                               //RatingBar(rating: 4.5),
-
                               SizedBox(height: 5.0),
-
                               Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Text(
@@ -270,14 +381,13 @@ class viewLawyerProfilePage extends StatelessWidget {
                               onPressed: () {
                                 // Button action
                               },
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Color(
-                                      0xFF008080), // Set the background color of the button
-
-                                  padding: EdgeInsets.all(8.0)
-
-                                  // Other style properties (e.g., textStyle, padding, shape, etc.)
-
+                              style: 
+                              ElevatedButton.styleFrom(
+                                  backgroundColor: Color(0xFF008080), // Set the background color of the button
+                                  padding: EdgeInsets.all(8.0),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                    ),
                                   ),
                               child: Text(
                                 'حجز موعد استشارة',
@@ -297,6 +407,7 @@ class viewLawyerProfilePage extends StatelessWidget {
               ),
             ],
           ),
+        ),
         ),
       ),
     );

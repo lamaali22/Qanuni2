@@ -25,9 +25,16 @@ class LawyersList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("المحامين"),
+        title: const Text("المحامين" ,
+          style: TextStyle(
+            fontFamily: 'Cairo',
+            fontWeight: FontWeight.w500
+            )
+            ),
         centerTitle: true,
+        
       ),
+      
       body: FutureBuilder(
         future: getLawyers(), // Fetch lawyers from Firebase Firestore
         builder: (context, snapshot) {
@@ -43,9 +50,11 @@ class LawyersList extends StatelessWidget {
               itemBuilder: (context, index) {
                 Lawyer lawyer = lawyers[index];
                 return Container(
+                  margin: EdgeInsets.all(10.0),
                   decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15.0),
                     border: Border.all(
-                      color: Colors.grey, // Adjust the border color
+                      color: Colors.grey.withOpacity(0.3), // Adjust the border color
                       width: 1.0, // Adjust the border width
                     ),
                   ),
@@ -62,6 +71,7 @@ class LawyersList extends StatelessWidget {
                           '3.8', // Replace with the actual number
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
+                            fontFamily: 'Cairo'
                           ),
                         ),
                       ],
@@ -83,7 +93,12 @@ class LawyersList extends StatelessWidget {
                     )),
                     title: Text(
                       '${lawyer.firstName} ${lawyer.lastName}',
-                      textAlign: TextAlign.right, // Align text to the right
+                      textAlign: TextAlign.right,
+                       // Align text to the right
+                       style: TextStyle(
+                        fontFamily: 'Cairo',
+                        fontWeight: FontWeight.w500,
+                        fontSize: 17)
                     ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,7 +107,13 @@ class LawyersList extends StatelessWidget {
                           alignment: Alignment
                               .centerRight, // Align specialties text to the right
                           child: Text(
-                            lawyer.specialties.join(', '),
+                            lawyer.specialties.join(' | '),
+                            style: TextStyle(
+                              fontFamily: 'Cairo',
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal
+                              )
+                            
                           ),
                         ),
                         SizedBox(height: 8),
@@ -102,13 +123,15 @@ class LawyersList extends StatelessWidget {
                             Container(
                               decoration: BoxDecoration(
                                 color: Colors.teal,
-                                borderRadius: BorderRadius.circular(25.0),
+                                borderRadius: BorderRadius.circular(25),
                               ),
-                              padding: EdgeInsets.all(3.0),
+                              padding: EdgeInsets.all(3),
                               child: Text(
                                 '${riyal}${lawyer.consultationPrice}',
                                 style: TextStyle(
                                   color: Colors.white,
+                                  fontFamily: 'Cairo',
+                                  fontSize: 12
                                 ),
                               ),
                             ),
