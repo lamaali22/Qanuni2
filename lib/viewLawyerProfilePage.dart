@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:qanuni/clientSignUp.dart';
+import 'package:qanuni/homePage.dart';
 
 import '../viewListOfLawyers.dart';
 
@@ -9,7 +11,7 @@ class viewLawyerProfilePage extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => LawyersList(),
+            builder: (context) => LogoutPage(),
           ),
         );
         break;
@@ -56,7 +58,7 @@ class viewLawyerProfilePage extends StatelessWidget {
           actions: [IconButton(
             padding: EdgeInsets.only(right: 30),
             alignment: Alignment.centerRight,
-            icon: Icon(Icons.arrow_forward, color: Colors.teal ),
+            icon: Icon(Icons.arrow_forward, color: Color(0x7F008080) ),
             onPressed: () {
               Navigator.pop(context); // Navigate back to the previous page
             },
