@@ -1,10 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:qanuni/presentation/screens/boarding_screen/widgets/custom_radio.dart';
 import 'package:qanuni/reset_Password.dart';
 import 'package:qanuni/viewListOfLawyers.dart';
 import 'firebase_options.dart';
+import 'package:qanuni/presentation/screens/login_screen/view.dart';
 
+late final Firebase app;
+late final FirebaseAuth auth;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -41,7 +46,8 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         home: LawyersList()
-        // resetPassword()
+        //resetPassword()
+
         // const MyHomePage(title: 'Flutter Demo Home Page'),
         );
   }
