@@ -2,11 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:qanuni/models/clientModel.dart';
 import 'firebase_options.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:qanuni/models/clientModel.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,23 +37,8 @@ class MyAppp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Client Sign Up',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a blue toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
         colorScheme:
             ColorScheme.fromSeed(seedColor: Color.fromARGB(103, 0, 132, 132)),
         useMaterial3: true,
@@ -160,6 +145,17 @@ class _MyHomePageState extends State<MyHomePage> {
         emails.add(email);
       }
     }
+
+    final QuerySnapshot querySnapshot2 = await _db.collection('lawyers').get();
+    final List<QueryDocumentSnapshot> documents2 = querySnapshot2.docs;
+
+    for (QueryDocumentSnapshot doc in documents2) {
+      final data = doc.data() as Map<String, dynamic>; // Access data as a Map
+      if (data.containsKey('email')) {
+        final email = data['email'] as String;
+        emails.add(email);
+      }
+    }
   }
 
 //check if phone is used
@@ -175,6 +171,17 @@ class _MyHomePageState extends State<MyHomePage> {
         phones.add(phone);
       }
     }
+
+    final QuerySnapshot querySnapshot2 = await _db.collection('lawyers').get();
+    final List<QueryDocumentSnapshot> documents2 = querySnapshot2.docs;
+
+    for (QueryDocumentSnapshot doc in documents2) {
+      final data = doc.data() as Map<String, dynamic>; // Access data as a Map
+      if (data.containsKey('phoneNumber')) {
+        final phone = data['phoneNumber'] as String;
+        phones.add(phone);
+      }
+    }
   }
 
   @override
@@ -182,7 +189,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return MaterialApp(
         theme: ThemeData(primarySwatch: Colors.blue),
         home: Scaffold(
-            body: Container(
+            body: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
           child: Form(
               key: _formKey,
@@ -263,7 +270,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           DateTime? pickedDate = await showDatePicker(
                               context: context,
                               initialDate: DateTime.now(),
-                              firstDate: DateTime(1950),
+                              firstDate: DateTime(1930),
                               lastDate: DateTime.now());
 
                           if (pickedDate != null) {
@@ -279,6 +286,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       height: 15,
                     ),
                     TextFormField(
+                      onTap: () async {
+                        await fetchPhonesAsync();
+                      },
                       controller: phoneNumController,
                       style: TextStyle(
                           fontSize: 13, height: 1.1, color: Colors.black),
@@ -298,7 +308,6 @@ class _MyHomePageState extends State<MyHomePage> {
                         else if (!isNumericUsingRegularExpression(value))
                           return '(الرجاء تعبأة الخانة بأعداد فقط (من 0-9';
                         else {
-                          fetchPhonesAsync();
                           if (phones.contains(value)) return 'هذا الرقم مستخدم';
                         }
                         return null;
@@ -308,6 +317,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       height: 15,
                     ),
                     TextFormField(
+                      onTap: () async {
+                        await fetchEmailsAsync();
+                      },
                       controller: emailController,
                       style: TextStyle(
                           fontSize: 13, height: 1.1, color: Colors.black),
@@ -327,7 +339,6 @@ class _MyHomePageState extends State<MyHomePage> {
                         else if (!validateEmail(value))
                           return 'الرجاء ادخال بريد الكتروني صحيح';
                         else {
-                          fetchEmailsAsync();
                           if (emails.contains(value))
                             return 'هذا البريد الإلكتروني مستخدم';
                         }
@@ -385,7 +396,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           textInputAction: TextInputAction.done),
                     ),
                     SizedBox(
-                      height: 15,
+                      height: 5,
                     ),
                     Container(
                         child: Column(
@@ -394,9 +405,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              SizedBox(
-                                width: 130,
-                              ),
                               AnimatedContainer(
                                 duration: Duration(milliseconds: 500),
                                 width: 20,
@@ -419,13 +427,16 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                               ),
                               SizedBox(
-                                width: 10,
+                                width: 5,
                               ),
                               Text("تتكون من 8 خانات على الأقل",
                                   textAlign: TextAlign.right,
                                   style: TextStyle(
                                       fontSize: 13,
-                                      color: Color.fromRGBO(104, 102, 102, 1)))
+                                      color: Color.fromRGBO(104, 102, 102, 1))),
+                              SizedBox(
+                                width: 10,
+                              ),
                             ],
                           ),
                           SizedBox(
@@ -434,9 +445,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              SizedBox(
-                                width: 123,
-                              ),
                               AnimatedContainer(
                                 duration: Duration(milliseconds: 500),
                                 width: 20,
@@ -464,7 +472,10 @@ class _MyHomePageState extends State<MyHomePage> {
                               Text("تحتوي على رقم واحد على الأقل",
                                   style: TextStyle(
                                       fontSize: 13,
-                                      color: Color.fromRGBO(104, 102, 102, 1)))
+                                      color: Color.fromRGBO(104, 102, 102, 1))),
+                              SizedBox(
+                                width: 5,
+                              ),
                             ],
                           ),
                         ])),
