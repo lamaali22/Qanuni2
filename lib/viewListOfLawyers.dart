@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
 
 class LawyersList extends StatelessWidget {
   String riyal = "ريال";
-   //navigation bar method
+  //navigation bar method
   void _navigateToScreen(BuildContext context, int index) {
     switch (index) {
       case 0:
@@ -58,22 +58,19 @@ class LawyersList extends StatelessWidget {
         break;
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text("المحامين" ,
-          style: TextStyle(
-            fontFamily: 'Cairo',
-            fontWeight: FontWeight.w500
-            )
-            ),
+        backgroundColor: Colors.teal,
+        title: const Text("المحامين",
+            style: TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.w500)),
         centerTitle: true,
-        
       ),
       //navigation Bar
-       bottomNavigationBar: BottomNavigationBar(  
+      bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Color(0x7F008080),
         unselectedItemColor: Colors.black,
         showUnselectedLabels: true,
@@ -82,7 +79,6 @@ class LawyersList extends StatelessWidget {
           BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined),
             label: 'الصفحةالرئيسية',
-            
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.message_outlined),
@@ -98,7 +94,7 @@ class LawyersList extends StatelessWidget {
           ),
         ],
       ),
-      
+
       body: FutureBuilder(
         future: getLawyers(), // Fetch lawyers from Firebase Firestore
         builder: (context, snapshot) {
@@ -118,7 +114,8 @@ class LawyersList extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15.0),
                     border: Border.all(
-                      color: Colors.grey.withOpacity(0.3), // Adjust the border color
+                      color: Colors.grey
+                          .withOpacity(0.3), // Adjust the border color
                       width: 1.0, // Adjust the border width
                     ),
                   ),
@@ -130,50 +127,49 @@ class LawyersList extends StatelessWidget {
                           width: 42,
                           height: 18,
                           child: Stack(
-                          children: [
-                            Positioned(
-                              left: 0,
-                              top: 0,
-                              child: Container(
-                                width: 42,
-                                height: 18,
-                                decoration: ShapeDecoration(
-                                  color: Color(0x26FFC126),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(6)),
+                            children: [
+                              Positioned(
+                                left: 0,
+                                top: 0,
+                                child: Container(
+                                  width: 42,
+                                  height: 18,
+                                  decoration: ShapeDecoration(
+                                    color: Color(0x26FFC126),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(6)),
+                                  ),
                                 ),
                               ),
-                            ),
-                           Positioned(
-                          left: 2.0,
-                          top: 0,
-                          child: Icon(
-                            Icons.star,
-                            size: 17.0,
-                            color: Colors.amber[400],
-                             ),
-                           ),
-                            Positioned(
-                          left: 20.40,
-                          top: 2.40,
-                          child: Text(
-                            '3.8',
-                            textAlign: TextAlign.right,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 13.02,
-                              fontFamily: 'Cairo',
-                              fontWeight: FontWeight.w400,
-                              height: 1,
-                            ),
-                          ),
-                        ),
-                          ],
+                              Positioned(
+                                left: 2.0,
+                                top: 0,
+                                child: Icon(
+                                  Icons.star,
+                                  size: 17.0,
+                                  color: Colors.amber[400],
+                                ),
+                              ),
+                              Positioned(
+                                left: 20.40,
+                                top: 2.40,
+                                child: Text(
+                                  '3.8',
+                                  textAlign: TextAlign.right,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 13.02,
+                                    fontFamily: 'Cairo',
+                                    fontWeight: FontWeight.w400,
+                                    height: 1,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
                     ),
-                    
                     trailing: ClipOval(
                         child: Image.network(
                       lawyer.photoURL,
@@ -189,30 +185,24 @@ class LawyersList extends StatelessWidget {
                         );
                       },
                     )),
-                    title: Text(
-                      '${lawyer.firstName} ${lawyer.lastName}',
-                      textAlign: TextAlign.right,
-                       // Align text to the right
-                       style: TextStyle(
-                        fontFamily: 'Cairo',
-                        fontWeight: FontWeight.w500,
-                        fontSize: 17)
-                    ),
+                    title: Text('${lawyer.firstName} ${lawyer.lastName}',
+                        textAlign: TextAlign.right,
+                        // Align text to the right
+                        style: TextStyle(
+                            fontFamily: 'Cairo',
+                            fontWeight: FontWeight.w500,
+                            fontSize: 17)),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Align(
                           alignment: Alignment
                               .centerRight, // Align specialties text to the right
-                          child: Text(
-                            lawyer.specialties.join(' | '),
-                            style: TextStyle(
-                              fontFamily: 'Cairo',
-                              fontSize: 12,
-                              fontWeight: FontWeight.normal
-                              )
-                            
-                          ),
+                          child: Text(lawyer.specialties.join(' | '),
+                              style: TextStyle(
+                                  fontFamily: 'Cairo',
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.normal)),
                         ),
                         SizedBox(height: 8),
                         Row(
@@ -227,10 +217,9 @@ class LawyersList extends StatelessWidget {
                               child: Text(
                                 '${riyal}${lawyer.consultationPrice}',
                                 style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'Cairo',
-                                  fontSize: 12
-                                ),
+                                    color: Colors.white,
+                                    fontFamily: 'Cairo',
+                                    fontSize: 12),
                               ),
                             ),
                           ],

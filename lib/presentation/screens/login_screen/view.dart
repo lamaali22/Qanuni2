@@ -113,11 +113,12 @@ class LoginScreen extends StatelessWidget {
                                     ;
                                   },
                                   child: const Text(
-                                    'نسيت كلمة المرور؟ قم بإعادة ضبط كلمة المرور',
+                                    'نسيت كلمة المرور؟',
                                     style: TextStyle(
+                                        decoration: TextDecoration.underline,
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500,
-                                        color: Colors.black),
+                                        color: ColorConstants.primaryColor),
                                   ),
                                 ),
                               ),
