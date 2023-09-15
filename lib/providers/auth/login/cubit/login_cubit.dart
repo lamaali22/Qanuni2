@@ -13,16 +13,21 @@ class LoginCubit extends Cubit<LoginState> {
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   login() async {
     emit(SigningIn());
     try {
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(
-              email: emailController.text, password: passwordController.text)
-          .then((value) {
-        emit(LoginSuccess());
-      });
+      if (formKey.currentState!.validate()) {
+        await FirebaseAuth.instance
+            .signInWithEmailAndPassword(
+                email: emailController.text, password: passwordController.text)
+            .then((value) {
+          emit(LoginSuccess());
+        });
+      } else {
+        emit(LoginInitial());
+      }
     } catch (e) {
       if (e is FirebaseAuthException) {
         emit(LoginFailed(e.code));

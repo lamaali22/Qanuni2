@@ -12,7 +12,6 @@ class BoardingCubit extends Cubit<BoardingState> {
   int? selectedOption;
 
   selectOption(int selection) {
-    print('aaaaa');
     selectedOption = selection;
     emit(BoardingInitial());
   }

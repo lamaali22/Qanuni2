@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:qanuni/presentation/screens/client_signup_screen/view.dart';
 import 'package:qanuni/presentation/widgets/custom_text_form_field.dart';
 
 import '../../../providers/auth/login/cubit/login_cubit.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/images.dart';
+import '../reset_password_screen/view.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -18,6 +20,7 @@ class LoginScreen extends StatelessWidget {
         if (state is LoginFailed) {
           showToast(state.error, position: ToastPosition.bottom);
         }
+
         if (state is LoginSuccess) {
           showToast('مرحبا', position: ToastPosition.bottom);
           LoginCubit.get(context).reset();
@@ -43,7 +46,7 @@ class LoginScreen extends StatelessWidget {
                             height: 0.2.sh,
                             child: Image.asset(ImageConstants.logo),
                           ),
-                          Spacer(),
+                          const Spacer(),
                           const Text(
                             'سجل الدخول لحسابك',
                             style: TextStyle(
@@ -57,68 +60,94 @@ class LoginScreen extends StatelessWidget {
                     SizedBox(
                       height: 0.4.sh,
                       child: Form(
+                          key: LoginCubit.get(context).formKey,
                           child: Column(
-                        children: [
-                          20.verticalSpace,
-                          CustomTextFormField(
-                            hinttext: 'البريد الالكتروني',
-                            icon: Icon(
-                              Icons.email_outlined,
-                              size: 20,
-                            ),
-                            filledColor: ColorConstants.greyColor,
-                            mycontroller:
-                                LoginCubit.get(context).emailController,
-                            valid: (text) {
-                              if (text!.isEmpty) {
-                                return 'يجب ادخال البريد الالكتروني';
-                              }
-                              return null;
-                            },
-                          ),
-                          20.verticalSpace,
-                          CustomTextFormField(
-                            hinttext: 'كلمة المرور',
-                            icon: Icon(
-                              Icons.lock,
-                              size: 20,
-                            ),
-                            filledColor: ColorConstants.greyColor,
-                            obscureText: true,
-                            mycontroller:
-                                LoginCubit.get(context).passwordController,
-                            valid: (text) {
-                              if (text!.isEmpty) {
-                                return 'يجب ادخال كلمة المرور';
-                              }
-                              return null;
-                            },
-                          ),
-                          40.verticalSpace,
-                          ElevatedButton(
-                              onPressed: () {
-                                LoginCubit.get(context).login();
-                              },
-                              style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15)),
-                                  fixedSize: Size(1.sw, 50),
-                                  backgroundColor: ColorConstants.primaryColor),
-                              child: state is SigningIn
-                                  ? Center(
-                                      child: SizedBox(
-                                          height: 20,
-                                          width: 20,
-                                          child: CircularProgressIndicator(
-                                            color: Colors.white,
-                                            strokeWidth: 2,
-                                          )))
-                                  : Text(
-                                      'تسجيل الدخول',
-                                      style: TextStyle(fontSize: 18),
-                                    )),
-                        ],
-                      )),
+                            children: [
+                              20.verticalSpace,
+                              CustomTextFormField(
+                                hinttext: 'البريد الالكتروني',
+                                icon: const Icon(
+                                  Icons.email_outlined,
+                                  size: 20,
+                                ),
+                                filledColor: ColorConstants.greyColor,
+                                mycontroller:
+                                    LoginCubit.get(context).emailController,
+                                valid: (text) {
+                                  if (text!.isEmpty) {
+                                    return 'يجب ادخال البريد الالكتروني';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              20.verticalSpace,
+                              CustomTextFormField(
+                                hinttext: 'كلمة المرور',
+                                icon: const Icon(
+                                  Icons.lock,
+                                  size: 20,
+                                ),
+                                filledColor: ColorConstants.greyColor,
+                                obscureText: true,
+                                maxLength: 10,
+                                mycontroller:
+                                    LoginCubit.get(context).passwordController,
+                                valid: (text) {
+                                  if (text!.isEmpty) {
+                                    return 'يجب ادخال كلمة المرور';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              5.verticalSpace,
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const ResetPassword(),
+                                        ));
+                                    ;
+                                  },
+                                  child: const Text(
+                                    'نسيت كلمة المرور؟ قم بإعادة ضبط كلمة المرور',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black),
+                                  ),
+                                ),
+                              ),
+                              10.verticalSpace,
+                              ElevatedButton(
+                                  onPressed: () {
+                                    LoginCubit.get(context).login();
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15)),
+                                      fixedSize: Size(1.sw, 50),
+                                      backgroundColor:
+                                          ColorConstants.primaryColor),
+                                  child: state is SigningIn
+                                      ? const Center(
+                                          child: SizedBox(
+                                              height: 20,
+                                              width: 20,
+                                              child: CircularProgressIndicator(
+                                                color: Colors.white,
+                                                strokeWidth: 2,
+                                              )))
+                                      : const Text(
+                                          'تسجيل الدخول',
+                                          style: TextStyle(fontSize: 18),
+                                        )),
+                            ],
+                          )),
                     ),
                     SizedBox(
                       height: 0.2.sh,
@@ -127,22 +156,32 @@ class LoginScreen extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              '     انشاء حساب جديد',
+                            const Text(
+                              'لا تملك حساب؟ قم بإنشاء',
                               style: TextStyle(
-                                  decoration: TextDecoration.underline,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
-                                  color: ColorConstants.primaryColor),
+                                  color: Colors.black),
                             ),
                             3.horizontalSpace,
-                            Text(
-                              'اعادة تعيين كلمة المرور',
-                              style: TextStyle(
-                                  decoration: TextDecoration.underline,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  color: ColorConstants.primaryColor),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ClientSignUpScreen(),
+                                    ));
+                                ;
+                              },
+                              child: const Text(
+                                'حساب جديد',
+                                style: TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: ColorConstants.primaryColor),
+                              ),
                             ),
                           ],
                         ),

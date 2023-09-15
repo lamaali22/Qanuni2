@@ -9,7 +9,7 @@ class CustomTextFormField extends StatelessWidget {
   final Widget? icon;
   final TextEditingController? mycontroller;
   final String? Function(String?) valid;
-
+  final int? maxLength;
   final bool? obscureText;
   final Color? filledColor;
   final double? height;
@@ -23,6 +23,7 @@ class CustomTextFormField extends StatelessWidget {
     required this.icon,
     required this.mycontroller,
     required this.valid,
+    this.maxLength,
     this.filledColor,
     this.width,
     this.height,
@@ -45,6 +46,11 @@ class CustomTextFormField extends StatelessWidget {
               style: TextStyle(height: 1.4, fontSize: 14, color: Colors.black),
               obscureText:
                   obscureText == null || obscureText == false ? false : true,
+              maxLength: maxLength,
+              buildCounter: (context,
+                  {required currentLength, required isFocused, maxLength}) {
+                return Container();
+              },
               decoration: InputDecoration(
                   fillColor: filledColor,
                   filled: filledColor != null,
