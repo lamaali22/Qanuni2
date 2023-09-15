@@ -1,7 +1,7 @@
-#Thu Sep 14 22:54:26 AST 2023
-base.0=C\:\\Windows\\development\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
-base.1=C\:\\Windows\\development\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes2.dex
-base.2=C\:\\Windows\\development\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes3.dex
+#Fri Sep 15 01:37:28 AST 2023
+base.0=/Users/FAY/Documents/GitHub/Qanuni2/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
+base.1=/Users/FAY/Documents/GitHub/Qanuni2/build/app/intermediates/dex/debug/mergeDexDebug/classes2.dex
+base.2=/Users/FAY/Documents/GitHub/Qanuni2/build/app/intermediates/dex/debug/mergeDexDebug/classes3.dex
 path.0=classes.dex
 path.1=classes2.dex
 path.2=classes3.dex
