@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:qanuni/models/clientModel.dart';
+import 'package:qanuni/models/lawyerModel.dart';
 import 'firebase_options.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -17,27 +17,11 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    const appTitle = 'Client Sign Up';
-    ColorScheme.fromSeed(seedColor: Color.fromARGB(103, 0, 132, 132));
-    return MaterialApp(
-      title: appTitle,
-      home: Scaffold(
-        body: const MyAppp(),
-      ),
-    );
-  }
-}
-
-// ignore: must_be_immutable
-class MyAppp extends StatelessWidget {
-  const MyAppp({Key? key}) : super(key: key);
-
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Client Sign Up',
+      title: 'Lawyer Sign Up',
       theme: ThemeData(
         colorScheme:
             ColorScheme.fromSeed(seedColor: Color.fromARGB(103, 0, 132, 132)),
@@ -58,16 +42,21 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-//controllers
+//Lawyer controllers
   final fNameController = TextEditingController();
   final lNameController = TextEditingController();
   final dOBController = TextEditingController();
   final phoneNumController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final genderController = TextEditingController();
+  TextEditingController genderController = TextEditingController();
+  final licenseNumberController = TextEditingController();
+  final ibanController = TextEditingController();
+  final priceController = TextEditingController();
+  final bioController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+
   //gender
   List<String> itemsList = ['الجنس', 'أنثى', 'ذكر'];
   String selectedItem = 'الجنس';
@@ -78,6 +67,17 @@ class _MyHomePageState extends State<MyHomePage> {
     return isvalid;
   }
 
+//iban validation
+  bool validateIban(String iban) {
+    bool isvalid = false;
+    String ibanStr = iban.substring(0, 2).toLowerCase();
+    String ibanStr2 = iban.substring(2);
+    if (ibanStr == "sa" && isNumericUsingRegularExpression(ibanStr2))
+      isvalid = true;
+
+    return isvalid;
+  }
+
 //phone validation
   bool validatePhoneNum(String phoneNum) {
     bool isvalid = false;
@@ -85,6 +85,13 @@ class _MyHomePageState extends State<MyHomePage> {
     if (phoneNumStr == '05' && phoneNum.length == 10) isvalid = true;
 
     return isvalid;
+  }
+
+//is a number validation
+  bool isNumericUsingRegularExpression(String string) {
+    final numericRegex = RegExp(r'^-?(([0-9]*)|(([0-9]*)\.([0-9]*)))$');
+
+    return numericRegex.hasMatch(string);
   }
 
 //password visibile or not
@@ -106,11 +113,36 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-//is a number validation
-  bool isNumericUsingRegularExpression(String string) {
-    final numericRegex = RegExp(r'^-?(([0-9]*)|(([0-9]*)\.([0-9]*)))$');
+  //specialities
+  List<String> specialities = [];
+  bool isChecked0 = false;
+  bool isChecked1 = false;
+  bool isChecked2 = false;
+  bool isChecked3 = false;
+  bool isChecked4 = false;
+  bool otherIsChecked = false;
 
-    return numericRegex.hasMatch(string);
+  bool atLeastOneCheckboxSelected() {
+    return isChecked0 ||
+        isChecked1 ||
+        isChecked2 ||
+        isChecked3 ||
+        isChecked4 ||
+        otherIsChecked;
+  }
+
+  String textSpec = "";
+  void changeTextColor() {
+    if (!atLeastOneCheckboxSelected()) {
+      setState(() {
+        // Change the text color when the button is pressed
+
+        textSpec = " يجب اختيار مجال واحد على الأقل   ";
+      });
+    } else
+      setState(() {
+        textSpec = "";
+      });
   }
 
   //Authentication
@@ -128,14 +160,15 @@ class _MyHomePageState extends State<MyHomePage> {
   //Storing data in Firebase
   final _db = FirebaseFirestore.instance;
 
-  createUser(clientModel client) async {
-    await _db.collection("Clients").add(client.toJson());
+  createUser(lawyerModel lawyer) async {
+    await _db.collection("lawyers").add(lawyer.toJson());
   }
 
-  //check if email is used
+  //check if email exists
   List<String> emails = [];
+
   Future<void> fetchEmailsAsync() async {
-    final QuerySnapshot querySnapshot = await _db.collection('Clients').get();
+    final QuerySnapshot querySnapshot = await _db.collection('lawyers').get();
     final List<QueryDocumentSnapshot> documents = querySnapshot.docs;
 
     for (QueryDocumentSnapshot doc in documents) {
@@ -145,8 +178,7 @@ class _MyHomePageState extends State<MyHomePage> {
         emails.add(email);
       }
     }
-
-    final QuerySnapshot querySnapshot2 = await _db.collection('lawyers').get();
+    final QuerySnapshot querySnapshot2 = await _db.collection('Clients').get();
     final List<QueryDocumentSnapshot> documents2 = querySnapshot2.docs;
 
     for (QueryDocumentSnapshot doc in documents2) {
@@ -158,10 +190,10 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-//check if phone is used
+  //check if phone exists
   List<String> phones = [];
   Future<void> fetchPhonesAsync() async {
-    final QuerySnapshot querySnapshot = await _db.collection('Clients').get();
+    final QuerySnapshot querySnapshot = await _db.collection('lawyers').get();
     final List<QueryDocumentSnapshot> documents = querySnapshot.docs;
 
     for (QueryDocumentSnapshot doc in documents) {
@@ -172,7 +204,7 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     }
 
-    final QuerySnapshot querySnapshot2 = await _db.collection('lawyers').get();
+    final QuerySnapshot querySnapshot2 = await _db.collection('Clients').get();
     final List<QueryDocumentSnapshot> documents2 = querySnapshot2.docs;
 
     for (QueryDocumentSnapshot doc in documents2) {
@@ -180,6 +212,36 @@ class _MyHomePageState extends State<MyHomePage> {
       if (data.containsKey('phoneNumber')) {
         final phone = data['phoneNumber'] as String;
         phones.add(phone);
+      }
+    }
+  }
+
+  //check if license used before
+  List<String> licenses = [];
+  Future<void> fetchLicenseNumbersUsedAsync() async {
+    final QuerySnapshot querySnapshot = await _db.collection('lawyers').get();
+    final List<QueryDocumentSnapshot> documents = querySnapshot.docs;
+
+    for (QueryDocumentSnapshot doc in documents) {
+      final data = doc.data() as Map<String, dynamic>; // Access data as a Map
+      if (data.containsKey('licenseNumber')) {
+        final license = data['licenseNumber'] as String;
+        licenses.add(license);
+      }
+    }
+  }
+
+  List<String> mockLicenses = [];
+  Future<void> fetchMockLicenseNumbersAsync() async {
+    final QuerySnapshot querySnapshot =
+        await _db.collection('lawyer license').get();
+    final List<QueryDocumentSnapshot> documents = querySnapshot.docs;
+
+    for (QueryDocumentSnapshot doc in documents) {
+      final data = doc.data() as Map<String, dynamic>; // Access data as a Map
+      if (data.containsKey('licenseNumber')) {
+        final license = data['licenseNumber'] as String;
+        mockLicenses.add(license);
       }
     }
   }
@@ -191,6 +253,7 @@ class _MyHomePageState extends State<MyHomePage> {
         home: Scaffold(
             body: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+
           child: Form(
               key: _formKey,
               child: Column(
@@ -263,8 +326,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             return 'الرجاء تعبأة الخانة';
                           } else if (value.length > 50)
                             return ' الرجاء تعبأة الخانة بشكل صحيح';
-
-                          return null;
+                          else
+                            return null;
                         },
                         onTap: () async {
                           DateTime? pickedDate = await showDatePicker(
@@ -287,6 +350,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     TextFormField(
                       onTap: () async {
+                        print("ontap");
                         await fetchPhonesAsync();
                       },
                       controller: phoneNumController,
@@ -310,6 +374,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         else {
                           if (phones.contains(value)) return 'هذا الرقم مستخدم';
                         }
+
                         return null;
                       },
                     ),
@@ -317,10 +382,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       height: 15,
                     ),
                     TextFormField(
+                      controller: emailController,
                       onTap: () async {
+                        print("ontap");
                         await fetchEmailsAsync();
                       },
-                      controller: emailController,
                       style: TextStyle(
                           fontSize: 13, height: 1.1, color: Colors.black),
                       textAlign: TextAlign.right,
@@ -350,6 +416,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       height: 15,
                     ),
                     Container(
+                      alignment: Alignment.topRight,
                       child: TextFormField(
                           controller: passwordController,
                           onChanged: (password) => onPasswordChanged(password),
@@ -396,7 +463,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           textInputAction: TextInputAction.done),
                     ),
                     SizedBox(
-                      height: 5,
+                      height: 15,
                     ),
                     Container(
                         child: Column(
@@ -406,9 +473,10 @@ class _MyHomePageState extends State<MyHomePage> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               AnimatedContainer(
+                                alignment: Alignment.topRight,
                                 duration: Duration(milliseconds: 500),
-                                width: 20,
-                                height: 20,
+                                width: 16,
+                                height: 16,
                                 decoration: BoxDecoration(
                                     color: _isPasswordEightCharacters
                                         ? Colors.green
@@ -427,16 +495,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                               ),
                               SizedBox(
-                                width: 5,
+                                width: 10,
                               ),
                               Text("تتكون من 8 خانات على الأقل",
                                   textAlign: TextAlign.right,
                                   style: TextStyle(
-                                      fontSize: 13,
-                                      color: Color.fromRGBO(104, 102, 102, 1))),
-                              SizedBox(
-                                width: 10,
-                              ),
+                                      fontSize: 12,
+                                      color: Color.fromRGBO(104, 102, 102, 1)))
                             ],
                           ),
                           SizedBox(
@@ -447,8 +512,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             children: [
                               AnimatedContainer(
                                 duration: Duration(milliseconds: 500),
-                                width: 20,
-                                height: 20,
+                                width: 16,
+                                height: 16,
                                 decoration: BoxDecoration(
                                     color: _hasPasswordOneNumber
                                         ? Colors.green
@@ -471,16 +536,13 @@ class _MyHomePageState extends State<MyHomePage> {
                               ),
                               Text("تحتوي على رقم واحد على الأقل",
                                   style: TextStyle(
-                                      fontSize: 13,
-                                      color: Color.fromRGBO(104, 102, 102, 1))),
-                              SizedBox(
-                                width: 5,
-                              ),
+                                      fontSize: 12,
+                                      color: Color.fromRGBO(104, 102, 102, 1)))
                             ],
                           ),
                         ])),
                     SizedBox(
-                      height: 15,
+                      height: 17,
                     ),
                     Align(
                       alignment: Alignment
@@ -539,6 +601,259 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                     ),
+                    TextFormField(
+                        onTap: () async {
+                          print("ontap");
+                          await fetchMockLicenseNumbersAsync();
+                          await fetchLicenseNumbersUsedAsync();
+                        },
+                        controller: licenseNumberController,
+                        style: TextStyle(
+                            fontSize: 13, height: 1.1, color: Colors.black),
+                        textAlign: TextAlign.right,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          hintStyle: TextStyle(color: Colors.grey[800]),
+                          hintText: "رقم ترخيص المحاماة",
+                        ),
+                        validator: (value) {
+                          if (!mockLicenses.contains(value)) {
+                            return 'الرجاء ادخال رقم صحيح ';
+                          }
+
+                          if (value == null || value.isEmpty) {
+                            return 'الرجاء تعبأة الخانة';
+                          } else if (value.length != 5) {
+                            return 'الرجاء ادخال رقم الرخصة بالصيغة الصحيحة';
+                          } else if (!isNumericUsingRegularExpression(value)) {
+                            return 'الرجاء ادخال رقم الرخصة بالصيغة الصحيحة';
+                          } else if (licenses.contains(value)) {
+                            return "هذا الرقم مستخدم";
+                          }
+
+                          return null;
+                        }),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Container(
+                        height: 120,
+                        padding: const EdgeInsets.fromLTRB(2, 4, 2, 2),
+                        margin: EdgeInsets.fromLTRB(2, 2, 2, 9),
+                        decoration: ShapeDecoration(
+                            shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                              width: 1.7,
+                              color: Color.fromARGB(71, 32, 31, 31)),
+                          borderRadius: BorderRadius.circular(15),
+                        )),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
+                                  Text(
+                                    " المجالات التي أود تقديم إستشارات فيها",
+                                    style: TextStyle(fontSize: 13.5),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: <Widget>[
+                                    Text(
+                                      'أخرى',
+                                      style: TextStyle(fontSize: 13),
+                                    ),
+                                    SizedBox(height: 10),
+                                    Checkbox(
+                                      activeColor: Color(0xFF008080),
+                                      value: otherIsChecked,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          otherIsChecked = value!;
+                                        });
+                                      },
+                                    ),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Text(
+                                      'جنائي',
+                                      style: TextStyle(fontSize: 13),
+                                    ),
+                                    SizedBox(height: 10),
+                                    Checkbox(
+                                      activeColor: Color(0xFF008080),
+                                      value: isChecked0,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          isChecked0 = value!;
+                                        });
+                                      },
+                                    ),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Text(
+                                      'مواريث',
+                                      style: TextStyle(fontSize: 13),
+                                    ),
+                                    SizedBox(height: 10),
+                                    Checkbox(
+                                      activeColor: Color(0xFF008080),
+                                      value: isChecked1,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          isChecked1 = value!;
+                                        });
+                                      },
+                                    ),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Text(
+                                      'إداري',
+                                      style: TextStyle(fontSize: 13),
+                                    ),
+                                    SizedBox(height: 10),
+                                    Checkbox(
+                                      activeColor: Color(0xFF008080),
+                                      value: isChecked2,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          isChecked2 = value!;
+                                        });
+                                      },
+                                    ),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Text(
+                                      'مدني',
+                                      style: TextStyle(fontSize: 13),
+                                    ),
+                                    SizedBox(height: 10),
+                                    Checkbox(
+                                      activeColor: Color(0xFF008080),
+                                      value: isChecked3,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          isChecked3 = value!;
+                                        });
+                                      },
+                                    ),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Text(
+                                      'تجاري',
+                                      style: TextStyle(fontSize: 13),
+                                    ),
+                                    SizedBox(height: 10),
+                                    Checkbox(
+                                      activeColor: Color(0xFF008080),
+                                      value: isChecked4,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          isChecked4 = value!;
+                                        });
+                                      },
+                                    ),
+                                  ]),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
+                                  SizedBox(
+                                    width: 60,
+                                  ),
+                                  Text(
+                                    textSpec,
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: const Color.fromARGB(
+                                            255, 172, 50, 41)),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                            ])),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    TextFormField(
+                      controller: ibanController,
+                      style: TextStyle(
+                          fontSize: 13, height: 1.1, color: Colors.black),
+                      textAlign: TextAlign.right,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        hintStyle: TextStyle(color: Colors.grey[800]),
+                        hintText: "(SA __________ )  رقم الأيبان",
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'الرجاء تعبأة الخانة';
+                        } else if (value.length > 27 || value.length < 22)
+                          return 'يجب أن يكون عدد خانات الأيبان من 23-26 خانة';
+                        else if (!validateIban(value))
+                          return ' (SA _______  )  الرجاء إدخال رقم ايبان صحيح';
+
+                        return null;
+                      },
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    TextFormField(
+                      controller: priceController,
+                      style: TextStyle(
+                          fontSize: 13, height: 1.1, color: Colors.black),
+                      textAlign: TextAlign.right,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        hintStyle: TextStyle(color: Colors.grey[800]),
+                        hintText: "حدد/ي سعر جلسة الاستشارة للساعة الواحدة",
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'الرجاء تعبأة الخانة';
+                        } else if (value.length > 50)
+                          return ' الرجاء تعبأة الخانة بشكل صحيح';
+                        else if (!isNumericUsingRegularExpression(value))
+                          return '(الرجاء تعبأة الخانة بأعداد فقط (من 0-9';
+                        return null;
+                      },
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    TextFormField(
+                      controller: bioController,
+                      keyboardType: TextInputType.multiline,
+                      minLines: 3, //Normal textInputField will be displayed
+                      maxLines: 5,
+                      style: TextStyle(
+                          fontSize: 13, height: 1.1, color: Colors.black),
+                      textAlign: TextAlign.right,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        hintStyle: TextStyle(color: Colors.grey[800]),
+                        hintText:
+                            "(الخبرات السابقة ,التعليم, المهارات)  السيرة الذاتية",
+                      ),
+                    ),
                     SizedBox(
                       height: 60,
                     ),
@@ -550,7 +865,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           primary: Color(0xFF008080),
                         ),
                         onPressed: () {
-                          if (_formKey.currentState!.validate()) {
+                          if (_formKey.currentState!.validate() &&
+                              atLeastOneCheckboxSelected()) {
                             //authentication
                             createUserWithEmailAndPassword(
                                 emailController.text.trim(),
@@ -558,19 +874,35 @@ class _MyHomePageState extends State<MyHomePage> {
 
                             //storing in DB
 
-                            final client = clientModel(
+                            if (isChecked0 == true) specialities.add("جنائي");
+                            if (isChecked1 == true) specialities.add("مواريث");
+                            if (isChecked2 == true) specialities.add("إداري");
+                            if (isChecked3 == true) specialities.add("مدني");
+                            if (isChecked4 == true) specialities.add("تجاري");
+                            if (otherIsChecked == true)
+                              specialities.add("أخرى");
+
+                            final lawyer = lawyerModel(
                                 firstName: fNameController.text.trim(),
                                 lastName: lNameController.text.trim(),
                                 dateOfBirth: dOBController.text.trim(),
                                 email: emailController.text.trim(),
                                 password: passwordController.text.trim(),
                                 phone: phoneNumController.text.trim(),
-                                gender: selectedItem);
+                                gender: selectedItem,
+                                licenseNumber:
+                                    licenseNumberController.text.trim(),
+                                iban: ibanController.text.trim(),
+                                price: priceController.text.trim(),
+                                specialties: specialities,
+                                bio: bioController.text.trim());
 
-                            createUser(client);
+                            createUser(lawyer);
 
                             //ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Processing Data')),);
                           }
+                          if (!atLeastOneCheckboxSelected()) changeTextColor();
+                          if (atLeastOneCheckboxSelected()) changeTextColor();
                         },
                         child: Text('التالي'),
                       ),
