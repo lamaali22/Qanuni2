@@ -1,4 +1,4 @@
-#Fri Sep 15 01:37:28 AST 2023
+#Sat Sep 16 02:30:16 AST 2023
 base.0=/Users/FAY/Documents/GitHub/Qanuni2/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
 base.1=/Users/FAY/Documents/GitHub/Qanuni2/build/app/intermediates/dex/debug/mergeDexDebug/classes2.dex
 base.2=/Users/FAY/Documents/GitHub/Qanuni2/build/app/intermediates/dex/debug/mergeDexDebug/classes3.dex
