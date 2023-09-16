@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:qanuni/data/models/clientModel.dart';
+import 'package:qanuni/models/clientModel.dart';
 import 'firebase_options.dart';
 import 'package:intl/intl.dart';
 import 'package:email_validator/email_validator.dart';
@@ -136,7 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
   //Storing data in Firebase
   final _db = FirebaseFirestore.instance;
 
-  createUser(ClientModel client) async {
+  createUser(clientModel client) async {
     await _db.collection("Clients").add(client.toJson());
   }
 
@@ -153,33 +154,11 @@ class _MyHomePageState extends State<MyHomePage> {
         emails.add(email);
       }
     }
-
-    final QuerySnapshot querySnapshot2 = await _db.collection('lawyers').get();
-    final List<QueryDocumentSnapshot> documents2 = querySnapshot2.docs;
-
-    for (QueryDocumentSnapshot doc in documents2) {
-      final data = doc.data() as Map<String, dynamic>; // Access data as a Map
-      if (data.containsKey('email')) {
-        final email = data['email'] as String;
-        emails.add(email);
-      }
-    }
   }
 
 //check if phone is used
   List<String> phones = [];
   Future<void> fetchPhonesAsync() async {
-    final QuerySnapshot querySnapshot2 = await _db.collection('lawyers').get();
-    final List<QueryDocumentSnapshot> documents2 = querySnapshot2.docs;
-
-    for (QueryDocumentSnapshot doc in documents2) {
-      final data = doc.data() as Map<String, dynamic>; // Access data as a Map
-      if (data.containsKey('phoneNumber')) {
-        final phone = data['phoneNumber'] as String;
-        phones.add(phone);
-      }
-    }
-
     final QuerySnapshot querySnapshot = await _db.collection('Clients').get();
     final List<QueryDocumentSnapshot> documents = querySnapshot.docs;
 
@@ -197,7 +176,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return MaterialApp(
         theme: ThemeData(primarySwatch: Colors.blue),
         home: Scaffold(
-            body: SingleChildScrollView(
+            body: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
           child: Form(
               key: _formKey,
@@ -280,8 +259,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           DateTime? pickedDate = await showDatePicker(
                               context: context,
                               initialDate: DateTime.now(),
-                              firstDate: DateTime(
-                                  1930), //DateTime.now() - not to allow to choose before today.
+                              firstDate: DateTime(1950),
                               lastDate: DateTime.now());
 
                           if (pickedDate != null) {
@@ -299,9 +277,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       height: 15,
                     ),
                     TextFormField(
-                      onTap: () async {
-                        await fetchPhonesAsync();
-                      },
                       controller: phoneNumController,
                       style: TextStyle(
                           fontSize: 13, height: 1.1, color: Colors.black),
@@ -321,6 +296,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         else if (!isNumericUsingRegularExpression(value))
                           return '(الرجاء تعبأة الخانة بأعداد فقط (من 0-9';
                         else {
+                          fetchPhonesAsync();
                           if (phones.contains(value)) return 'هذا الرقم مستخدم';
                         }
                         return null;
@@ -330,9 +306,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       height: 15,
                     ),
                     TextFormField(
-                      onTap: () async {
-                        await fetchEmailsAsync();
-                      },
                       controller: emailController,
                       style: TextStyle(
                           fontSize: 13, height: 1.1, color: Colors.black),
@@ -352,6 +325,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         else if (!validateEmail(value))
                           return 'الرجاء ادخال بريد الكتروني صحيح';
                         else {
+                          fetchEmailsAsync();
                           if (emails.contains(value))
                             return 'هذا البريد الإلكتروني مستخدم';
                         }
@@ -464,7 +438,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           textInputAction: TextInputAction.done),
                     ),
                     SizedBox(
-                      height: 5,
+                      height: 15,
                     ),
                     Container(
                         child: Column(
@@ -473,6 +447,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
+                              SizedBox(
+                                width: 130,
+                              ),
                               AnimatedContainer(
                                 duration: Duration(milliseconds: 500),
                                 width: 20,
@@ -495,16 +472,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                               ),
                               SizedBox(
-                                width: 5,
+                                width: 10,
                               ),
                               Text("تتكون من 8 خانات على الأقل",
                                   textAlign: TextAlign.right,
                                   style: TextStyle(
                                       fontSize: 13,
-                                      color: Color.fromRGBO(104, 102, 102, 1))),
-                              SizedBox(
-                                width: 10,
-                              ),
+                                      color: Color.fromRGBO(104, 102, 102, 1)))
                             ],
                           ),
                           SizedBox(
@@ -513,6 +487,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
+                              SizedBox(
+                                width: 123,
+                              ),
                               AnimatedContainer(
                                 duration: Duration(milliseconds: 500),
                                 width: 20,
@@ -540,10 +517,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               Text("تحتوي على رقم واحد على الأقل",
                                   style: TextStyle(
                                       fontSize: 13,
-                                      color: Color.fromRGBO(104, 102, 102, 1))),
-                              SizedBox(
-                                width: 5,
-                              ),
+                                      color: Color.fromRGBO(104, 102, 102, 1)))
                             ],
                           ),
                         ])),
@@ -626,7 +600,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
                             //storing in DB
 
-                            final client = ClientModel(
+                            final client = clientModel(
                                 firstName: fNameController.text.trim(),
                                 lastName: lNameController.text.trim(),
                                 dateOfBirth: dOBController.text.trim(),
