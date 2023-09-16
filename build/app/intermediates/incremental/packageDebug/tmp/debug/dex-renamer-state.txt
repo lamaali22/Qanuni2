@@ -1,10 +1,15 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 #Sat Sep 16 16:28:56 AST 2023
 base.0=C\:\\Windows\\development\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
 base.1=C\:\\Windows\\development\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes2.dex
 base.2=C\:\\Windows\\development\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes3.dex
 =======
+#Sat Sep 16 12:41:25 GMT+03:00 2023
+>>>>>>> lama-sprint
+=======
 #Sat Sep 16 18:37:29 GMT+03:00 2023
+>>>>>>> 558fb5e9d5e63aeadb5468a01c480d9b507e7b6e
 base.0=C\:\\Users\\44220\\OneDrive\\Documents\\GitHub\\Qanuni\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
 base.1=C\:\\Users\\44220\\OneDrive\\Documents\\GitHub\\Qanuni\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes2.dex
 base.2=C\:\\Users\\44220\\OneDrive\\Documents\\GitHub\\Qanuni\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes3.dex

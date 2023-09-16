@@ -62,15 +62,24 @@ class _MyHomePageState extends State<MyHomePage> {
   final fNameController = TextEditingController();
   final lNameController = TextEditingController();
   final dOBController = TextEditingController();
+  final passwordConfirmController = TextEditingController();
   final phoneNumController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
   final genderController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   //gender
   List<String> itemsList = ['الجنس', 'أنثى', 'ذكر'];
   String selectedItem = 'الجنس';
+
+  //DOB
+  @override
+  void initState() {
+    dOBController.text = ""; //set the initial value of text field
+    super.initState();
+  }
 
 //Email validation
   bool validateEmail(String email) {
@@ -244,17 +253,26 @@ class _MyHomePageState extends State<MyHomePage> {
 
                           return null;
                         },
+                        readOnly:
+                            true, //set it true, so that user will not able to edit text
                         onTap: () async {
                           DateTime? pickedDate = await showDatePicker(
                               context: context,
                               initialDate: DateTime.now(),
+<<<<<<< HEAD
                               firstDate: DateTime(1950),
+=======
+                              firstDate: DateTime(
+                                  1930), //DateTime.now() - not to allow to choose before today.
+>>>>>>> lama-sprint
                               lastDate: DateTime.now());
 
                           if (pickedDate != null) {
+                            String formattedDate =
+                                DateFormat('yyyy-MM-dd').format(pickedDate);
                             setState(() {
                               dOBController.text =
-                                  DateFormat('yyyy-mm-dd').format(pickedDate);
+                                  formattedDate; //set output date to TextField value.
                             });
                           }
                         },
@@ -363,6 +381,61 @@ class _MyHomePageState extends State<MyHomePage> {
                               return 'الرجاء تعبأة الخانة';
                             else if (value.length < 8)
                               return '  الرجاء ادخال 8 خانات و رقم واحد على الأقل';
+                            else if (passwordController.text !=
+                                passwordConfirmController.text)
+                              return "لا يوجد تطابق";
+                            else
+                              return null;
+                          },
+                          keyboardType: TextInputType.visiblePassword,
+                          textInputAction: TextInputAction.done),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Container(
+                      child: TextFormField(
+                          controller: passwordConfirmController,
+                          onChanged: (password) => onPasswordChanged(password),
+                          obscureText: !passwordVisible,
+                          style: TextStyle(
+                              fontSize: 13,
+                              height: 1.1,
+                              color: Colors.black,
+                              backgroundColor: null),
+                          textAlign: TextAlign.right,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            hintText: 'تأكيد كلمة المرور',
+                            //hintStyle: TextStyle(color: Colors.black),
+                            prefixIcon: IconButton(
+                              onPressed: () {
+                                setState(
+                                  () {
+                                    passwordVisible = !passwordVisible;
+                                  },
+                                );
+                              },
+                              icon: passwordVisible
+                                  ? Icon(
+                                      Icons.visibility,
+                                    )
+                                  : Icon(
+                                      Icons.visibility_off,
+                                    ),
+                            ),
+                            alignLabelWithHint: false,
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty)
+                              return 'الرجاء تعبأة الخانة';
+                            else if (value.length < 8)
+                              return '  الرجاء ادخال 8 خانات و رقم واحد على الأقل';
+                            else if (passwordController.text !=
+                                passwordConfirmController.text)
+                              return "لا يوجد تطابق";
                             else
                               return null;
                           },
@@ -546,7 +619,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             //ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Processing Data')),);
                           }
                         },
-                        child: Text('التالي'),
+                        child: Text('تسجيل'),
                       ),
                     ),
                   ] //children

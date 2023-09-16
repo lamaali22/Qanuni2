@@ -48,6 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final phoneNumController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final passwordConfirmController = TextEditingController();
   TextEditingController genderController = TextEditingController();
   final licenseNumberController = TextEditingController();
   final ibanController = TextEditingController();
@@ -59,6 +60,13 @@ class _MyHomePageState extends State<MyHomePage> {
   //gender
   List<String> itemsList = ['الجنس', 'أنثى', 'ذكر'];
   String selectedItem = 'الجنس';
+
+//DOB
+  @override
+  void initState() {
+    dOBController.text = ""; //set the initial value of text field
+    super.initState();
+  }
 
 //Email validation
   bool validateEmail(String email) {
@@ -328,17 +336,22 @@ class _MyHomePageState extends State<MyHomePage> {
                           else
                             return null;
                         },
+                        readOnly:
+                            true, //set it true, so that user will not able to edit text
                         onTap: () async {
                           DateTime? pickedDate = await showDatePicker(
                               context: context,
                               initialDate: DateTime.now(),
-                              firstDate: DateTime(1930),
+                              firstDate: DateTime(
+                                  1930), //DateTime.now() - not to allow to choose before today.
                               lastDate: DateTime.now());
 
                           if (pickedDate != null) {
+                            String formattedDate =
+                                DateFormat('yyyy-MM-dd').format(pickedDate);
                             setState(() {
                               dOBController.text =
-                                  DateFormat('yyyy-mm-dd').format(pickedDate);
+                                  formattedDate; //set output date to TextField value.
                             });
                           }
                         },
@@ -415,7 +428,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       height: 15,
                     ),
                     Container(
-                      alignment: Alignment.topRight,
                       child: TextFormField(
                           controller: passwordController,
                           onChanged: (password) => onPasswordChanged(password),
@@ -455,6 +467,61 @@ class _MyHomePageState extends State<MyHomePage> {
                               return 'الرجاء تعبأة الخانة';
                             else if (value.length < 8)
                               return '  الرجاء ادخال 8 خانات و رقم واحد على الأقل';
+                            else if (passwordController.text !=
+                                passwordConfirmController.text)
+                              return "لا يوجد تطابق";
+                            else
+                              return null;
+                          },
+                          keyboardType: TextInputType.visiblePassword,
+                          textInputAction: TextInputAction.done),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Container(
+                      child: TextFormField(
+                          controller: passwordConfirmController,
+                          onChanged: (password) => onPasswordChanged(password),
+                          obscureText: !passwordVisible,
+                          style: TextStyle(
+                              fontSize: 13,
+                              height: 1.1,
+                              color: Colors.black,
+                              backgroundColor: null),
+                          textAlign: TextAlign.right,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            hintText: 'تأكيد كلمة المرور',
+                            //hintStyle: TextStyle(color: Colors.black),
+                            prefixIcon: IconButton(
+                              onPressed: () {
+                                setState(
+                                  () {
+                                    passwordVisible = !passwordVisible;
+                                  },
+                                );
+                              },
+                              icon: passwordVisible
+                                  ? Icon(
+                                      Icons.visibility,
+                                    )
+                                  : Icon(
+                                      Icons.visibility_off,
+                                    ),
+                            ),
+                            alignLabelWithHint: false,
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty)
+                              return 'الرجاء تعبأة الخانة';
+                            else if (value.length < 8)
+                              return '  الرجاء ادخال 8 خانات و رقم واحد على الأقل';
+                            else if (passwordController.text !=
+                                passwordConfirmController.text)
+                              return "لا يوجد تطابق";
                             else
                               return null;
                           },
@@ -902,7 +969,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           if (!atLeastOneCheckboxSelected()) changeTextColor();
                           if (atLeastOneCheckboxSelected()) changeTextColor();
                         },
-                        child: Text('التالي'),
+                        child: Text('تسجيل'),
                       ),
                     ),
                   ] //children
