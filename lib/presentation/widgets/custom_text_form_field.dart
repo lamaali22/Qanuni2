@@ -38,7 +38,6 @@ class CustomTextFormField extends StatelessWidget {
         children: [
           Container(
             width: width,
-            height: height,
             child: TextFormField(
               validator: valid,
               controller: mycontroller,
@@ -54,8 +53,9 @@ class CustomTextFormField extends StatelessWidget {
               decoration: InputDecoration(
                   fillColor: filledColor,
                   filled: filledColor != null,
-                  isCollapsed: true,
+                  isCollapsed: false,
                   hintText: hinttext,
+                  errorStyle: TextStyle(color: Colors.red, fontSize: 0),
                   hintStyle: const TextStyle(fontSize: 14, color: Colors.grey),
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                   contentPadding:
@@ -80,6 +80,12 @@ class CustomTextFormField extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10))),
             ),
           ),
+          if (
+              valid(mycontroller!.text) != null)
+            Text(
+              valid(mycontroller!.text)!,
+              style: TextStyle(color: Colors.red, fontSize: 14),
+            )
         ],
       ),
     );
