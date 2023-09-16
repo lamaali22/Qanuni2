@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:qanuni/data/models/lawyerModel.dart';
+import 'package:qanuni/homePageLawyer.dart';
+import 'package:qanuni/models/lawyerModel.dart';
 import 'firebase_options.dart';
 import 'package:intl/intl.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:qanuni/presentation/screens/home_screen/view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -167,7 +170,7 @@ class _MyHomePageState extends State<MyHomePage> {
   //Storing data in Firebase
   final _db = FirebaseFirestore.instance;
 
-  createUser(LawyerModel lawyer) async {
+  createUser(lawyerModel lawyer) async {
     await _db.collection("lawyers").add(lawyer.toJson());
   }
 
@@ -947,7 +950,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             if (otherIsChecked == true)
                               specialities.add("أخرى");
 
-                            final lawyer = LawyerModel(
+                            final lawyer = lawyerModel(
                                 firstName: fNameController.text.trim(),
                                 lastName: lNameController.text.trim(),
                                 dateOfBirth: dOBController.text.trim(),
@@ -960,9 +963,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                 iban: ibanController.text.trim(),
                                 price: priceController.text.trim(),
                                 specialties: specialities,
-                                bio: bioController.text.trim());
+                                bio: bioController.text.trim(),
+                                photoURL: "");
 
                             createUser(lawyer);
+
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const HomeScreen(),
+                            ));
 
                             //ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Processing Data')),);
                           }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:qanuni/firebase_options.dart';
+import 'package:qanuni/presentation/screens/home_screen/view.dart';
 import 'package:qanuni/viewLawyerProfilePage.dart';
 
 void main() async {
@@ -69,6 +70,13 @@ class LawyersList extends StatelessWidget {
         title: const Text("المحامين",
             style: TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.w500)),
         centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back), // Back button icon
+          onPressed: () {
+            // Navigate back to the previous page
+            Navigator.pop(context);
+          },
+        ),
       ),
       //navigation Bar
       bottomNavigationBar: BottomNavigationBar(
@@ -105,7 +113,6 @@ class LawyersList extends StatelessWidget {
             return Text('Error: ${snapshot.error}');
           } else {
             List<Lawyer> lawyers = snapshot.data as List<Lawyer>;
-
             return ListView.builder(
               itemCount: lawyers.length,
               itemBuilder: (context, index) {
@@ -190,9 +197,11 @@ class LawyersList extends StatelessWidget {
                         textAlign: TextAlign.right,
                         // Align text to the right
                         style: TextStyle(
-                            fontFamily: 'Cairo',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 17)),
+                          color: Colors.black,
+                          fontFamily: 'Cairo',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 17,
+                        )),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -201,6 +210,7 @@ class LawyersList extends StatelessWidget {
                               .centerRight, // Align specialties text to the right
                           child: Text(lawyer.specialties.join(' | '),
                               style: TextStyle(
+                                  color: Colors.black,
                                   fontFamily: 'Cairo',
                                   fontSize: 12,
                                   fontWeight: FontWeight.normal)),

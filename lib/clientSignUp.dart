@@ -2,11 +2,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:qanuni/data/models/clientModel.dart';
 import 'package:qanuni/models/clientModel.dart';
+import 'package:qanuni/presentation/screens/home_screen/view.dart';
 import 'firebase_options.dart';
 import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:qanuni/providers/boarding/cubit/boarding_cubit.dart';
+import '../../../providers/auth/login/cubit/login_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -62,11 +65,10 @@ class _MyHomePageState extends State<MyHomePage> {
   final fNameController = TextEditingController();
   final lNameController = TextEditingController();
   final dOBController = TextEditingController();
-  final passwordConfirmController = TextEditingController();
   final phoneNumController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-
+  final passwordConfirmController = TextEditingController();
   final genderController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
@@ -154,6 +156,17 @@ class _MyHomePageState extends State<MyHomePage> {
         emails.add(email);
       }
     }
+
+    final QuerySnapshot querySnapshot2 = await _db.collection('lawyers').get();
+    final List<QueryDocumentSnapshot> documents2 = querySnapshot2.docs;
+
+    for (QueryDocumentSnapshot doc in documents2) {
+      final data = doc.data() as Map<String, dynamic>; // Access data as a Map
+      if (data.containsKey('email')) {
+        final email = data['email'] as String;
+        emails.add(email);
+      }
+    }
   }
 
 //check if phone is used
@@ -169,14 +182,27 @@ class _MyHomePageState extends State<MyHomePage> {
         phones.add(phone);
       }
     }
+
+    final QuerySnapshot querySnapshot2 = await _db.collection('lawyers').get();
+    final List<QueryDocumentSnapshot> documents2 = querySnapshot2.docs;
+
+    for (QueryDocumentSnapshot doc in documents2) {
+      final data = doc.data() as Map<String, dynamic>; // Access data as a Map
+      if (data.containsKey('phoneNumber')) {
+        final phone = data['phoneNumber'] as String;
+        phones.add(phone);
+      }
+    }
   }
+
+  ////////////
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         theme: ThemeData(primarySwatch: Colors.blue),
         home: Scaffold(
-            body: Container(
+            body: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
           child: Form(
               key: _formKey,
@@ -259,7 +285,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           DateTime? pickedDate = await showDatePicker(
                               context: context,
                               initialDate: DateTime.now(),
-                              firstDate: DateTime(1950),
+                              firstDate: DateTime(
+                                  1930), //DateTime.now() - not to allow to choose before today.
                               lastDate: DateTime.now());
 
                           if (pickedDate != null) {
@@ -277,6 +304,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       height: 15,
                     ),
                     TextFormField(
+                      onTap: () async {
+                        print("ontap");
+                        await fetchPhonesAsync();
+                      },
                       controller: phoneNumController,
                       style: TextStyle(
                           fontSize: 13, height: 1.1, color: Colors.black),
@@ -296,7 +327,6 @@ class _MyHomePageState extends State<MyHomePage> {
                         else if (!isNumericUsingRegularExpression(value))
                           return '(الرجاء تعبأة الخانة بأعداد فقط (من 0-9';
                         else {
-                          fetchPhonesAsync();
                           if (phones.contains(value)) return 'هذا الرقم مستخدم';
                         }
                         return null;
@@ -306,6 +336,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       height: 15,
                     ),
                     TextFormField(
+                      onTap: () async {
+                        print("ontap");
+                        await fetchEmailsAsync();
+                      },
                       controller: emailController,
                       style: TextStyle(
                           fontSize: 13, height: 1.1, color: Colors.black),
@@ -325,7 +359,6 @@ class _MyHomePageState extends State<MyHomePage> {
                         else if (!validateEmail(value))
                           return 'الرجاء ادخال بريد الكتروني صحيح';
                         else {
-                          fetchEmailsAsync();
                           if (emails.contains(value))
                             return 'هذا البريد الإلكتروني مستخدم';
                         }
@@ -438,7 +471,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           textInputAction: TextInputAction.done),
                     ),
                     SizedBox(
-                      height: 15,
+                      height: 5,
                     ),
                     Container(
                         child: Column(
@@ -447,9 +480,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              SizedBox(
-                                width: 130,
-                              ),
                               AnimatedContainer(
                                 duration: Duration(milliseconds: 500),
                                 width: 20,
@@ -472,13 +502,16 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                               ),
                               SizedBox(
-                                width: 10,
+                                width: 5,
                               ),
                               Text("تتكون من 8 خانات على الأقل",
                                   textAlign: TextAlign.right,
                                   style: TextStyle(
                                       fontSize: 13,
-                                      color: Color.fromRGBO(104, 102, 102, 1)))
+                                      color: Color.fromRGBO(104, 102, 102, 1))),
+                              SizedBox(
+                                width: 10,
+                              ),
                             ],
                           ),
                           SizedBox(
@@ -487,9 +520,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              SizedBox(
-                                width: 123,
-                              ),
                               AnimatedContainer(
                                 duration: Duration(milliseconds: 500),
                                 width: 20,
@@ -517,7 +547,10 @@ class _MyHomePageState extends State<MyHomePage> {
                               Text("تحتوي على رقم واحد على الأقل",
                                   style: TextStyle(
                                       fontSize: 13,
-                                      color: Color.fromRGBO(104, 102, 102, 1)))
+                                      color: Color.fromRGBO(104, 102, 102, 1))),
+                              SizedBox(
+                                width: 5,
+                              ),
                             ],
                           ),
                         ])),
@@ -610,6 +643,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                 gender: selectedItem);
 
                             createUser(client);
+
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const HomeScreen(),
+                            ));
 
                             //ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Processing Data')),);
                           }

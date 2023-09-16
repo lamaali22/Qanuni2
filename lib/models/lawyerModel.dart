@@ -12,6 +12,7 @@ class lawyerModel {
   List<String> specialties;
   final String price;
   final String bio;
+  final String photoURL;
 
   lawyerModel({
     this.id, // id added
@@ -27,6 +28,7 @@ class lawyerModel {
     required this.specialties,
     required this.price,
     required this.bio,
+    required this.photoURL,
   });
 
   toJson() {
@@ -42,7 +44,8 @@ class lawyerModel {
       "iban": iban,
       "specialties": specialties,
       "price": price,
-      "bio": bio
+      "bio": bio,
+      "photoURL": photoURL
     };
   }
 }
