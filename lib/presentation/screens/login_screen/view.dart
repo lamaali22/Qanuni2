@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:qanuni/presentation/screens/client_signup_screen/view.dart';
+import 'package:qanuni/presentation/screens/lawyer_signup_screen/view.dart';
 import 'package:qanuni/presentation/widgets/custom_text_form_field.dart';
+import 'package:qanuni/providers/boarding/cubit/boarding_cubit.dart';
 
 import '../../../providers/auth/login/cubit/login_cubit.dart';
 import '../../../utils/colors.dart';
@@ -38,8 +40,19 @@ class LoginScreen extends StatelessWidget {
                       height: 0.4.sh,
                       child: Column(
                         children: [
-                          SizedBox(
+                          Container(
+                            alignment: Alignment.bottomRight,
                             height: 0.1.sh,
+                            width: 1.sw,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Icon(
+                                Icons.chevron_right_outlined,
+                                size: 30,
+                              ),
+                            ),
                           ),
                           SizedBox(
                             width: 0.2.sh,
@@ -58,7 +71,7 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: 0.4.sh,
+                      height: 0.5.sh,
                       child: Form(
                           key: LoginCubit.get(context).formKey,
                           child: Column(
@@ -76,11 +89,12 @@ class LoginScreen extends StatelessWidget {
                                 valid: (text) {
                                   if (text!.isEmpty) {
                                     return 'يجب ادخال البريد الالكتروني';
+                                  } else {
+                                    return null;
                                   }
-                                  return null;
                                 },
                               ),
-                              20.verticalSpace,
+                              10.verticalSpace,
                               CustomTextFormField(
                                 hinttext: 'كلمة المرور',
                                 icon: const Icon(
@@ -125,7 +139,13 @@ class LoginScreen extends StatelessWidget {
                               10.verticalSpace,
                               ElevatedButton(
                                   onPressed: () {
-                                    LoginCubit.get(context).login();
+                                    if (BoardingCubit.get(context)
+                                            .selectedOption ==
+                                        0) {
+                                      LoginCubit.get(context).loginClient();
+                                    } else {
+                                      LoginCubit.get(context).loginLawyer();
+                                    }
                                   },
                                   style: ElevatedButton.styleFrom(
                                       shape: RoundedRectangleBorder(
@@ -150,8 +170,9 @@ class LoginScreen extends StatelessWidget {
                             ],
                           )),
                     ),
-                    SizedBox(
-                      height: 0.2.sh,
+                    Container(
+                      alignment: Alignment.topCenter,
+                      height: 0.1.sh,
                       child: Directionality(
                         textDirection: TextDirection.rtl,
                         child: Row(
@@ -167,13 +188,22 @@ class LoginScreen extends StatelessWidget {
                             3.horizontalSpace,
                             GestureDetector(
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          ClientSignUpScreen(),
-                                    ));
-                                ;
+                                if (BoardingCubit.get(context).selectedOption ==
+                                    0) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ClientSignUpScreen(),
+                                      ));
+                                } else {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            LawyerSignupScreen(),
+                                      ));
+                                }
                               },
                               child: const Text(
                                 'حساب جديد',

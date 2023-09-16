@@ -5,6 +5,7 @@ import 'package:qanuni/presentation/screens/boarding_screen/widgets/custom_radio
 import 'package:qanuni/presentation/screens/landing_screen/view.dart';
 import 'package:qanuni/presentation/screens/login_screen/view.dart';
 import 'package:qanuni/presentation/widgets/custom_button.dart';
+import 'package:qanuni/providers/auth/login/cubit/login_cubit.dart';
 import 'package:qanuni/providers/boarding/cubit/boarding_cubit.dart';
 import 'package:qanuni/utils/colors.dart';
 import 'package:qanuni/utils/images.dart';
@@ -82,7 +83,9 @@ class BoardingScreen extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => const LandingScreen(),
-                            ));
+                            )).then((value) {
+                          LoginCubit.get(context).reset();
+                        });
                       }
                     },
                     style: ElevatedButton.styleFrom(

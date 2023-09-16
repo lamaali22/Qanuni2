@@ -2,10 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:qanuni/models/clientModel.dart';
+import 'package:qanuni/data/models/clientModel.dart';
 import 'firebase_options.dart';
 import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:email_validator/email_validator.dart';
 
 void main() async {
@@ -137,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
   //Storing data in Firebase
   final _db = FirebaseFirestore.instance;
 
-  createUser(clientModel client) async {
+  createUser(ClientModel client) async {
     await _db.collection("Clients").add(client.toJson());
   }
 
@@ -627,7 +626,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
                             //storing in DB
 
-                            final client = clientModel(
+                            final client = ClientModel(
                                 firstName: fNameController.text.trim(),
                                 lastName: lNameController.text.trim(),
                                 dateOfBirth: dOBController.text.trim(),
