@@ -161,10 +161,10 @@ class _MyHomePageState extends State<MyHomePage> {
 //check if phone is used
   List<String> phones = [];
   Future<void> fetchPhonesAsync() async {
-    final QuerySnapshot querySnapshot = await _db.collection('Clients').get();
-    final List<QueryDocumentSnapshot> documents = querySnapshot.docs;
+    final QuerySnapshot querySnapshot2 = await _db.collection('lawyers').get();
+    final List<QueryDocumentSnapshot> documents2 = querySnapshot2.docs;
 
-    for (QueryDocumentSnapshot doc in documents) {
+    for (QueryDocumentSnapshot doc in documents2) {
       final data = doc.data() as Map<String, dynamic>; // Access data as a Map
       if (data.containsKey('phoneNumber')) {
         final phone = data['phoneNumber'] as String;
@@ -172,10 +172,10 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     }
 
-    final QuerySnapshot querySnapshot2 = await _db.collection('lawyers').get();
-    final List<QueryDocumentSnapshot> documents2 = querySnapshot2.docs;
+    final QuerySnapshot querySnapshot = await _db.collection('Clients').get();
+    final List<QueryDocumentSnapshot> documents = querySnapshot.docs;
 
-    for (QueryDocumentSnapshot doc in documents2) {
+    for (QueryDocumentSnapshot doc in documents) {
       final data = doc.data() as Map<String, dynamic>; // Access data as a Map
       if (data.containsKey('phoneNumber')) {
         final phone = data['phoneNumber'] as String;

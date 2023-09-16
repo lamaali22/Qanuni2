@@ -619,10 +619,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           hintText: "رقم ترخيص المحاماة",
                         ),
                         validator: (value) {
-                          if (!mockLicenses.contains(value)) {
-                            return 'الرجاء ادخال رقم صحيح ';
-                          }
-
                           if (value == null || value.isEmpty) {
                             return 'الرجاء تعبأة الخانة';
                           } else if (value.length != 5) {
@@ -631,6 +627,9 @@ class _MyHomePageState extends State<MyHomePage> {
                             return 'الرجاء ادخال رقم الرخصة بالصيغة الصحيحة';
                           } else if (licenses.contains(value)) {
                             return "هذا الرقم مستخدم";
+                          }
+                          if (!mockLicenses.contains(value)) {
+                            return 'الرجاء ادخال رقم صحيح ';
                           }
 
                           return null;
