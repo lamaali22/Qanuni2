@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qanuni/homePage.dart';
 import 'package:qanuni/main.dart';
 import 'package:qanuni/presentation/screens/reset_password_screen/view.dart';
 import 'package:qanuni/utils/colors.dart';
@@ -107,6 +108,11 @@ class HomeScreen extends StatelessWidget {
             ElevatedButton(
                 onPressed: () async {
                   await auth.signOut();
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LogoutPage(),
+                      ));
                 },
                 child: Text('تسجيل خروج'))
           ],

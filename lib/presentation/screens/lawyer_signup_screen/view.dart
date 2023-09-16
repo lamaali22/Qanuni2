@@ -6,7 +6,9 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:qanuni/data/models/lawyerModel.dart';
+import 'package:qanuni/homePageLawyer.dart';
 import 'package:qanuni/main.dart';
+import 'package:qanuni/models/lawyerModel.dart';
 
 import '../landing_screen/view.dart';
 
@@ -18,12 +20,14 @@ class LawyerSignupScreen extends StatefulWidget {
 }
 
 class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
+  //Lawyer controllers
   final fNameController = TextEditingController();
   final lNameController = TextEditingController();
   final dOBController = TextEditingController();
   final phoneNumController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final passwordConfirmController = TextEditingController();
   TextEditingController genderController = TextEditingController();
   final licenseNumberController = TextEditingController();
   final ibanController = TextEditingController();
@@ -35,6 +39,13 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
   //gender
   List<String> itemsList = ['الجنس', 'أنثى', 'ذكر'];
   String selectedItem = 'الجنس';
+
+//DOB
+  @override
+  void initState() {
+    dOBController.text = ""; //set the initial value of text field
+    super.initState();
+  }
 
 //Email validation
   bool validateEmail(String email) {
@@ -135,8 +146,17 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
   //Storing data in Firebase
   final _db = FirebaseFirestore.instance;
 
-  Future createUser(LawyerModel lawyer) async {
+  createUser(lawyerModel lawyer) async {
     await _db.collection("lawyers").add(lawyer.toJson());
+  }
+
+  //signinUser
+  Future<void> signInWithEmailAndPassword(String email, password) async {
+    try {
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
+    } on FirebaseAuthException catch (e) {
+      e.code;
+    } catch (_) {}
   }
 
   //check if email exists
@@ -304,17 +324,22 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                           else
                             return null;
                         },
+                        readOnly:
+                            true, //set it true, so that user will not able to edit text
                         onTap: () async {
                           DateTime? pickedDate = await showDatePicker(
                               context: context,
                               initialDate: DateTime.now(),
-                              firstDate: DateTime(1930),
+                              firstDate: DateTime(
+                                  1930), //DateTime.now() - not to allow to choose before today.
                               lastDate: DateTime.now());
 
                           if (pickedDate != null) {
+                            String formattedDate =
+                                DateFormat('yyyy-MM-dd').format(pickedDate);
                             setState(() {
                               dOBController.text =
-                                  DateFormat('yyyy-mm-dd').format(pickedDate);
+                                  formattedDate; //set output date to TextField value.
                             });
                           }
                         },
@@ -391,7 +416,6 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                       height: 15,
                     ),
                     Container(
-                      alignment: Alignment.topRight,
                       child: TextFormField(
                           controller: passwordController,
                           onChanged: (password) => onPasswordChanged(password),
@@ -431,6 +455,61 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                               return 'الرجاء تعبأة الخانة';
                             else if (value.length < 8)
                               return '  الرجاء ادخال 8 خانات و رقم واحد على الأقل';
+                            else if (passwordController.text !=
+                                passwordConfirmController.text)
+                              return "لا يوجد تطابق";
+                            else
+                              return null;
+                          },
+                          keyboardType: TextInputType.visiblePassword,
+                          textInputAction: TextInputAction.done),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Container(
+                      child: TextFormField(
+                          controller: passwordConfirmController,
+                          onChanged: (password) => onPasswordChanged(password),
+                          obscureText: !passwordVisible,
+                          style: TextStyle(
+                              fontSize: 13,
+                              height: 1.1,
+                              color: Colors.black,
+                              backgroundColor: null),
+                          textAlign: TextAlign.right,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            hintText: 'تأكيد كلمة المرور',
+                            //hintStyle: TextStyle(color: Colors.black),
+                            prefixIcon: IconButton(
+                              onPressed: () {
+                                setState(
+                                  () {
+                                    passwordVisible = !passwordVisible;
+                                  },
+                                );
+                              },
+                              icon: passwordVisible
+                                  ? Icon(
+                                      Icons.visibility,
+                                    )
+                                  : Icon(
+                                      Icons.visibility_off,
+                                    ),
+                            ),
+                            alignLabelWithHint: false,
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty)
+                              return 'الرجاء تعبأة الخانة';
+                            else if (value.length < 8)
+                              return '  الرجاء ادخال 8 خانات و رقم واحد على الأقل';
+                            else if (passwordController.text !=
+                                passwordConfirmController.text)
+                              return "لا يوجد تطابق";
                             else
                               return null;
                           },
@@ -594,10 +673,6 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                           hintText: "رقم ترخيص المحاماة",
                         ),
                         validator: (value) {
-                          if (!mockLicenses.contains(value)) {
-                            return 'الرجاء ادخال رقم صحيح ';
-                          }
-
                           if (value == null || value.isEmpty) {
                             return 'الرجاء تعبأة الخانة';
                           } else if (value.length != 5) {
@@ -606,6 +681,9 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                             return 'الرجاء ادخال رقم الرخصة بالصيغة الصحيحة';
                           } else if (licenses.contains(value)) {
                             return "هذا الرقم مستخدم";
+                          }
+                          if (!mockLicenses.contains(value)) {
+                            return 'الرجاء ادخال رقم صحيح ';
                           }
 
                           return null;
@@ -857,7 +935,7 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                             if (otherIsChecked == true)
                               specialities.add("أخرى");
 
-                            final lawyer = LawyerModel(
+                            final lawyer = lawyerModel(
                                 firstName: fNameController.text.trim(),
                                 lastName: lNameController.text.trim(),
                                 dateOfBirth: dOBController.text.trim(),
@@ -870,29 +948,26 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                                 iban: ibanController.text.trim(),
                                 price: priceController.text.trim(),
                                 specialties: specialities,
-                                bio: bioController.text.trim());
+                                bio: bioController.text.trim(),
+                                photoURL: "");
 
-                            await createUser(lawyer);
-                            _auth
-                                .signInWithEmailAndPassword(
-                                    email: emailController.text,
-                                    password: passwordController.text)
-                                .then((value) {
-                              showToast('مرحبا بك في تطبيق قانوني',
-                                  position: ToastPosition.bottom);
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const LandingScreen(),
-                                  ));
-                            });
+                            createUser(lawyer);
+                            await signInWithEmailAndPassword(
+                                emailController.text.trim(),
+                                passwordController.text.trim());
+
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => LogoutPageLawyer(),
+                            ));
+
+// Replace '/login' with your login screen route
 
                             //ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Processing Data')),);
                           }
                           if (!atLeastOneCheckboxSelected()) changeTextColor();
                           if (atLeastOneCheckboxSelected()) changeTextColor();
                         },
-                        child: Text('التالي'),
+                        child: Text('تسجيل'),
                       ),
                     ),
                   ] //children

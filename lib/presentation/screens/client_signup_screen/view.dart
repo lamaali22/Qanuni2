@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:qanuni/models/clientModel.dart';
+import 'package:qanuni/presentation/screens/home_screen/view.dart';
 import 'package:qanuni/presentation/screens/landing_screen/view.dart';
 
 import '../../../data/models/clientModel.dart';
@@ -16,18 +18,27 @@ class ClientSignUpScreen extends StatefulWidget {
 }
 
 class _ClientSignUpScreenState extends State<ClientSignUpScreen> {
+  //controllers
   final fNameController = TextEditingController();
   final lNameController = TextEditingController();
   final dOBController = TextEditingController();
   final phoneNumController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final passwordConfirmController = TextEditingController();
   final genderController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   //gender
   List<String> itemsList = ['الجنس', 'أنثى', 'ذكر'];
   String selectedItem = 'الجنس';
+
+  //DOB
+  @override
+  void initState() {
+    dOBController.text = ""; //set the initial value of text field
+    super.initState();
+  }
 
 //Email validation
   bool validateEmail(String email) {
@@ -84,9 +95,17 @@ class _ClientSignUpScreenState extends State<ClientSignUpScreen> {
 
   //Storing data in Firebase
   final _db = FirebaseFirestore.instance;
-
-  Future createUser(ClientModel client) async {
+  createUser(clientModel client) async {
     await _db.collection("Clients").add(client.toJson());
+  }
+
+  //signinUser
+  Future<void> signInWithEmailAndPassword(String email, password) async {
+    try {
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
+    } on FirebaseAuthException catch (e) {
+      e.code;
+    } catch (_) {}
   }
 
   //check if email is used
@@ -96,6 +115,17 @@ class _ClientSignUpScreenState extends State<ClientSignUpScreen> {
     final List<QueryDocumentSnapshot> documents = querySnapshot.docs;
 
     for (QueryDocumentSnapshot doc in documents) {
+      final data = doc.data() as Map<String, dynamic>; // Access data as a Map
+      if (data.containsKey('email')) {
+        final email = data['email'] as String;
+        emails.add(email);
+      }
+    }
+
+    final QuerySnapshot querySnapshot2 = await _db.collection('lawyers').get();
+    final List<QueryDocumentSnapshot> documents2 = querySnapshot2.docs;
+
+    for (QueryDocumentSnapshot doc in documents2) {
       final data = doc.data() as Map<String, dynamic>; // Access data as a Map
       if (data.containsKey('email')) {
         final email = data['email'] as String;
@@ -117,417 +147,482 @@ class _ClientSignUpScreenState extends State<ClientSignUpScreen> {
         phones.add(phone);
       }
     }
+
+    final QuerySnapshot querySnapshot2 = await _db.collection('lawyers').get();
+    final List<QueryDocumentSnapshot> documents2 = querySnapshot2.docs;
+
+    for (QueryDocumentSnapshot doc in documents2) {
+      final data = doc.data() as Map<String, dynamic>; // Access data as a Map
+      if (data.containsKey('phoneNumber')) {
+        final phone = data['phoneNumber'] as String;
+        phones.add(phone);
+      }
+    }
   }
+
+  ////////////
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         theme: ThemeData(primarySwatch: Colors.blue),
         home: Scaffold(
-            body: Container(
+            body: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
           child: Form(
               key: _formKey,
-              child: SingleChildScrollView(
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: 50,
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 50,
+                    ),
+                    TextFormField(
+                      controller: fNameController,
+                      style: TextStyle(
+                          fontSize: 13, height: 1.1, color: Colors.black),
+                      textAlign: TextAlign.right,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        hintStyle: TextStyle(color: Colors.grey[800]),
+                        hintText: "الأسم الأول",
                       ),
-                      TextFormField(
-                        controller: fNameController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'الرجاء تعبأة الخانة';
+                        } else if (value.length > 50)
+                          return ' الرجاء تعبأة الخانة بشكل صحيح';
+                        return null;
+                      },
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    TextFormField(
+                      controller: lNameController,
+                      style: TextStyle(
+                          fontSize: 13, height: 1.1, color: Colors.black),
+                      textAlign: TextAlign.right,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        hintStyle: TextStyle(color: Colors.grey[800]),
+                        hintText: "الأسم الأخير",
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'الرجاء تعبأة الخانة';
+                        } else if (value.length > 50)
+                          return ' الرجاء تعبأة الخانة بشكل صحيح';
+                        return null;
+                      },
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Container(
+                      child: TextFormField(
+                        controller: dOBController,
                         style: TextStyle(
                             fontSize: 13, height: 1.1, color: Colors.black),
                         textAlign: TextAlign.right,
                         decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          hintStyle: TextStyle(color: Colors.grey[800]),
-                          hintText: "الأسم الأول",
-                        ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            hintStyle: TextStyle(color: Colors.grey[800]),
+                            hintText: "تاريخ الميلاد",
+                            prefixIcon: Icon(Icons.calendar_month_rounded)),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'الرجاء تعبأة الخانة';
                           } else if (value.length > 50)
                             return ' الرجاء تعبأة الخانة بشكل صحيح';
+
                           return null;
                         },
+                        readOnly:
+                            true, //set it true, so that user will not able to edit text
+                        onTap: () async {
+                          DateTime? pickedDate = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(
+                                  1930), //DateTime.now() - not to allow to choose before today.
+                              lastDate: DateTime.now());
+
+                          if (pickedDate != null) {
+                            String formattedDate =
+                                DateFormat('yyyy-MM-dd').format(pickedDate);
+                            setState(() {
+                              dOBController.text =
+                                  formattedDate; //set output date to TextField value.
+                            });
+                          }
+                        },
                       ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      TextFormField(
-                        controller: lNameController,
-                        style: TextStyle(
-                            fontSize: 13, height: 1.1, color: Colors.black),
-                        textAlign: TextAlign.right,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          hintStyle: TextStyle(color: Colors.grey[800]),
-                          hintText: "الأسم الأخير",
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    TextFormField(
+                      onTap: () async {
+                        await fetchPhonesAsync();
+                      },
+                      controller: phoneNumController,
+                      style: TextStyle(
+                          fontSize: 13, height: 1.1, color: Colors.black),
+                      textAlign: TextAlign.right,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'الرجاء تعبأة الخانة';
-                          } else if (value.length > 50)
-                            return ' الرجاء تعبأة الخانة بشكل صحيح';
-                          return null;
-                        },
+                        hintStyle: TextStyle(color: Colors.grey[800]),
+                        hintText: ' (05x xxxx xxx) رقم الهاتف',
                       ),
-                      SizedBox(
-                        height: 15,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'الرجاء تعبأة الخانة';
+                        } else if (!validatePhoneNum(value))
+                          return 'الرجاء ادخال رقم هاتف صحيح';
+                        else if (!isNumericUsingRegularExpression(value))
+                          return '(الرجاء تعبأة الخانة بأعداد فقط (من 0-9';
+                        else {
+                          if (phones.contains(value)) return 'هذا الرقم مستخدم';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    TextFormField(
+                      onTap: () async {
+                        await fetchEmailsAsync();
+                      },
+                      controller: emailController,
+                      style: TextStyle(
+                          fontSize: 13, height: 1.1, color: Colors.black),
+                      textAlign: TextAlign.right,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        hintStyle: TextStyle(color: Colors.grey[800]),
+                        hintText: '(example@gmail.com) البريد الالكتروني',
                       ),
-                      Container(
-                        child: TextFormField(
-                          controller: dOBController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'الرجاء تعبأة الخانة';
+                        } else if (value.length > 50)
+                          return ' الرجاء تعبأة الخانة بشكل صحيح';
+                        else if (!validateEmail(value))
+                          return 'الرجاء ادخال بريد الكتروني صحيح';
+                        else {
+                          if (emails.contains(value))
+                            return 'هذا البريد الإلكتروني مستخدم';
+                        }
+
+                        return null;
+                      },
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Container(
+                      child: TextFormField(
+                          controller: passwordController,
+                          onChanged: (password) => onPasswordChanged(password),
+                          obscureText: !passwordVisible,
                           style: TextStyle(
-                              fontSize: 13, height: 1.1, color: Colors.black),
+                              fontSize: 13,
+                              height: 1.1,
+                              color: Colors.black,
+                              backgroundColor: null),
                           textAlign: TextAlign.right,
                           decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              hintStyle: TextStyle(color: Colors.grey[800]),
-                              hintText: "تاريخ الميلاد",
-                              prefixIcon: Icon(Icons.calendar_month_rounded)),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            hintText: 'كلمة المرور',
+                            //hintStyle: TextStyle(color: Colors.black),
+                            prefixIcon: IconButton(
+                              onPressed: () {
+                                setState(
+                                  () {
+                                    passwordVisible = !passwordVisible;
+                                  },
+                                );
+                              },
+                              icon: passwordVisible
+                                  ? Icon(
+                                      Icons.visibility,
+                                    )
+                                  : Icon(
+                                      Icons.visibility_off,
+                                    ),
+                            ),
+                            alignLabelWithHint: false,
+                          ),
                           validator: (value) {
-                            if (value == null || value.isEmpty) {
+                            if (value == null || value.isEmpty)
                               return 'الرجاء تعبأة الخانة';
-                            } else if (value.length > 50)
-                              return ' الرجاء تعبأة الخانة بشكل صحيح';
-
-                            return null;
+                            else if (value.length < 8)
+                              return '  الرجاء ادخال 8 خانات و رقم واحد على الأقل';
+                            else if (passwordController.text !=
+                                passwordConfirmController.text)
+                              return "لا يوجد تطابق";
+                            else
+                              return null;
                           },
-                          onTap: () async {
-                            DateTime? pickedDate = await showDatePicker(
-                                context: context,
-                                
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(1950),
-                                lastDate: DateTime.now());
-
-                            if (pickedDate != null) {
-                              setState(() {
-                                dOBController.text =
-                                    DateFormat('yyyy-mm-dd').format(pickedDate);
-                              });
-                            }
+                          keyboardType: TextInputType.visiblePassword,
+                          textInputAction: TextInputAction.done),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Container(
+                      child: TextFormField(
+                          controller: passwordConfirmController,
+                          onChanged: (password) => onPasswordChanged(password),
+                          obscureText: !passwordVisible,
+                          style: TextStyle(
+                              fontSize: 13,
+                              height: 1.1,
+                              color: Colors.black,
+                              backgroundColor: null),
+                          textAlign: TextAlign.right,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            hintText: 'تأكيد كلمة المرور',
+                            //hintStyle: TextStyle(color: Colors.black),
+                            prefixIcon: IconButton(
+                              onPressed: () {
+                                setState(
+                                  () {
+                                    passwordVisible = !passwordVisible;
+                                  },
+                                );
+                              },
+                              icon: passwordVisible
+                                  ? Icon(
+                                      Icons.visibility,
+                                    )
+                                  : Icon(
+                                      Icons.visibility_off,
+                                    ),
+                            ),
+                            alignLabelWithHint: false,
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty)
+                              return 'الرجاء تعبأة الخانة';
+                            else if (value.length < 8)
+                              return '  الرجاء ادخال 8 خانات و رقم واحد على الأقل';
+                            else if (passwordController.text !=
+                                passwordConfirmController.text)
+                              return "لا يوجد تطابق";
+                            else
+                              return null;
                           },
-                        ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      TextFormField(
-                        controller: phoneNumController,
-                        style: TextStyle(
-                            fontSize: 13, height: 1.1, color: Colors.black),
-                        textAlign: TextAlign.right,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                          keyboardType: TextInputType.visiblePassword,
+                          textInputAction: TextInputAction.done),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Container(
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              AnimatedContainer(
+                                duration: Duration(milliseconds: 500),
+                                width: 20,
+                                height: 20,
+                                decoration: BoxDecoration(
+                                    color: _isPasswordEightCharacters
+                                        ? Colors.green
+                                        : Colors.transparent,
+                                    border: _isPasswordEightCharacters
+                                        ? Border.all(color: Colors.transparent)
+                                        : Border.all(
+                                            color: Colors.grey.shade400),
+                                    borderRadius: BorderRadius.circular(50)),
+                                child: Center(
+                                  child: Icon(
+                                    Icons.check,
+                                    color: Colors.white,
+                                    size: 15,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text("تتكون من 8 خانات على الأقل",
+                                  textAlign: TextAlign.right,
+                                  style: TextStyle(
+                                      fontSize: 13,
+                                      color: Color.fromRGBO(104, 102, 102, 1))),
+                              SizedBox(
+                                width: 10,
+                              ),
+                            ],
                           ),
-                          hintStyle: TextStyle(color: Colors.grey[800]),
-                          hintText: ' (05x xxxx xxx) رقم الهاتف',
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'الرجاء تعبأة الخانة';
-                          } else if (!validatePhoneNum(value))
-                            return 'الرجاء ادخال رقم هاتف صحيح';
-                          else if (!isNumericUsingRegularExpression(value))
-                            return '(الرجاء تعبأة الخانة بأعداد فقط (من 0-9';
-                          else {
-                            fetchPhonesAsync();
-                            if (phones.contains(value))
-                              return 'هذا الرقم مستخدم';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      TextFormField(
-                        controller: emailController,
-                        style: TextStyle(
-                            fontSize: 13, height: 1.1, color: Colors.black),
-                        textAlign: TextAlign.right,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                          SizedBox(
+                            height: 2,
                           ),
-                          hintStyle: TextStyle(color: Colors.grey[800]),
-                          hintText: '(example@gmail.com) البريد الالكتروني',
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              AnimatedContainer(
+                                duration: Duration(milliseconds: 500),
+                                width: 20,
+                                height: 20,
+                                decoration: BoxDecoration(
+                                    color: _hasPasswordOneNumber
+                                        ? Colors.green
+                                        : Colors.transparent,
+                                    border: _hasPasswordOneNumber
+                                        ? Border.all(color: Colors.transparent)
+                                        : Border.all(
+                                            color: Colors.grey.shade400),
+                                    borderRadius: BorderRadius.circular(50)),
+                                child: Center(
+                                  child: Icon(
+                                    Icons.check,
+                                    color: Colors.white,
+                                    size: 15,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text("تحتوي على رقم واحد على الأقل",
+                                  style: TextStyle(
+                                      fontSize: 13,
+                                      color: Color.fromRGBO(104, 102, 102, 1))),
+                              SizedBox(
+                                width: 5,
+                              ),
+                            ],
+                          ),
+                        ])),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Align(
+                      alignment: Alignment
+                          .centerRight, // Align the FractionallySizedBox to the right
+                      child: FractionallySizedBox(
+                        widthFactor: 1, // Set to 50% of the screen width
+                        child: Container(
+                          height: 95,
+                          padding: const EdgeInsets.fromLTRB(2, 4, 2, 2),
+                          margin: EdgeInsets.all(2),
+                          /*decoration: ShapeDecoration(
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                              width: 1.7,
+                              color: Color.fromARGB(71, 32, 31, 31)),
+                          borderRadius: BorderRadius.circular(15),
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'الرجاء تعبأة الخانة';
-                          } else if (value.length > 50)
-                            return ' الرجاء تعبأة الخانة بشكل صحيح';
-                          else if (!validateEmail(value))
-                            return 'الرجاء ادخال بريد الكتروني صحيح';
-                          else {
-                            fetchEmailsAsync();
-                            if (emails.contains(value))
-                              return 'هذا البريد الإلكتروني مستخدم';
-                          }
-
-                          return null;
-                        },
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Container(
-                        child: TextFormField(
-                            controller: passwordController,
-                            onChanged: (password) =>
-                                onPasswordChanged(password),
-                            obscureText: !passwordVisible,
-                            style: TextStyle(
-                                fontSize: 13,
-                                height: 1.1,
-                                color: Colors.black,
-                                backgroundColor: null),
-                            textAlign: TextAlign.right,
+                      ),*/
+                          child: DropdownButtonFormField<String>(
                             decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              hintText: 'كلمة المرور',
-                              //hintStyle: TextStyle(color: Colors.black),
-                              prefixIcon: IconButton(
-                                onPressed: () {
-                                  setState(
-                                    () {
-                                      passwordVisible = !passwordVisible;
-                                    },
-                                  );
-                                },
-                                icon: passwordVisible
-                                    ? Icon(
-                                        Icons.visibility,
-                                      )
-                                    : Icon(
-                                        Icons.visibility_off,
-                                      ),
-                              ),
-                              alignLabelWithHint: false,
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty)
-                                return 'الرجاء تعبأة الخانة';
-                              else if (value.length < 8)
-                                return '  الرجاء ادخال 8 خانات و رقم واحد على الأقل';
-                              else
-                                return null;
-                            },
-                            keyboardType: TextInputType.visiblePassword,
-                            textInputAction: TextInputAction.done),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Container(
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                SizedBox(
-                                  width: 130,
-                                ),
-                                AnimatedContainer(
-                                  duration: Duration(milliseconds: 500),
-                                  width: 20,
-                                  height: 20,
-                                  decoration: BoxDecoration(
-                                      color: _isPasswordEightCharacters
-                                          ? Colors.green
-                                          : Colors.transparent,
-                                      border: _isPasswordEightCharacters
-                                          ? Border.all(
-                                              color: Colors.transparent)
-                                          : Border.all(
-                                              color: Colors.grey.shade400),
-                                      borderRadius: BorderRadius.circular(50)),
-                                  child: Center(
-                                    child: Icon(
-                                      Icons.check,
-                                      color: Colors.white,
-                                      size: 15,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text("تتكون من 8 خانات على الأقل",
-                                    textAlign: TextAlign.right,
-                                    style: TextStyle(
-                                        fontSize: 13,
-                                        color:
-                                            Color.fromRGBO(104, 102, 102, 1)))
-                              ],
-                            ),
-                            SizedBox(
-                              height: 2,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                SizedBox(
-                                  width: 123,
-                                ),
-                                AnimatedContainer(
-                                  duration: Duration(milliseconds: 500),
-                                  width: 20,
-                                  height: 20,
-                                  decoration: BoxDecoration(
-                                      color: _hasPasswordOneNumber
-                                          ? Colors.green
-                                          : Colors.transparent,
-                                      border: _hasPasswordOneNumber
-                                          ? Border.all(
-                                              color: Colors.transparent)
-                                          : Border.all(
-                                              color: Colors.grey.shade400),
-                                      borderRadius: BorderRadius.circular(50)),
-                                  child: Center(
-                                    child: Icon(
-                                      Icons.check,
-                                      color: Colors.white,
-                                      size: 15,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text("تحتوي على رقم واحد على الأقل",
-                                    style: TextStyle(
-                                        fontSize: 13,
-                                        color:
-                                            Color.fromRGBO(104, 102, 102, 1)))
-                              ],
-                            ),
-                          ])),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Align(
-                        alignment: Alignment
-                            .centerRight, // Align the FractionallySizedBox to the right
-                        child: FractionallySizedBox(
-                          widthFactor: 1, // Set to 50% of the screen width
-                          child: Container(
-                            height: 95,
-                            padding: const EdgeInsets.fromLTRB(2, 4, 2, 2),
-                            margin: EdgeInsets.all(2),
-                            /*decoration: ShapeDecoration(
-                          shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                                width: 1.7,
-                                color: Color.fromARGB(71, 32, 31, 31)),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                        ),*/
-                            child: DropdownButtonFormField<String>(
-                              decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              )),
-                              value: selectedItem,
-                              items: itemsList
-                                  .map(
-                                    (item) => DropdownMenuItem(
-                                      value: item,
-                                      child: Align(
-                                        alignment: Alignment
-                                            .centerRight, // Right-align the text
-                                        child: Text(
-                                          item,
-                                          style: TextStyle(
-                                            fontSize: 13,
-                                            color: Color.fromRGBO(
-                                                123, 121, 121, 1),
-                                          ),
+                                border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            )),
+                            value: selectedItem,
+                            items: itemsList
+                                .map(
+                                  (item) => DropdownMenuItem(
+                                    value: item,
+                                    child: Align(
+                                      alignment: Alignment
+                                          .centerRight, // Right-align the text
+                                      child: Text(
+                                        item,
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          color:
+                                              Color.fromRGBO(123, 121, 121, 1),
                                         ),
                                       ),
                                     ),
-                                  )
-                                  .toList(),
-                              onChanged: (item) => setState(
-                                  () => selectedItem = item.toString()),
-                              validator: (value) {
-                                if (value == "الجنس")
-                                  return 'الرجاء تحديد الجنس';
-                                else
-                                  return null;
-                              },
-                              // Set the maximum dropdown menu height
-                              isExpanded:
-                                  true, // Expand the dropdown to the maximum width
-                            ),
+                                  ),
+                                )
+                                .toList(),
+                            onChanged: (item) =>
+                                setState(() => selectedItem = item.toString()),
+                            validator: (value) {
+                              if (value == "الجنس")
+                                return 'الرجاء تحديد الجنس';
+                              else
+                                return null;
+                            },
+                            // Set the maximum dropdown menu height
+                            isExpanded:
+                                true, // Expand the dropdown to the maximum width
                           ),
                         ),
                       ),
-                      SizedBox(
-                        height: 60,
-                      ),
-                      SizedBox(
-                        width: double.maxFinite,
-                        height: 50,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: Color(0xFF008080),
-                          ),
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              //authentication
-                              await createUserWithEmailAndPassword(
-                                  emailController.text.trim(),
-                                  passwordController.text.trim());
-
-                              //storing in DB
-
-                              final client = ClientModel(
-                                  firstName: fNameController.text.trim(),
-                                  lastName: lNameController.text.trim(),
-                                  dateOfBirth: dOBController.text.trim(),
-                                  email: emailController.text.trim(),
-                                  password: passwordController.text.trim(),
-                                  phone: phoneNumController.text.trim(),
-                                  gender: selectedItem);
-
-                              await createUser(client);
-
-                              _auth
-                                  .signInWithEmailAndPassword(
-                                      email: emailController.text,
-                                      password: passwordController.text)
-                                  .then((value) {
-                                showToast('مرحبا بك في تطبيق قانوني',position: ToastPosition.bottom);
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => LandingScreen(),
-                                    ));
-                              });
-                            }
-                          },
-                          child: Text('التالي'),
-                        ),
-                      ),
-                    ] //children
                     ),
-              ) //column
+                    SizedBox(
+                      height: 60,
+                    ),
+                    SizedBox(
+                      width: double.maxFinite,
+                      height: 50,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xFF008080),
+                        ),
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            //authentication
+                            createUserWithEmailAndPassword(
+                                emailController.text.trim(),
+                                passwordController.text.trim());
+
+                            //storing in DB
+                            final client = clientModel(
+                                firstName: fNameController.text.trim(),
+                                lastName: lNameController.text.trim(),
+                                dateOfBirth: dOBController.text.trim(),
+                                email: emailController.text.trim(),
+                                password: passwordController.text.trim(),
+                                phone: phoneNumController.text.trim(),
+                                gender: selectedItem);
+
+                            await createUser(client);
+
+                            await signInWithEmailAndPassword(
+                                emailController.text.trim(),
+                                passwordController.text.trim());
+
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HomeScreen(),
+                                ));
+                          }
+                          //ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Processing Data')),);
+                        },
+                        child: Text('تسجيل'),
+                      ),
+                    ),
+                  ] //children
+                  ) //column
               ), //form
         ) //container
             ));

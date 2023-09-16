@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:qanuni/data/models/lawyerModel.dart';
+import 'package:qanuni/presentation/screens/login_screen/view.dart';
 import 'package:qanuni/homePageLawyer.dart';
 import 'package:qanuni/models/lawyerModel.dart';
 import 'firebase_options.dart';
@@ -969,8 +970,10 @@ class _MyHomePageState extends State<MyHomePage> {
                             createUser(lawyer);
 
                             Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const HomeScreen(),
+                              builder: (context) => LogoutPageLawyer(),
                             ));
+
+// Replace '/login' with your login screen route
 
                             //ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Processing Data')),);
                           }
