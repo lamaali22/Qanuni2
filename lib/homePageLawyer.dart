@@ -1,11 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:qanuni/presentation/screens/boarding_screen/view.dart';
 import 'package:qanuni/presentation/screens/client_signup_screen/view.dart';
 import 'package:qanuni/presentation/screens/login_screen/view.dart';
 import 'package:qanuni/viewListOfLawyers.dart';
 
-class LogoutPage extends StatelessWidget {
+class LogoutPageLawyer extends StatelessWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
