@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:qanuni/firebase_options.dart';
 import 'package:qanuni/presentation/screens/boarding_screen/view.dart';
 import 'package:qanuni/providers/boarding/cubit/boarding_cubit.dart';
 
@@ -13,7 +14,8 @@ late final FirebaseApp app;
 late final FirebaseAuth auth;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  app = await Firebase.initializeApp();
+  app = await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform);
   auth = FirebaseAuth.instanceFor(app: app);
   runApp(const MyApp());
 }

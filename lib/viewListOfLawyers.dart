@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:qanuni/firebase_options.dart';
 import 'package:qanuni/viewLawyerProfilePage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(MyApp());
 }
@@ -178,7 +179,7 @@ class LawyersList extends StatelessWidget {
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
                         return Image.asset(
-                          'assets/default_photo.jpg',
+                          'default_photo.jpg',
                           width: 60,
                           height: 60,
                           fit: BoxFit.cover,
@@ -215,7 +216,7 @@ class LawyersList extends StatelessWidget {
                               ),
                               padding: EdgeInsets.all(3),
                               child: Text(
-                                '${riyal}${lawyer.consultationPrice}',
+                                '${riyal}${lawyer.price}',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontFamily: 'Cairo',
@@ -253,6 +254,8 @@ Future<List<Lawyer>> getLawyers() async {
   for (QueryDocumentSnapshot doc in querySnapshot.docs) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     Lawyer lawyer = Lawyer.fromMap(data);
+    print(
+        'Lawyer Data: ${lawyer.firstName}, ${lawyer.lastName}, ${lawyer.photoURL}, ${lawyer.specialties}');
     lawyers.add(lawyer);
   }
 
@@ -260,31 +263,31 @@ Future<List<Lawyer>> getLawyers() async {
 }
 
 class Lawyer {
-  final int ID;
+  //final int ID;
   final String firstName;
   final String lastName;
   final List<String> specialties;
-  final int consultationPrice;
+  final String price;
   final String photoURL;
   final String bio; // URL to the lawyer's photo
 
   Lawyer({
-    required this.ID,
+    // required this.ID,
     required this.firstName,
     required this.lastName,
     required this.specialties,
-    required this.consultationPrice,
+    required this.price,
     required this.photoURL,
     required this.bio,
   });
 
   factory Lawyer.fromMap(Map<String, dynamic> map) {
     return Lawyer(
-      ID: map['ID'],
+      // ID: map['ID'],
       firstName: map['firstName'],
       lastName: map['lastName'],
       specialties: List<String>.from(map['specialties']),
-      consultationPrice: map['consultationPrice'],
+      price: map['price'],
       photoURL: map['photoURL'],
       bio: map['bio'],
     );
