@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:qanuni/firebase_options.dart';
+import 'package:qanuni/presentation/screens/client_home_screen/view.dart';
 import 'package:qanuni/viewLawyerProfilePage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(MyApp());
 }
@@ -21,7 +23,7 @@ class MyApp extends StatelessWidget {
 
 class LawyersList extends StatelessWidget {
   String riyal = "ريال";
-   //navigation bar method
+  //navigation bar method
   void _navigateToScreen(BuildContext context, int index) {
     switch (index) {
       case 0:
@@ -63,17 +65,20 @@ class LawyersList extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text("المحامين" ,
-          style: TextStyle(
-            fontFamily: 'Cairo',
-            fontWeight: FontWeight.w500
-            )
-            ),
+        backgroundColor: Colors.teal,
+        title: const Text("المحامين",
+            style: TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.w500)),
         centerTitle: true,
-        
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back), // Back button icon
+          onPressed: () {
+            // Navigate back to the previous page
+            Navigator.pop(context);
+          },
+        ),
       ),
       //navigation Bar
-       bottomNavigationBar: BottomNavigationBar(  
+      bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Color(0x7F008080),
         unselectedItemColor: Colors.black,
         showUnselectedLabels: true,
@@ -82,7 +87,6 @@ class LawyersList extends StatelessWidget {
           BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined),
             label: 'الصفحةالرئيسية',
-            
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.message_outlined),
@@ -98,7 +102,6 @@ class LawyersList extends StatelessWidget {
           ),
         ],
       ),
-      
       body: FutureBuilder(
         future: getLawyers(), // Fetch lawyers from Firebase Firestore
         builder: (context, snapshot) {
@@ -118,7 +121,8 @@ class LawyersList extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15.0),
                     border: Border.all(
-                      color: Colors.grey.withOpacity(0.3), // Adjust the border color
+                      color: Colors.grey
+                          .withOpacity(0.3), // Adjust the border color
                       width: 1.0, // Adjust the border width
                     ),
                   ),
@@ -130,45 +134,45 @@ class LawyersList extends StatelessWidget {
                           width: 42,
                           height: 18,
                           child: Stack(
-                          children: [
-                            Positioned(
-                              left: 0,
-                              top: 0,
-                              child: Container(
-                                width: 42,
-                                height: 18,
-                                decoration: ShapeDecoration(
-                                  color: Color(0x26FFC126),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(6)),
+                            children: [
+                              Positioned(
+                                left: 0,
+                                top: 0,
+                                child: Container(
+                                  width: 42,
+                                  height: 18,
+                                  decoration: ShapeDecoration(
+                                    color: Color(0x26FFC126),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(6)),
+                                  ),
                                 ),
                               ),
-                            ),
-                           Positioned(
-                          left: 2.0,
-                          top: 0,
-                          child: Icon(
-                            Icons.star,
-                            size: 17.0,
-                            color: Colors.amber[400],
-                             ),
-                           ),
-                            Positioned(
-                          left: 20.40,
-                          top: 2.40,
-                          child: Text(
-                            '3.8',
-                            textAlign: TextAlign.right,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 13.02,
-                              fontFamily: 'Cairo',
-                              fontWeight: FontWeight.w400,
-                              height: 1,
-                            ),
-                          ),
-                        ),
-                          ],
+                              Positioned(
+                                left: 2.0,
+                                top: 0,
+                                child: Icon(
+                                  Icons.star,
+                                  size: 17.0,
+                                  color: Colors.amber[400],
+                                ),
+                              ),
+                              Positioned(
+                                left: 20.40,
+                                top: 2.40,
+                                child: Text(
+                                  '3.8',
+                                  textAlign: TextAlign.right,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 13.02,
+                                    fontFamily: 'Cairo',
+                                    fontWeight: FontWeight.w400,
+                                    height: 1,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
@@ -189,30 +193,27 @@ class LawyersList extends StatelessWidget {
                         );
                       },
                     )),
-                    title: Text(
-                      '${lawyer.firstName} ${lawyer.lastName}',
-                      textAlign: TextAlign.right,
-                       // Align text to the right
-                       style: TextStyle(
-                        fontFamily: 'Cairo',
-                        fontWeight: FontWeight.w500,
-                        fontSize: 17)
-                    ),
+                    title: Text('${lawyer.firstName} ${lawyer.lastName}',
+                        textAlign: TextAlign.right,
+                        // Align text to the right
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'Cairo',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 17,
+                        )),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Align(
                           alignment: Alignment
                               .centerRight, // Align specialties text to the right
-                          child: Text(
-                            lawyer.specialties.join(' | '),
-                            style: TextStyle(
-                              fontFamily: 'Cairo',
-                              fontSize: 12,
-                              fontWeight: FontWeight.normal
-                              )
-                            
-                          ),
+                          child: Text(lawyer.specialties.join(' | '),
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: 'Cairo',
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.normal)),
                         ),
                         SizedBox(height: 8),
                         Row(
@@ -225,12 +226,11 @@ class LawyersList extends StatelessWidget {
                               ),
                               padding: EdgeInsets.all(3),
                               child: Text(
-                                '${riyal}${lawyer.consultationPrice}',
+                                '${riyal}${lawyer.price}',
                                 style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'Cairo',
-                                  fontSize: 12
-                                ),
+                                    color: Colors.white,
+                                    fontFamily: 'Cairo',
+                                    fontSize: 12),
                               ),
                             ),
                           ],
@@ -264,6 +264,8 @@ Future<List<Lawyer>> getLawyers() async {
   for (QueryDocumentSnapshot doc in querySnapshot.docs) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     Lawyer lawyer = Lawyer.fromMap(data);
+    print(
+        'Lawyer Data: ${lawyer.firstName}, ${lawyer.lastName}, ${lawyer.photoURL}, ${lawyer.specialties}');
     lawyers.add(lawyer);
   }
 
@@ -271,31 +273,31 @@ Future<List<Lawyer>> getLawyers() async {
 }
 
 class Lawyer {
-  final int ID;
+  //final int ID;
   final String firstName;
   final String lastName;
   final List<String> specialties;
-  final int consultationPrice;
+  final String price;
   final String photoURL;
   final String bio; // URL to the lawyer's photo
 
   Lawyer({
-    required this.ID,
+    // required this.ID,
     required this.firstName,
     required this.lastName,
     required this.specialties,
-    required this.consultationPrice,
+    required this.price,
     required this.photoURL,
     required this.bio,
   });
 
   factory Lawyer.fromMap(Map<String, dynamic> map) {
     return Lawyer(
-      ID: map['ID'],
+      // ID: map['ID'],
       firstName: map['firstName'],
       lastName: map['lastName'],
       specialties: List<String>.from(map['specialties']),
-      consultationPrice: map['consultationPrice'],
+      price: map['price'],
       photoURL: map['photoURL'],
       bio: map['bio'],
     );

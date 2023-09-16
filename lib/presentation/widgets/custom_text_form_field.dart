@@ -9,7 +9,7 @@ class CustomTextFormField extends StatelessWidget {
   final Widget? icon;
   final TextEditingController? mycontroller;
   final String? Function(String?) valid;
-
+  final int? maxLength;
   final bool? obscureText;
   final Color? filledColor;
   final double? height;
@@ -23,6 +23,7 @@ class CustomTextFormField extends StatelessWidget {
     required this.icon,
     required this.mycontroller,
     required this.valid,
+    this.maxLength,
     this.filledColor,
     this.width,
     this.height,
@@ -37,7 +38,6 @@ class CustomTextFormField extends StatelessWidget {
         children: [
           Container(
             width: width,
-            height: height,
             child: TextFormField(
               validator: valid,
               controller: mycontroller,
@@ -45,11 +45,17 @@ class CustomTextFormField extends StatelessWidget {
               style: TextStyle(height: 1.4, fontSize: 14, color: Colors.black),
               obscureText:
                   obscureText == null || obscureText == false ? false : true,
+              maxLength: maxLength,
+              buildCounter: (context,
+                  {required currentLength, required isFocused, maxLength}) {
+                return Container();
+              },
               decoration: InputDecoration(
                   fillColor: filledColor,
                   filled: filledColor != null,
-                  isCollapsed: true,
+                  isCollapsed: false,
                   hintText: hinttext,
+                  errorStyle: TextStyle(color: Colors.red, fontSize: 0),
                   hintStyle: const TextStyle(fontSize: 14, color: Colors.grey),
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                   contentPadding:
@@ -74,6 +80,12 @@ class CustomTextFormField extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10))),
             ),
           ),
+          if (
+              valid(mycontroller!.text) != null)
+            Text(
+              valid(mycontroller!.text)!,
+              style: TextStyle(color: Colors.red, fontSize: 14),
+            )
         ],
       ),
     );

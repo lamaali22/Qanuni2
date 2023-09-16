@@ -2,11 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:qanuni/data/models/clientModel.dart';
+import 'package:qanuni/models/clientModel.dart';
 import 'firebase_options.dart';
 import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:qanuni/models/clientModel.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,23 +37,8 @@ class MyAppp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Client Sign Up',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a blue toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
         colorScheme:
             ColorScheme.fromSeed(seedColor: Color.fromARGB(103, 0, 132, 132)),
         useMaterial3: true,
@@ -77,15 +62,24 @@ class _MyHomePageState extends State<MyHomePage> {
   final fNameController = TextEditingController();
   final lNameController = TextEditingController();
   final dOBController = TextEditingController();
+  final passwordConfirmController = TextEditingController();
   final phoneNumController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
   final genderController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   //gender
   List<String> itemsList = ['الجنس', 'أنثى', 'ذكر'];
   String selectedItem = 'الجنس';
+
+  //DOB
+  @override
+  void initState() {
+    dOBController.text = ""; //set the initial value of text field
+    super.initState();
+  }
 
 //Email validation
   bool validateEmail(String email) {
@@ -259,17 +253,26 @@ class _MyHomePageState extends State<MyHomePage> {
 
                           return null;
                         },
+                        readOnly:
+                            true, //set it true, so that user will not able to edit text
                         onTap: () async {
                           DateTime? pickedDate = await showDatePicker(
                               context: context,
                               initialDate: DateTime.now(),
+<<<<<<< HEAD
                               firstDate: DateTime(1950),
+=======
+                              firstDate: DateTime(
+                                  1930), //DateTime.now() - not to allow to choose before today.
+>>>>>>> lama-sprint
                               lastDate: DateTime.now());
 
                           if (pickedDate != null) {
+                            String formattedDate =
+                                DateFormat('yyyy-MM-dd').format(pickedDate);
                             setState(() {
                               dOBController.text =
-                                  DateFormat('yyyy-mm-dd').format(pickedDate);
+                                  formattedDate; //set output date to TextField value.
                             });
                           }
                         },
@@ -378,6 +381,61 @@ class _MyHomePageState extends State<MyHomePage> {
                               return 'الرجاء تعبأة الخانة';
                             else if (value.length < 8)
                               return '  الرجاء ادخال 8 خانات و رقم واحد على الأقل';
+                            else if (passwordController.text !=
+                                passwordConfirmController.text)
+                              return "لا يوجد تطابق";
+                            else
+                              return null;
+                          },
+                          keyboardType: TextInputType.visiblePassword,
+                          textInputAction: TextInputAction.done),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Container(
+                      child: TextFormField(
+                          controller: passwordConfirmController,
+                          onChanged: (password) => onPasswordChanged(password),
+                          obscureText: !passwordVisible,
+                          style: TextStyle(
+                              fontSize: 13,
+                              height: 1.1,
+                              color: Colors.black,
+                              backgroundColor: null),
+                          textAlign: TextAlign.right,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            hintText: 'تأكيد كلمة المرور',
+                            //hintStyle: TextStyle(color: Colors.black),
+                            prefixIcon: IconButton(
+                              onPressed: () {
+                                setState(
+                                  () {
+                                    passwordVisible = !passwordVisible;
+                                  },
+                                );
+                              },
+                              icon: passwordVisible
+                                  ? Icon(
+                                      Icons.visibility,
+                                    )
+                                  : Icon(
+                                      Icons.visibility_off,
+                                    ),
+                            ),
+                            alignLabelWithHint: false,
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty)
+                              return 'الرجاء تعبأة الخانة';
+                            else if (value.length < 8)
+                              return '  الرجاء ادخال 8 خانات و رقم واحد على الأقل';
+                            else if (passwordController.text !=
+                                passwordConfirmController.text)
+                              return "لا يوجد تطابق";
                             else
                               return null;
                           },
@@ -561,7 +619,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             //ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Processing Data')),);
                           }
                         },
-                        child: Text('التالي'),
+                        child: Text('تسجيل'),
                       ),
                     ),
                   ] //children
