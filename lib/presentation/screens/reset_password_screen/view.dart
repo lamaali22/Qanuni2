@@ -100,6 +100,7 @@ class _resetPasswordState extends State<ResetPassword> {
         appBar: AppBar(
           title: const Text('إعادة ضبط كلمة المرور'),
           centerTitle: true,
+          backgroundColor: Colors.teal,
         ),
         body: Directionality(
           textDirection: TextDirection.rtl,

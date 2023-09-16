@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:qanuni/presentation/screens/home_screen/view.dart';
+import 'package:qanuni/presentation/screens/client_home_screen/view.dart';
 import 'package:qanuni/presentation/screens/login_screen/view.dart';
 
 import '../../../main.dart';
