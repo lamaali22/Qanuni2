@@ -187,7 +187,7 @@ class LawyersList extends StatelessWidget {
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
                         return Image.asset(
-                          'default_photo.jpg',
+                          'assets/default_photo.jpg',
                           width: 60,
                           height: 60,
                           fit: BoxFit.cover,
