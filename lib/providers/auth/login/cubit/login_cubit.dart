@@ -63,14 +63,14 @@ class LoginCubit extends Cubit<LoginState> {
             emit(LoginSuccess());
           });
         } else {
-          emit(LoginFailed('المحامي غير موجود'));
+          emit(LoginFailed('البريد الالكتروني أو كلمة المرور غير صحيحة'));
         }
       } else {
         emit(LoginInitial());
       }
     } catch (e) {
       if (e is FirebaseAuthException) {
-        emit(LoginFailed('كلمة المرور غير صحيحة'));
+          emit(LoginFailed('البريد الالكتروني أو كلمة المرور غير صحيحة'));
       } else {
         emit(LoginFailed(e.toString()));
       }
