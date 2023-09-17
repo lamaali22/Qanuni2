@@ -64,16 +64,16 @@ class LogoutPageLawyer extends StatelessWidget {
                           height: 1.4,
                         ),
                       ),
-                      TextSpan(
-                        text: 'محمد الصالح',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18.12,
-                          fontFamily: 'Cairo',
-                          fontWeight: FontWeight.w600,
-                          height: 0.06,
-                        ),
-                      ),
+                      // TextSpan(
+                      //   text: 'محمد الصالح',
+                      //   style: TextStyle(
+                      //     color: Colors.white,
+                      //     fontSize: 18.12,
+                      //     fontFamily: 'Cairo',
+                      //     fontWeight: FontWeight.w600,
+                      //     height: 0.06,
+                      //   ),
+                      // ),
                     ],
                   ),
                   textAlign: TextAlign.right,
