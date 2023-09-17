@@ -246,6 +246,24 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
     return MaterialApp(
         theme: ThemeData(primarySwatch: Colors.blue),
         home: Scaffold(
+            appBar: AppBar(
+              backgroundColor: Color.fromARGB(255, 0, 128, 128),
+              elevation: 0,
+              title: const Text("انشاء حساب جديد", 
+              style: TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.w500, color: Colors.white)
+              ),
+              centerTitle: true,
+            actions: [
+            IconButton(
+              padding: EdgeInsets.only(right: 30),
+              alignment: Alignment.centerRight,
+              icon: Icon(Icons.arrow_forward, color: Colors.white),
+              onPressed: () {
+                Navigator.pop(context); // Navigate back to the previous page
+              },
+            ),
+          ],
+             ),
             body: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
 
@@ -303,48 +321,64 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                     SizedBox(
                       height: 15,
                     ),
-                    Container(
-                      child: TextFormField(
-                        controller: dOBController,
-                        style: TextStyle(
-                            fontSize: 13, height: 1.1, color: Colors.black),
-                        textAlign: TextAlign.right,
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            hintStyle: TextStyle(color: Colors.grey[800]),
-                            hintText: "تاريخ الميلاد",
-                            prefixIcon: Icon(Icons.calendar_month_rounded)),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'الرجاء تعبأة الخانة';
-                          } else if (value.length > 50)
-                            return ' الرجاء تعبأة الخانة بشكل صحيح';
-                          else
-                            return null;
-                        },
-                        readOnly:
-                            true, //set it true, so that user will not able to edit text
-                        onTap: () async {
-                          DateTime? pickedDate = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(
-                                  1930), //DateTime.now() - not to allow to choose before today.
-                              lastDate: DateTime.now());
+Container(
+  child: TextFormField(
+    controller: dOBController,
+    style: TextStyle(
+      fontSize: 13,
+      height: 1.1,
+      color: Colors.black,
+    ),
+    textAlign: TextAlign.right,
+    decoration: InputDecoration(
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      hintStyle: TextStyle(color: Colors.grey[800]),
+      hintText: "تاريخ الميلاد",
+      prefixIcon: Icon(Icons.calendar_month_rounded),
+    ),
+    validator: (value) {
+      if (value == null || value.isEmpty) {
+        return 'الرجاء تعبأة الخانة';
+      } else if (value.length > 50) {
+        return 'الرجاء تعبأة الخانة بشكل صحيح';
+      }
+      return null;
+    },
+    readOnly: true,
+    onTap: () async {
+      DateTime? pickedDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(1930),
+        lastDate: DateTime.now(),
+        builder: (BuildContext context, Widget? child) {
+          return Theme(
+            data: ThemeData.dark().copyWith(
+              colorScheme: ColorScheme.dark(
+                primary: Colors.teal, // Change the primary color to teal
+              ),
+              textTheme: TextTheme(
+                headline1: TextStyle(
+                  color: Colors.teal, // Change the year text color to teal
+                ),
+              ),
+            ),
+            child: child!,
+          );
+        },
+      );
 
-                          if (pickedDate != null) {
-                            String formattedDate =
-                                DateFormat('yyyy-MM-dd').format(pickedDate);
-                            setState(() {
-                              dOBController.text =
-                                  formattedDate; //set output date to TextField value.
-                            });
-                          }
-                        },
-                      ),
-                    ),
+      if (pickedDate != null) {
+        String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+        setState(() {
+          dOBController.text = formattedDate;
+        });
+      }
+    },
+  ),
+),
                     SizedBox(
                       height: 15,
                     ),
@@ -395,7 +429,7 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         hintStyle: TextStyle(color: Colors.grey[800]),
-                        hintText: '(example@gmail.com) البريد الالكتروني',
+                        hintText: '(example@example.com) البريد الالكتروني',
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -426,6 +460,7 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                               color: Colors.black,
                               backgroundColor: null),
                           textAlign: TextAlign.right,
+                           maxLength: 20,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
@@ -478,6 +513,7 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                               color: Colors.black,
                               backgroundColor: null),
                           textAlign: TextAlign.right,
+                           maxLength: 20,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
@@ -692,7 +728,8 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                       height: 15,
                     ),
                     Container(
-                        height: 120,
+                        height: 100,
+                        width: double.infinity,
                         padding: const EdgeInsets.fromLTRB(2, 4, 2, 2),
                         margin: EdgeInsets.fromLTRB(2, 2, 2, 9),
                         decoration: ShapeDecoration(
@@ -704,7 +741,7 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                         )),
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
+                             children: [
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: <Widget>[
@@ -717,45 +754,45 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                               Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: <Widget>[
-                                    Text(
-                                      'أخرى',
-                                      style: TextStyle(fontSize: 13),
-                                    ),
-                                    SizedBox(height: 10),
-                                    Checkbox(
-                                      activeColor: Color(0xFF008080),
-                                      value: otherIsChecked,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          otherIsChecked = value!;
-                                        });
-                                      },
-                                    ),
-                                    SizedBox(
-                                      width: 20,
-                                    ),
-                                    Text(
-                                      'جنائي',
-                                      style: TextStyle(fontSize: 13),
-                                    ),
-                                    SizedBox(height: 10),
-                                    Checkbox(
-                                      activeColor: Color(0xFF008080),
-                                      value: isChecked0,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          isChecked0 = value!;
-                                        });
-                                      },
-                                    ),
-                                    SizedBox(
-                                      width: 20,
-                                    ),
+                                    // Text(
+                                    //   'أخرى',
+                                    //   style: TextStyle(fontSize: 13),
+                                    // ),
+                                    // SizedBox(height: 10),
+                                    // Checkbox(
+                                    //   activeColor: Color(0xFF008080),
+                                    //   value: otherIsChecked,
+                                    //   onChanged: (value) {
+                                    //     setState(() {
+                                    //       otherIsChecked = value!;
+                                    //     });
+                                    //   },
+                                    // ),
+                                    // SizedBox(
+                                    //   width: 20,
+                                    // ),
+                                    // Text(
+                                    //   'جنائي',
+                                    //   style: TextStyle(fontSize: 13),
+                                    // ),
+                                    // //SizedBox(height: 10),
+                                    // Checkbox(
+                                    //   activeColor: Color(0xFF008080),
+                                    //   value: isChecked0,
+                                    //   onChanged: (value) {
+                                    //     setState(() {
+                                    //       isChecked0 = value!;
+                                    //     });
+                                    //   },
+                                    // ),
+                                    // SizedBox(
+                                    //   width: 20,
+                                    //),
                                     Text(
                                       'مواريث',
                                       style: TextStyle(fontSize: 13),
                                     ),
-                                    SizedBox(height: 10),
+                                    // SizedBox(height: 10),
                                     Checkbox(
                                       activeColor: Color(0xFF008080),
                                       value: isChecked1,
@@ -765,14 +802,14 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                                         });
                                       },
                                     ),
-                                    SizedBox(
-                                      width: 20,
-                                    ),
+                                    // SizedBox(
+                                    //   width: 20,
+                                    // ),
                                     Text(
                                       'إداري',
                                       style: TextStyle(fontSize: 13),
                                     ),
-                                    SizedBox(height: 10),
+                                    // SizedBox(height: 10),
                                     Checkbox(
                                       activeColor: Color(0xFF008080),
                                       value: isChecked2,
@@ -782,14 +819,14 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                                         });
                                       },
                                     ),
-                                    SizedBox(
-                                      width: 20,
-                                    ),
+                                    // SizedBox(
+                                    //   width: 20,
+                                    // ),
                                     Text(
                                       'مدني',
                                       style: TextStyle(fontSize: 13),
                                     ),
-                                    SizedBox(height: 10),
+                                    // SizedBox(height: 10),
                                     Checkbox(
                                       activeColor: Color(0xFF008080),
                                       value: isChecked3,
@@ -799,14 +836,14 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                                         });
                                       },
                                     ),
-                                    SizedBox(
-                                      width: 20,
-                                    ),
+                                    // SizedBox(
+                                    //   width: 20,
+                                    // ),
                                     Text(
                                       'تجاري',
                                       style: TextStyle(fontSize: 13),
                                     ),
-                                    SizedBox(height: 10),
+                                    //SizedBox(height: 10),
                                     Checkbox(
                                       activeColor: Color(0xFF008080),
                                       value: isChecked4,
@@ -832,10 +869,9 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                                   ),
                                 ],
                               ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                            ])),
+                            ]
+                          )
+                        ),
                     SizedBox(
                       height: 15,
                     ),

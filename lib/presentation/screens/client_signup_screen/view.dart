@@ -167,6 +167,24 @@ class _ClientSignUpScreenState extends State<ClientSignUpScreen> {
     return MaterialApp(
         theme: ThemeData(primarySwatch: Colors.blue),
         home: Scaffold(
+          appBar: AppBar(
+              backgroundColor: Color.fromARGB(255, 0, 128, 128),
+              elevation: 0,
+              title: const Text("انشاء حساب جديد", 
+              style: TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.w500, color: Colors.white)
+              ),
+              centerTitle: true,
+            actions: [
+            IconButton(
+              padding: EdgeInsets.only(right: 30),
+              alignment: Alignment.centerRight,
+              icon: Icon(Icons.arrow_forward, color: Colors.white),
+              onPressed: () {
+                Navigator.pop(context); // Navigate back to the previous page
+              },
+            ),
+          ],
+             ),
             body: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
           child: Form(
@@ -223,48 +241,64 @@ class _ClientSignUpScreenState extends State<ClientSignUpScreen> {
                     SizedBox(
                       height: 15,
                     ),
-                    Container(
-                      child: TextFormField(
-                        controller: dOBController,
-                        style: TextStyle(
-                            fontSize: 13, height: 1.1, color: Colors.black),
-                        textAlign: TextAlign.right,
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            hintStyle: TextStyle(color: Colors.grey[800]),
-                            hintText: "تاريخ الميلاد",
-                            prefixIcon: Icon(Icons.calendar_month_rounded)),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'الرجاء تعبأة الخانة';
-                          } else if (value.length > 50)
-                            return ' الرجاء تعبأة الخانة بشكل صحيح';
+Container(
+  child: TextFormField(
+    controller: dOBController,
+    style: TextStyle(
+      fontSize: 13,
+      height: 1.1,
+      color: Colors.black,
+    ),
+    textAlign: TextAlign.right,
+    decoration: InputDecoration(
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      hintStyle: TextStyle(color: Colors.grey[800]),
+      hintText: "تاريخ الميلاد",
+      prefixIcon: Icon(Icons.calendar_month_rounded),
+    ),
+    validator: (value) {
+      if (value == null || value.isEmpty) {
+        return 'الرجاء تعبأة الخانة';
+      } else if (value.length > 50) {
+        return 'الرجاء تعبأة الخانة بشكل صحيح';
+      }
+      return null;
+    },
+    readOnly: true,
+    onTap: () async {
+      DateTime? pickedDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(1930),
+        lastDate: DateTime.now(),
+        builder: (BuildContext context, Widget? child) {
+          return Theme(
+            data: ThemeData.dark().copyWith(
+              colorScheme: ColorScheme.dark(
+                primary: Colors.teal, // Change the primary color to teal
+              ),
+              textTheme: TextTheme(
+                headline1: TextStyle(
+                  color: Colors.teal, // Change the year text color to teal
+                ),
+              ),
+            ),
+            child: child!,
+          );
+        },
+      );
 
-                          return null;
-                        },
-                        readOnly:
-                            true, //set it true, so that user will not able to edit text
-                        onTap: () async {
-                          DateTime? pickedDate = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(
-                                  1930), //DateTime.now() - not to allow to choose before today.
-                              lastDate: DateTime.now());
-
-                          if (pickedDate != null) {
-                            String formattedDate =
-                                DateFormat('yyyy-MM-dd').format(pickedDate);
-                            setState(() {
-                              dOBController.text =
-                                  formattedDate; //set output date to TextField value.
-                            });
-                          }
-                        },
-                      ),
-                    ),
+      if (pickedDate != null) {
+        String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+        setState(() {
+          dOBController.text = formattedDate;
+        });
+      }
+    },
+  ),
+),
                     SizedBox(
                       height: 15,
                     ),
@@ -312,7 +346,7 @@ class _ClientSignUpScreenState extends State<ClientSignUpScreen> {
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         hintStyle: TextStyle(color: Colors.grey[800]),
-                        hintText: '(example@gmail.com) البريد الالكتروني',
+                        hintText: '(example@example.com) البريد الالكتروني',
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -343,6 +377,7 @@ class _ClientSignUpScreenState extends State<ClientSignUpScreen> {
                               color: Colors.black,
                               backgroundColor: null),
                           textAlign: TextAlign.right,
+                           maxLength: 20,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
@@ -395,6 +430,7 @@ class _ClientSignUpScreenState extends State<ClientSignUpScreen> {
                               color: Colors.black,
                               backgroundColor: null),
                           textAlign: TextAlign.right,
+                           maxLength: 20,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),

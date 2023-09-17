@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:qanuni/homePage.dart';
+import 'package:qanuni/presentation/screens/home_screen/view.dart';
 
 import '../viewListOfLawyers.dart';
 
@@ -6,43 +8,41 @@ class viewLawyerProfilePage extends StatelessWidget {
   String riyal = "ريال";
   final Lawyer lawyer; // Pass the lawyer object
 
-  //navigation bar method
-  void _navigateToScreen(BuildContext context, int index) {
-    switch (index) {
-      case 0:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => LawyersList(),
-          ),
-        );
-        break;
-      case 1:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => LawyersList(),
-          ),
-        );
-        break;
-      case 2:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => LawyersList(),
-          ),
-        );
-        break;
-      case 3:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => LawyersList(),
-          ),
-        );
-        break;
-    }
+//navigation bar method
+void _navigateToScreen(BuildContext context, int index) {
+  switch (index) {
+    case 0:
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => LogoutPage()),
+        (route) => false,
+      );
+      break;
+    case 1:
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => LogoutPage()),
+        (route) => false,
+      );
+      break;
+    case 2:
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => LogoutPage()),
+        (route) => false,
+      );
+      break;
+    case 3:
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+        (route) => false,
+      );
+      break;
   }
+}
+
+
 
   viewLawyerProfilePage(this.lawyer);
 
@@ -122,7 +122,7 @@ class viewLawyerProfilePage extends StatelessWidget {
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
                         return Image.asset(
-                          'default_photo.jpg',
+                          'assets/default_photo.jpg',
                           width: 120,
                           height: 120,
                           fit: BoxFit.cover,

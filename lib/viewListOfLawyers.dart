@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:qanuni/firebase_options.dart';
+import 'package:qanuni/homePage.dart';
 import 'package:qanuni/presentation/screens/home_screen/view.dart';
 import 'package:qanuni/viewLawyerProfilePage.dart';
 
@@ -23,60 +24,56 @@ class MyApp extends StatelessWidget {
 
 class LawyersList extends StatelessWidget {
   String riyal = "ريال";
-  //navigation bar method
-  void _navigateToScreen(BuildContext context, int index) {
-    switch (index) {
-      case 0:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => LawyersList(),
-          ),
-        );
-        break;
-      case 1:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => LawyersList(),
-          ),
-        );
-        break;
-      case 2:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => LawyersList(),
-          ),
-        );
-        break;
-      case 3:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => LawyersList(),
-          ),
-        );
-        break;
-    }
+//navigation bar method
+void _navigateToScreen(BuildContext context, int index) {
+  switch (index) {
+    case 0:
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => LogoutPage()),
+        (route) => false,
+      );
+      break;
+    case 1:
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => LogoutPage()),
+        (route) => false,
+      );
+      break;
+    case 2:
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => LogoutPage()),
+        (route) => false,
+      );
+      break;
+    case 3:
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+        (route) => false,
+      );
+      break;
   }
+}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.teal,
+        backgroundColor: Color.fromARGB(255, 0, 128, 128),
         title: const Text("المحامين",
             style: TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.w500)),
         centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back), // Back button icon
-          onPressed: () {
-            // Navigate back to the previous page
-            Navigator.pop(context);
-          },
-        ),
+        // leading: IconButton(
+        //   icon: Icon(Icons.arrow_back), // Back button icon
+        //   onPressed: () {
+        //     // Navigate back to the previous page
+        //     Navigator.pop(context);
+        //   },
+        // ),
       ),
       //navigation Bar
       bottomNavigationBar: BottomNavigationBar(
@@ -186,7 +183,7 @@ class LawyersList extends StatelessWidget {
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
                         return Image.asset(
-                          'default_photo.jpg',
+                          'assets/default_photo.jpg',
                           width: 60,
                           height: 60,
                           fit: BoxFit.cover,

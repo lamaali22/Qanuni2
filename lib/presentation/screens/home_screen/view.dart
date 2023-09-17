@@ -9,43 +9,38 @@ import 'package:qanuni/viewListOfLawyers.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 //navigation bar method
-  void _navigateToScreen(BuildContext context, int index) {
-    switch (index) {
-      case 0:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => LawyersList(),
-          ),
-        );
-        break;
-      case 1:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => LawyersList(),
-          ),
-        );
-        break;
-      case 2:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => LawyersList(),
-          ),
-        );
-        break;
-      case 3:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => LawyersList(),
-          ),
-        );
-        break;
-    }
+void _navigateToScreen(BuildContext context, int index) {
+  switch (index) {
+    case 0:
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => LogoutPage()),
+        (route) => false,
+      );
+      break;
+    case 1:
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => LogoutPage()),
+        (route) => false,
+      );
+      break;
+    case 2:
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => LogoutPage()),
+        (route) => false,
+      );
+      break;
+    case 3:
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+        (route) => false,
+      );
+      break;
   }
-
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,13 +74,13 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'الصفحة الرئيسية',
-              style: TextStyle(color: Colors.black, fontSize: 20),
-            ),
+            // Text(
+            //   'الصفحة الرئيسية',
+            //   style: TextStyle(color: Colors.black, fontSize: 20),
+            // ),
             10.verticalSpace,
             Align(
-              alignment: Alignment.centerRight,
+              alignment: Alignment.center,
               child: GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -114,7 +109,7 @@ class HomeScreen extends StatelessWidget {
                         builder: (context) => LogoutPage(),
                       ));
                 },
-                child: Text('تسجيل خروج'))
+                child: Text('تسجيل الخروج'))
           ],
         ),
       ),

@@ -4,7 +4,7 @@
             "outputFile": "com.example.qanuni.app-mergeDebugResources-16:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\44220\\OneDrive\\Documents\\GitHub\\Qanuni\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+                    "source": "/Users/FAY/Documents/GitHub/Qanuni2/android/app/src/main/res/values-night/styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",

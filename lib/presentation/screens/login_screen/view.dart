@@ -103,7 +103,7 @@ class LoginScreen extends StatelessWidget {
                                 ),
                                 filledColor: ColorConstants.greyColor,
                                 obscureText: true,
-                                maxLength: 10,
+                                maxLength: 20,
                                 mycontroller:
                                     LoginCubit.get(context).passwordController,
                                 valid: (text) {
