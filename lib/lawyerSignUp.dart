@@ -735,9 +735,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                   children: <Widget>[
                                     Text(
                                       'أخرى',
-                                      style: TextStyle(fontSize: 13),
+                                      style: TextStyle(fontSize: 12),
                                     ),
-                                    SizedBox(height: 10),
+                                    // SizedBox(height: 10),
                                     Checkbox(
                                       activeColor: Color(0xFF008080),
                                       value: otherIsChecked,
@@ -747,31 +747,31 @@ class _MyHomePageState extends State<MyHomePage> {
                                         });
                                       },
                                     ),
-                                    SizedBox(
-                                      width: 20,
-                                    ),
-                                    Text(
-                                      'جنائي',
-                                      style: TextStyle(fontSize: 13),
-                                    ),
-                                    SizedBox(height: 10),
-                                    Checkbox(
-                                      activeColor: Color(0xFF008080),
-                                      value: isChecked0,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          isChecked0 = value!;
-                                        });
-                                      },
-                                    ),
-                                    SizedBox(
-                                      width: 20,
-                                    ),
+                                    // SizedBox(
+                                    //   width: 20,
+                                    // ),
+                                    // Text(
+                                    //   'جنائي',
+                                    //   style: TextStyle(fontSize: 13),
+                                    // ),
+                                    // // SizedBox(height: 10),
+                                    // Checkbox(
+                                    //   activeColor: Color(0xFF008080),
+                                    //   value: isChecked0,
+                                    //   onChanged: (value) {
+                                    //     setState(() {
+                                    //       isChecked0 = value!;
+                                    //     });
+                                    //   },
+                                    // ),
+                                    // SizedBox(
+                                    //   width: 20,
+                                    // ),
                                     Text(
                                       'مواريث',
-                                      style: TextStyle(fontSize: 13),
+                                      style: TextStyle(fontSize: 12),
                                     ),
-                                    SizedBox(height: 10),
+                                    // SizedBox(height: 10),
                                     Checkbox(
                                       activeColor: Color(0xFF008080),
                                       value: isChecked1,
@@ -781,14 +781,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                         });
                                       },
                                     ),
-                                    SizedBox(
-                                      width: 20,
-                                    ),
+                                    // SizedBox(
+                                    //   width: 20,
+                                    // ),
                                     Text(
                                       'إداري',
-                                      style: TextStyle(fontSize: 13),
+                                      style: TextStyle(fontSize: 12),
                                     ),
-                                    SizedBox(height: 10),
+                                    // SizedBox(height: 10),
                                     Checkbox(
                                       activeColor: Color(0xFF008080),
                                       value: isChecked2,
@@ -798,14 +798,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                         });
                                       },
                                     ),
-                                    SizedBox(
-                                      width: 20,
-                                    ),
+                                    // SizedBox(
+                                    //   width: 20,
+                                    // ),
                                     Text(
                                       'مدني',
-                                      style: TextStyle(fontSize: 13),
+                                      style: TextStyle(fontSize: 12),
                                     ),
-                                    SizedBox(height: 10),
+                                    // SizedBox(height: 10),
                                     Checkbox(
                                       activeColor: Color(0xFF008080),
                                       value: isChecked3,
@@ -815,14 +815,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                         });
                                       },
                                     ),
-                                    SizedBox(
-                                      width: 20,
-                                    ),
+                                    // SizedBox(
+                                    //   width: 20,
+                                    // ),
                                     Text(
                                       'تجاري',
-                                      style: TextStyle(fontSize: 13),
+                                      style: TextStyle(fontSize: 12),
                                     ),
-                                    SizedBox(height: 10),
+                                    // SizedBox(height: 10),
                                     Checkbox(
                                       activeColor: Color(0xFF008080),
                                       value: isChecked4,
@@ -836,9 +836,9 @@ class _MyHomePageState extends State<MyHomePage> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: <Widget>[
-                                  SizedBox(
-                                    width: 60,
-                                  ),
+                                  // SizedBox(
+                                  //   width: 60,
+                                  // ),
                                   Text(
                                     textSpec,
                                     style: TextStyle(
@@ -848,9 +848,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                   ),
                                 ],
                               ),
-                              SizedBox(
-                                height: 20,
-                              ),
+                              // SizedBox(
+                              //   height: 20,
+                              // ),
                             ])),
                     SizedBox(
                       height: 15,
@@ -969,9 +969,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
                             createUser(lawyer);
 
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => LogoutPageLawyer(),
-                            ));
+Navigator.of(context).pushAndRemoveUntil(
+  MaterialPageRoute(builder: (context) => LogoutPageLawyer()),
+  (Route<dynamic> route) => false,
+);
 
 // Replace '/login' with your login screen route
 

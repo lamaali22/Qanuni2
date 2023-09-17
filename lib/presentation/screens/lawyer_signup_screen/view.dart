@@ -391,6 +391,7 @@ Container(
                       style: TextStyle(
                           fontSize: 13, height: 1.1, color: Colors.black),
                       textAlign: TextAlign.right,
+                      maxLength: 10,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
@@ -728,7 +729,7 @@ Container(
                       height: 15,
                     ),
                     Container(
-                        height: 100,
+                        height: 140,
                         width: double.infinity,
                         padding: const EdgeInsets.fromLTRB(2, 4, 2, 2),
                         margin: EdgeInsets.fromLTRB(2, 2, 2, 9),
@@ -963,13 +964,21 @@ Container(
 
                             //storing in DB
 
+                            // if (isChecked0 == true) specialities.add("جنائي");
+                            // if (isChecked1 == true) specialities.add("مواريث");
+                            // if (isChecked2 == true) specialities.add("إداري");
+                            // if (isChecked3 == true) specialities.add("مدني");
+                            // if (isChecked4 == true) specialities.add("تجاري");
+                            // if (otherIsChecked == true)
+                            //   specialities.add("أخرى");
+
+                            //modified for the overflow 
+                            if (isChecked0 == true) specialities.add("مواريث");
+                            if (isChecked0 == true) specialities.add("إداري");                            if (isChecked0 == true) specialities.add("مواريث");
+                            if (isChecked0 == true) specialities.add("مدني");                            if (isChecked0 == true) specialities.add("مواريث");
                             if (isChecked0 == true) specialities.add("جنائي");
-                            if (isChecked1 == true) specialities.add("مواريث");
-                            if (isChecked2 == true) specialities.add("إداري");
-                            if (isChecked3 == true) specialities.add("مدني");
-                            if (isChecked4 == true) specialities.add("تجاري");
-                            if (otherIsChecked == true)
-                              specialities.add("أخرى");
+
+
 
                             final lawyer = lawyerModel(
                                 firstName: fNameController.text.trim(),

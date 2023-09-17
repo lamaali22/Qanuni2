@@ -66,25 +66,25 @@ void _navigateToScreen(BuildContext context, int index) {
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Center(
-                child: IconButton(
-                  icon: Icon(
-                    Icons.exit_to_app,
-                    color: Colors.white,
-                    size: 30,
-                  ),
-                  onPressed: () async {
-                    await _auth.signOut();
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            LoginScreen(), // go to sign in page
-                      ),
-                    ); // Replace '/login' with your login screen route
-                  },
-                ),
-              ),
+              // Center(
+              //   child: IconButton(
+              //     icon: Icon(
+              //       Icons.exit_to_app,
+              //       color: Colors.white,
+              //       size: 30,
+              //     ),
+              //     onPressed: () async {
+              //       await _auth.signOut();
+              //       Navigator.pushReplacement(
+              //         context,
+              //         MaterialPageRoute(
+              //           builder: (context) =>
+              //               LoginScreen(), // go to sign in page
+              //         ),
+              //       ); // Replace '/login' with your login screen route
+              //     },
+              //   ),
+              // ),
               Expanded(
                 child: Text.rich(
                   TextSpan(
