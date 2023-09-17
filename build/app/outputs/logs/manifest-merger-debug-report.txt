@@ -71,6 +71,7 @@ MERGED from [:firebase_storage] /Users/FAY/Documents/GitHub/Qanuni2/build/fireba
 MERGED from [:cloud_firestore] /Users/FAY/Documents/GitHub/Qanuni2/build/cloud_firestore/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-17:12
 MERGED from [:firebase_messaging] /Users/FAY/Documents/GitHub/Qanuni2/build/firebase_messaging/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-50:12
 MERGED from [:firebase_core] /Users/FAY/Documents/GitHub/Qanuni2/build/firebase_core/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-17:12
+MERGED from [:flutter_native_splash] /Users/FAY/Documents/GitHub/Qanuni2/build/flutter_native_splash/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-9:12
 MERGED from [androidx.multidex:multidex:2.0.0] /Users/FAY/.gradle/caches/transforms-3/7ff7efc73225d031a22de8594b12c055/transformed/multidex-2.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [com.google.firebase:firebase-auth:22.1.1] /Users/FAY/.gradle/caches/transforms-3/599064198241a8b937d0c64750e203a4/transformed/jetified-firebase-auth-22.1.1/AndroidManifest.xml:17:1-75:12
 MERGED from [com.google.android.recaptcha:recaptcha:18.1.2] /Users/FAY/.gradle/caches/transforms-3/458e0778392bf2d47327ba95da0f5ed2/transformed/jetified-recaptcha-18.1.2/AndroidManifest.xml:2:1-10:12
@@ -158,6 +159,8 @@ MERGED from [:firebase_messaging] /Users/FAY/Documents/GitHub/Qanuni2/build/fire
 MERGED from [:firebase_messaging] /Users/FAY/Documents/GitHub/Qanuni2/build/firebase_messaging/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [:firebase_core] /Users/FAY/Documents/GitHub/Qanuni2/build/firebase_core/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [:firebase_core] /Users/FAY/Documents/GitHub/Qanuni2/build/firebase_core/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:flutter_native_splash] /Users/FAY/Documents/GitHub/Qanuni2/build/flutter_native_splash/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:flutter_native_splash] /Users/FAY/Documents/GitHub/Qanuni2/build/flutter_native_splash/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [androidx.multidex:multidex:2.0.0] /Users/FAY/.gradle/caches/transforms-3/7ff7efc73225d031a22de8594b12c055/transformed/multidex-2.0.0/AndroidManifest.xml:20:5-43
 MERGED from [androidx.multidex:multidex:2.0.0] /Users/FAY/.gradle/caches/transforms-3/7ff7efc73225d031a22de8594b12c055/transformed/multidex-2.0.0/AndroidManifest.xml:20:5-43
 MERGED from [com.google.firebase:firebase-auth:22.1.1] /Users/FAY/.gradle/caches/transforms-3/599064198241a8b937d0c64750e203a4/transformed/jetified-firebase-auth-22.1.1/AndroidManifest.xml:21:5-23:64

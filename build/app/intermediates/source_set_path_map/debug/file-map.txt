@@ -22,4 +22,5 @@ com.example.qanuni.app-packaged_res-20 /Users/FAY/Documents/GitHub/Qanuni2/build
 com.example.qanuni.app-packaged_res-21 /Users/FAY/Documents/GitHub/Qanuni2/build/firebase_core/intermediates/packaged_res/debug
 com.example.qanuni.app-packaged_res-22 /Users/FAY/Documents/GitHub/Qanuni2/build/firebase_messaging/intermediates/packaged_res/debug
 com.example.qanuni.app-packaged_res-23 /Users/FAY/Documents/GitHub/Qanuni2/build/firebase_storage/intermediates/packaged_res/debug
-com.example.qanuni.app-packaged_res-24 /Users/FAY/Documents/GitHub/Qanuni2/build/shared_preferences_android/intermediates/packaged_res/debug
+com.example.qanuni.app-packaged_res-24 /Users/FAY/Documents/GitHub/Qanuni2/build/flutter_native_splash/intermediates/packaged_res/debug
+com.example.qanuni.app-packaged_res-25 /Users/FAY/Documents/GitHub/Qanuni2/build/shared_preferences_android/intermediates/packaged_res/debug
