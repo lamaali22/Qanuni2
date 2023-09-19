@@ -150,13 +150,13 @@ void _navigateToScreen(BuildContext context, int index) {
               alignment: Alignment.center,
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => LawyersList(),
-                      ));
-                  ;
-                },
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(
+      builder: (context) => LawyersList(),
+    ),
+  );
+},
                 child: const Text(
                   'جميع المحامين >',
                   style: TextStyle(

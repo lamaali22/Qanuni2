@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:qanuni/homePageLawyer.dart';
+import 'package:qanuni/presentation/screens/boarding_screen/view.dart';
 import 'package:qanuni/presentation/screens/client_signup_screen/view.dart';
+import 'package:qanuni/presentation/screens/home_screen/view.dart';
+import 'package:qanuni/presentation/screens/landing_screen/view.dart';
 import 'package:qanuni/presentation/screens/lawyer_signup_screen/view.dart';
 import 'package:qanuni/presentation/widgets/custom_text_form_field.dart';
 import 'package:qanuni/providers/boarding/cubit/boarding_cubit.dart';
@@ -26,6 +30,23 @@ class LoginScreen extends StatelessWidget {
         if (state is LoginSuccess) {
           showToast('مرحبا', position: ToastPosition.bottom);
           LoginCubit.get(context).reset();
+           if (BoardingCubit.get(context).selectedOption ==0) {
+               Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => HomeScreen(),
+      ),
+    );
+           }else {
+               Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LogoutPageLawyer(),
+      ),
+    );
+           }
+ 
+
         }
       },
       builder: (context, state) {
@@ -45,9 +66,12 @@ class LoginScreen extends StatelessWidget {
                             height: 0.1.sh,
                             width: 1.sw,
                             child: GestureDetector(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
+                             onTap: () {
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(builder: (context) => BoardingScreen()),
+  );
+},
                               child: Icon(
                                 Icons.chevron_right_outlined,
                                 size: 30,
