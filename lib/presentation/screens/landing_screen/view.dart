@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:qanuni/homePage.dart';
 import 'package:qanuni/homePageLawyer.dart';
 import 'package:qanuni/presentation/screens/home_screen/view.dart';
 import 'package:qanuni/presentation/screens/login_screen/view.dart';
@@ -18,7 +19,7 @@ class LandingScreen extends StatelessWidget {
         stream: auth.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData && BoardingCubit.get(context).selectedOption == 0 ) {
-            return const HomeScreen();
+            return  LogoutPage();
           }
           else {
           if(snapshot.hasData && BoardingCubit.get(context).selectedOption == 1) {
