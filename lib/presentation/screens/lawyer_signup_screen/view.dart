@@ -53,26 +53,6 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
     return isvalid;
   }
 
-//iban validation
-  bool validateIban(String iban) {
-    bool isvalid = false;
-    String ibanStr = iban.substring(0, 2).toLowerCase();
-    String ibanStr2 = iban.substring(2);
-    if (ibanStr == "sa" && isNumericUsingRegularExpression(ibanStr2))
-      isvalid = true;
-
-    return isvalid;
-  }
-
-//phone validation
-  bool validatePhoneNum(String phoneNum) {
-    bool isvalid = false;
-    String phoneNumStr = phoneNum.substring(0, 2);
-    if (phoneNumStr == '05' && phoneNum.length == 10) isvalid = true;
-
-    return isvalid;
-  }
-
 //is a number validation
   bool isNumericUsingRegularExpression(String string) {
     final numericRegex = RegExp(r'^-?(([0-9]*)|(([0-9]*)\.([0-9]*)))$');
@@ -249,776 +229,1213 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
             appBar: AppBar(
               backgroundColor: Color.fromARGB(255, 0, 128, 128),
               elevation: 0,
-              title: const Text("انشاء حساب جديد", 
-              style: TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.w500, color: Colors.white)
-              ),
+              title: const Text("انشاء حساب جديد",
+                  style: TextStyle(
+                      fontFamily: 'Cairo',
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white)),
               centerTitle: true,
-            actions: [
-            IconButton(
-              padding: EdgeInsets.only(right: 30),
-              alignment: Alignment.centerRight,
-              icon: Icon(Icons.arrow_forward, color: Colors.white),
-              onPressed: () {
-                Navigator.pop(context); // Navigate back to the previous page
-              },
-            ),
-          ],
-             ),
-            body: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-
-          child: Form(
-              key: _formKey,
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 50,
-                    ),
-                    TextFormField(
-                      controller: fNameController,
-                      style: TextStyle(
-                          fontSize: 13, height: 1.1, color: Colors.black),
-                      textAlign: TextAlign.right,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        hintStyle: TextStyle(color: Colors.grey[800]),
-                        hintText: "الأسم الأول",
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'الرجاء تعبأة الخانة';
-                        } else if (value.length > 50)
-                          return ' الرجاء تعبأة الخانة بشكل صحيح';
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    TextFormField(
-                      controller: lNameController,
-                      style: TextStyle(
-                          fontSize: 13, height: 1.1, color: Colors.black),
-                      textAlign: TextAlign.right,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        hintStyle: TextStyle(color: Colors.grey[800]),
-                        hintText: "الأسم الأخير",
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'الرجاء تعبأة الخانة';
-                        } else if (value.length > 50)
-                          return ' الرجاء تعبأة الخانة بشكل صحيح';
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-Container(
-  child: TextFormField(
-    controller: dOBController,
-    style: TextStyle(
-      fontSize: 13,
-      height: 1.1,
-      color: Colors.black,
-    ),
-    textAlign: TextAlign.right,
-    decoration: InputDecoration(
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      hintStyle: TextStyle(color: Colors.grey[800]),
-      hintText: "تاريخ الميلاد",
-      prefixIcon: Icon(Icons.calendar_month_rounded),
-    ),
-    validator: (value) {
-      if (value == null || value.isEmpty) {
-        return 'الرجاء تعبأة الخانة';
-      } else if (value.length > 50) {
-        return 'الرجاء تعبأة الخانة بشكل صحيح';
-      }
-      return null;
-    },
-    readOnly: true,
-    onTap: () async {
-      DateTime? pickedDate = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(1930),
-        lastDate: DateTime.now(),
-        builder: (BuildContext context, Widget? child) {
-          return Theme(
-            data: ThemeData.dark().copyWith(
-              colorScheme: ColorScheme.dark(
-                primary: Colors.teal, // Change the primary color to teal
-              ),
-              textTheme: TextTheme(
-                headline1: TextStyle(
-                  color: Colors.teal, // Change the year text color to teal
+              actions: [
+                IconButton(
+                  padding: EdgeInsets.only(right: 30),
+                  alignment: Alignment.centerRight,
+                  icon: Icon(Icons.arrow_forward, color: Colors.white),
+                  onPressed: () {
+                    Navigator.pop(
+                        context); // Navigate back to the previous page
+                  },
                 ),
-              ),
+              ],
             ),
-            child: child!,
-          );
-        },
-      );
+            body: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
 
-      if (pickedDate != null) {
-        String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-        setState(() {
-          dOBController.text = formattedDate;
-        });
-      }
-    },
-  ),
-),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    TextFormField(
-                      onTap: () async {
-                        print("ontap");
-                        await fetchPhonesAsync();
-                      },
-                      controller: phoneNumController,
-                      style: TextStyle(
-                          fontSize: 13, height: 1.1, color: Colors.black),
-                      textAlign: TextAlign.right,
-                      maxLength: 10,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+              child: Form(
+                  key: _formKey,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 50,
                         ),
-                        hintStyle: TextStyle(color: Colors.grey[800]),
-                        hintText: ' (05x xxxx xxx) رقم الهاتف',
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'الرجاء تعبأة الخانة';
-                        } else if (!validatePhoneNum(value))
-                          return 'الرجاء ادخال رقم هاتف صحيح';
-                        else if (!isNumericUsingRegularExpression(value))
-                          return '(الرجاء تعبأة الخانة بأعداد فقط (من 0-9';
-                        else {
-                          if (phones.contains(value)) return 'هذا الرقم مستخدم';
-                        }
-
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    TextFormField(
-                      controller: emailController,
-                      onTap: () async {
-                        print("ontap");
-                        await fetchEmailsAsync();
-                      },
-                      style: TextStyle(
-                          fontSize: 13, height: 1.1, color: Colors.black),
-                      textAlign: TextAlign.right,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        hintStyle: TextStyle(color: Colors.grey[800]),
-                        hintText: '(example@example.com) البريد الالكتروني',
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'الرجاء تعبأة الخانة';
-                        } else if (value.length > 50)
-                          return ' الرجاء تعبأة الخانة بشكل صحيح';
-                        else if (!validateEmail(value))
-                          return 'الرجاء ادخال بريد الكتروني صحيح';
-                        else {
-                          if (emails.contains(value))
-                            return 'هذا البريد الإلكتروني مستخدم';
-                        }
-
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Container(
-                      child: TextFormField(
-                          controller: passwordController,
-                          onChanged: (password) => onPasswordChanged(password),
-                          obscureText: !passwordVisible,
-                          style: TextStyle(
-                              fontSize: 13,
-                              height: 1.1,
-                              color: Colors.black,
-                              backgroundColor: null),
-                          textAlign: TextAlign.right,
-                           maxLength: 20,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            hintText: 'كلمة المرور',
-                            //hintStyle: TextStyle(color: Colors.black),
-                            prefixIcon: IconButton(
-                              onPressed: () {
-                                setState(
-                                  () {
-                                    passwordVisible = !passwordVisible;
-                                  },
-                                );
-                              },
-                              icon: passwordVisible
-                                  ? Icon(
-                                      Icons.visibility,
-                                    )
-                                  : Icon(
-                                      Icons.visibility_off,
-                                    ),
-                            ),
-                            alignLabelWithHint: false,
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty)
-                              return 'الرجاء تعبأة الخانة';
-                            else if (value.length < 8)
-                              return '  الرجاء ادخال 8 خانات و رقم واحد على الأقل';
-                            else if (passwordController.text !=
-                                passwordConfirmController.text)
-                              return "لا يوجد تطابق";
-                            else
-                              return null;
-                          },
-                          keyboardType: TextInputType.visiblePassword,
-                          textInputAction: TextInputAction.done),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Container(
-                      child: TextFormField(
-                          controller: passwordConfirmController,
-                          onChanged: (password) => onPasswordChanged(password),
-                          obscureText: !passwordVisible,
-                          style: TextStyle(
-                              fontSize: 13,
-                              height: 1.1,
-                              color: Colors.black,
-                              backgroundColor: null),
-                          textAlign: TextAlign.right,
-                           maxLength: 20,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            hintText: 'تأكيد كلمة المرور',
-                            //hintStyle: TextStyle(color: Colors.black),
-                            prefixIcon: IconButton(
-                              onPressed: () {
-                                setState(
-                                  () {
-                                    passwordVisible = !passwordVisible;
-                                  },
-                                );
-                              },
-                              icon: passwordVisible
-                                  ? Icon(
-                                      Icons.visibility,
-                                    )
-                                  : Icon(
-                                      Icons.visibility_off,
-                                    ),
-                            ),
-                            alignLabelWithHint: false,
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty)
-                              return 'الرجاء تعبأة الخانة';
-                            else if (value.length < 8)
-                              return '  الرجاء ادخال 8 خانات و رقم واحد على الأقل';
-                            else if (passwordController.text !=
-                                passwordConfirmController.text)
-                              return "لا يوجد تطابق";
-                            else
-                              return null;
-                          },
-                          keyboardType: TextInputType.visiblePassword,
-                          textInputAction: TextInputAction.done),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Container(
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              AnimatedContainer(
-                                alignment: Alignment.topRight,
-                                duration: Duration(milliseconds: 500),
-                                width: 16,
-                                height: 16,
-                                decoration: BoxDecoration(
-                                    color: _isPasswordEightCharacters
-                                        ? Colors.green
-                                        : Colors.transparent,
-                                    border: _isPasswordEightCharacters
-                                        ? Border.all(color: Colors.transparent)
-                                        : Border.all(
-                                            color: Colors.grey.shade400),
-                                    borderRadius: BorderRadius.circular(50)),
-                                child: Center(
-                                  child: Icon(
-                                    Icons.check,
-                                    color: Colors.white,
-                                    size: 15,
-                                  ),
+                        Container(
+                            child: Column(
+                          children: [
+                            Container(
+                              alignment: Alignment.topRight,
+                              child: Text(
+                                ' * الأسم الاول',
+                                textAlign: TextAlign.right,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Color.fromARGB(
+                                    255,
+                                    78,
+                                    76,
+                                    76,
+                                  ), // Customize label color
                                 ),
                               ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text("تتكون من 8 خانات على الأقل",
-                                  textAlign: TextAlign.right,
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color.fromRGBO(104, 102, 102, 1)))
-                            ],
-                          ),
-                          SizedBox(
-                            height: 2,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              AnimatedContainer(
-                                duration: Duration(milliseconds: 500),
-                                width: 16,
-                                height: 16,
-                                decoration: BoxDecoration(
-                                    color: _hasPasswordOneNumber
-                                        ? Colors.green
-                                        : Colors.transparent,
-                                    border: _hasPasswordOneNumber
-                                        ? Border.all(color: Colors.transparent)
-                                        : Border.all(
-                                            color: Colors.grey.shade400),
-                                    borderRadius: BorderRadius.circular(50)),
-                                child: Center(
-                                  child: Icon(
-                                    Icons.check,
-                                    color: Colors.white,
-                                    size: 15,
-                                  ),
+                            ),
+                            TextFormField(
+                              controller: fNameController,
+                              textAlign: TextAlign.right,
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  height: 0.9,
+                                  color: Colors.black),
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                isDense: true,
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.teal),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                fillColor: Colors.grey[200],
+                                filled: true,
+                                prefixIcon: IconButton(
+                                  icon: Icon(Icons.clear), // Clear button icon
+                                  onPressed: () {
+                                    setState(() {
+                                      fNameController.clear();
+                                    });
+                                  },
                                 ),
                               ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text("تحتوي على رقم واحد على الأقل",
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color.fromRGBO(104, 102, 102, 1)))
-                            ],
-                          ),
-                        ])),
-                    SizedBox(
-                      height: 17,
-                    ),
-                    Align(
-                      alignment: Alignment
-                          .centerRight, // Align the FractionallySizedBox to the right
-                      child: FractionallySizedBox(
-                        widthFactor: 1, // Set to 50% of the screen width
-                        child: Container(
-                          height: 95,
-                          padding: const EdgeInsets.fromLTRB(2, 4, 2, 2),
-                          margin: EdgeInsets.all(2),
-                          /*decoration: ShapeDecoration(
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                              width: 1.7,
-                              color: Color.fromARGB(71, 32, 31, 31)),
-                          borderRadius: BorderRadius.circular(15),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'الرجاء تعبأة الخانة';
+                                } else if (value.length > 50)
+                                  return ' الرجاء تعبأة الخانة بشكل صحيح';
+                                return null;
+                              },
+                            ),
+                          ],
+                        )),
+                        SizedBox(
+                          height: 5,
                         ),
-                      ),*/
-                          child: DropdownButtonFormField<String>(
+                        Container(
+                            child: Column(
+                          children: [
+                            Container(
+                              alignment: Alignment.topRight,
+                              child: Text(
+                                '* الأسم الأخير',
+                                textAlign: TextAlign.right,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Color.fromARGB(
+                                    255,
+                                    78,
+                                    76,
+                                    76,
+                                  ), // Customize label color
+                                ),
+                              ),
+                            ),
+                            TextFormField(
+                              controller: lNameController,
+                              textAlign: TextAlign.right,
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  height: 0.9,
+                                  color: Colors.black),
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                isDense: true,
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.teal),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                fillColor: Colors.grey[200],
+                                filled: true,
+                                prefixIcon: IconButton(
+                                  icon: Icon(Icons.clear), // Clear button icon
+                                  onPressed: () {
+                                    setState(() {
+                                      lNameController.clear();
+                                    });
+                                  },
+                                ),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'الرجاء تعبأة الخانة';
+                                } else if (value.length > 50)
+                                  return ' الرجاء تعبأة الخانة بشكل صحيح';
+                                return null;
+                              },
+                            ),
+                          ],
+                        )),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Container(
+                            child: Column(children: [
+                          Container(
+                            alignment: Alignment.topRight,
+                            child: Text(
+                              '* تاريخ الميلاد',
+                              textAlign: TextAlign.right,
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: Color.fromARGB(
+                                    255, 78, 76, 76), // Customize label color
+                              ),
+                            ),
+                          ),
+                          TextFormField(
+                            controller: dOBController,
+                            style: TextStyle(
+                                fontSize: 13, height: 1.1, color: Colors.black),
+                            textAlign: TextAlign.right,
                             decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            )),
-                            value: selectedItem,
-                            items: itemsList
-                                .map(
-                                  (item) => DropdownMenuItem(
-                                    value: item,
-                                    child: Align(
-                                      alignment: Alignment
-                                          .centerRight, // Right-align the text
-                                      child: Text(
-                                        item,
-                                        style: TextStyle(
-                                          fontSize: 13,
-                                          color:
-                                              Color.fromRGBO(123, 121, 121, 1),
+                                border: OutlineInputBorder(),
+                                isDense: true,
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.teal),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                fillColor: Colors.grey[200],
+                                filled: true,
+                                suffixIcon: Icon(Icons.calendar_month_rounded)),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'الرجاء تعبأة الخانة';
+                              } else if (value.length > 50)
+                                return ' الرجاء تعبأة الخانة بشكل صحيح';
+
+                              return null;
+                            },
+                            readOnly:
+                                true, //set it true, so that user will not able to edit text
+                            onTap: () async {
+                              DateTime? pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(1930),
+                                lastDate: DateTime.now(),
+                                builder: (BuildContext context, Widget? child) {
+                                  return Theme(
+                                    data: ThemeData.dark().copyWith(
+                                      colorScheme: ColorScheme.dark(
+                                        primary: Colors
+                                            .teal, // Change the primary color to teal
+                                      ),
+                                      textTheme: TextTheme(
+                                        headline1: TextStyle(
+                                          color: Colors
+                                              .teal, // Change the year text color to teal
                                         ),
                                       ),
                                     ),
-                                  ),
-                                )
-                                .toList(),
-                            onChanged: (item) =>
-                                setState(() => selectedItem = item.toString()),
-                            validator: (value) {
-                              if (value == "الجنس")
-                                return 'الرجاء تحديد الجنس';
-                              else
-                                return null;
+                                    child: child!,
+                                  );
+                                },
+                              );
+
+                              if (pickedDate != null) {
+                                String formattedDate =
+                                    DateFormat('yyyy-MM-dd').format(pickedDate);
+                                setState(() {
+                                  dOBController.text = formattedDate;
+                                });
+                              }
                             },
-                            // Set the maximum dropdown menu height
-                            isExpanded:
-                                true, // Expand the dropdown to the maximum width
                           ),
+                        ])),
+                        SizedBox(
+                          height: 5,
                         ),
-                      ),
-                    ),
-                    TextFormField(
-                        onTap: () async {
-                          print("ontap");
-                          await fetchMockLicenseNumbersAsync();
-                          await fetchLicenseNumbersUsedAsync();
-                        },
-                        controller: licenseNumberController,
-                        style: TextStyle(
-                            fontSize: 13, height: 1.1, color: Colors.black),
-                        textAlign: TextAlign.right,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          hintStyle: TextStyle(color: Colors.grey[800]),
-                          hintText: "رقم ترخيص المحاماة",
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'الرجاء تعبأة الخانة';
-                          } else if (value.length != 5) {
-                            return 'الرجاء ادخال رقم الرخصة بالصيغة الصحيحة';
-                          } else if (!isNumericUsingRegularExpression(value)) {
-                            return 'الرجاء ادخال رقم الرخصة بالصيغة الصحيحة';
-                          } else if (licenses.contains(value)) {
-                            return "هذا الرقم مستخدم";
-                          }
-                          if (!mockLicenses.contains(value)) {
-                            return 'الرجاء ادخال رقم صحيح ';
-                          }
-
-                          return null;
-                        }),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Container(
-                        height: 140,
-                        width: double.infinity,
-                        padding: const EdgeInsets.fromLTRB(2, 4, 2, 2),
-                        margin: EdgeInsets.fromLTRB(2, 2, 2, 9),
-                        decoration: ShapeDecoration(
-                            shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                              width: 1.7,
-                              color: Color.fromARGB(71, 32, 31, 31)),
-                          borderRadius: BorderRadius.circular(15),
+                        Container(
+                            child: Column(
+                          children: [
+                            Container(
+                              alignment: Alignment.topRight,
+                              child: Text(
+                                '* رقم الهاتف',
+                                textAlign: TextAlign.right,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Color.fromARGB(
+                                      255, 78, 76, 76), // Customize label color
+                                ),
+                              ),
+                            ),
+                            TextFormField(
+                              onTap: () async {
+                                print("ontap");
+                                await fetchPhonesAsync();
+                              },
+                              controller: phoneNumController,
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  height: 1.1,
+                                  color: Colors.black),
+                              textAlign: TextAlign.right,
+                              decoration: InputDecoration(
+                                prefixText: "05",
+                                prefixStyle: TextStyle(
+                                  color: Color.fromARGB(255, 78, 80, 78),
+                                ),
+                                border: OutlineInputBorder(),
+                                isDense: true,
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.teal),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                fillColor: Colors.grey[200],
+                                filled: true,
+                                prefixIcon: IconButton(
+                                  icon: Icon(Icons.clear), // Clear button icon
+                                  onPressed: () {
+                                    setState(() {
+                                      phoneNumController.clear();
+                                    });
+                                  },
+                                ),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'الرجاء تعبأة الخانة';
+                                } else if (value.length != 8)
+                                  return '(05x-xxxx-xxx) الرجاء ادخال رقم هاتف صحيح';
+                                else if (!isNumericUsingRegularExpression(
+                                    value))
+                                  return '(الرجاء تعبأة الخانة بأعداد فقط (من 0-9';
+                                else {
+                                  if (phones.contains(value))
+                                    return 'هذا الرقم مستخدم';
+                                }
+                                return null;
+                              },
+                            ),
+                          ],
                         )),
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                             children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: <Widget>[
-                                  Text(
-                                    " المجالات التي أود تقديم إستشارات فيها",
-                                    style: TextStyle(fontSize: 13.5),
-                                  ),
-                                ],
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Container(
+                            child: Column(
+                          children: [
+                            Container(
+                              alignment: Alignment.topRight,
+                              child: Text(
+                                '* البريد الإلكتروني',
+                                textAlign: TextAlign.right,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Color.fromARGB(
+                                      255, 78, 76, 76), // Customize label color
+                                ),
                               ),
-                              Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: <Widget>[
-                                    // Text(
-                                    //   'أخرى',
-                                    //   style: TextStyle(fontSize: 13),
-                                    // ),
-                                    // SizedBox(height: 10),
-                                    // Checkbox(
-                                    //   activeColor: Color(0xFF008080),
-                                    //   value: otherIsChecked,
-                                    //   onChanged: (value) {
-                                    //     setState(() {
-                                    //       otherIsChecked = value!;
-                                    //     });
-                                    //   },
-                                    // ),
-                                    // SizedBox(
-                                    //   width: 20,
-                                    // ),
-                                    // Text(
-                                    //   'جنائي',
-                                    //   style: TextStyle(fontSize: 13),
-                                    // ),
-                                    // //SizedBox(height: 10),
-                                    // Checkbox(
-                                    //   activeColor: Color(0xFF008080),
-                                    //   value: isChecked0,
-                                    //   onChanged: (value) {
-                                    //     setState(() {
-                                    //       isChecked0 = value!;
-                                    //     });
-                                    //   },
-                                    // ),
-                                    // SizedBox(
-                                    //   width: 20,
-                                    //),
-                                    Text(
-                                      'مواريث',
-                                      style: TextStyle(fontSize: 13),
+                            ),
+                            TextFormField(
+                              onTap: () async {
+                                print("ontap");
+                                await fetchEmailsAsync();
+                              },
+                              controller: emailController,
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  height: 1.1,
+                                  color: Colors.black),
+                              textAlign: TextAlign.right,
+                              decoration: InputDecoration(
+                                hintText: "Example@gmail.com",
+                                border: OutlineInputBorder(),
+                                isDense: true,
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.teal),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                fillColor: Colors.grey[200],
+                                filled: true,
+                                suffixIcon: Icon(Icons.email),
+                                prefixIcon: IconButton(
+                                  icon: Icon(Icons.clear), // Clear button icon
+                                  onPressed: () {
+                                    setState(() {
+                                      emailController.clear();
+                                    });
+                                  },
+                                ),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'الرجاء تعبأة الخانة';
+                                } else if (value.length > 50)
+                                  return ' الرجاء تعبأة الخانة بشكل صحيح';
+                                else if (!validateEmail(value))
+                                  return '( Example@gmail.com )  الرجاء ادخال بريد الكتروني صحيح';
+                                else {
+                                  if (emails.contains(value))
+                                    return 'هذا البريد الإلكتروني مستخدم';
+                                }
+
+                                return null;
+                              },
+                            ),
+                          ],
+                        )),
+                        SizedBox(
+                          height: 5,
+                        ),
+
+                        Container(
+                            child: Column(
+                          children: [
+                            Container(
+                              alignment: Alignment.topRight,
+                              child: Text(
+                                '* كلمة المرور',
+                                textAlign: TextAlign.right,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Color.fromARGB(
+                                      255, 78, 76, 76), // Customize label color
+                                ),
+                              ),
+                            ),
+                            Container(
+                              child: TextFormField(
+                                  controller: passwordController,
+                                  onChanged: (password) =>
+                                      onPasswordChanged(password),
+                                  obscureText: !passwordVisible,
+                                  style: TextStyle(
+                                      fontSize: 13,
+                                      height: 1.1,
+                                      color: Colors.black,
+                                      backgroundColor: null),
+                                  textAlign: TextAlign.right,
+                                  maxLength: 20,
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    isDense: true,
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.white),
+                                      borderRadius: BorderRadius.circular(12),
                                     ),
-                                    // SizedBox(height: 10),
-                                    Checkbox(
-                                      activeColor: Color(0xFF008080),
-                                      value: isChecked1,
-                                      onChanged: (value) {
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.teal),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    fillColor: Colors.grey[200],
+                                    filled: true,
+                                    prefixIcon: IconButton(
+                                      icon: Icon(
+                                          Icons.clear), // Clear button icon
+                                      onPressed: () {
                                         setState(() {
-                                          isChecked1 = value!;
+                                          passwordController.clear();
                                         });
                                       },
                                     ),
-                                    // SizedBox(
-                                    //   width: 20,
-                                    // ),
-                                    Text(
-                                      'إداري',
-                                      style: TextStyle(fontSize: 13),
+                                    suffixIcon: IconButton(
+                                      onPressed: () {
+                                        setState(
+                                          () {
+                                            passwordVisible = !passwordVisible;
+                                          },
+                                        );
+                                      },
+                                      icon: passwordVisible
+                                          ? Icon(
+                                              Icons.visibility,
+                                            )
+                                          : Icon(
+                                              Icons.visibility_off,
+                                            ),
                                     ),
-                                    // SizedBox(height: 10),
-                                    Checkbox(
-                                      activeColor: Color(0xFF008080),
-                                      value: isChecked2,
-                                      onChanged: (value) {
+                                    alignLabelWithHint: false,
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty)
+                                      return 'الرجاء تعبأة الخانة';
+                                    else if (value.length < 8)
+                                      return '  الرجاء ادخال 8 خانات و رقم واحد على الأقل';
+                                    else if (passwordController.text !=
+                                        passwordConfirmController.text)
+                                      return "لا يوجد تطابق";
+                                    else
+                                      return null;
+                                  },
+                                  keyboardType: TextInputType.visiblePassword,
+                                  textInputAction: TextInputAction.done),
+                            ),
+                          ],
+                        )),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Container(
+                            child: Column(
+                          children: [
+                            Container(
+                              alignment: Alignment.topRight,
+                              child: Text(
+                                '* تأكيد كلمة المرور',
+                                textAlign: TextAlign.right,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Color.fromARGB(
+                                      255, 78, 76, 76), // Customize label color
+                                ),
+                              ),
+                            ),
+                            Container(
+                              child: TextFormField(
+                                  controller: passwordConfirmController,
+                                  obscureText: !passwordVisible,
+                                  style: TextStyle(
+                                      fontSize: 13,
+                                      height: 1.1,
+                                      color: Colors.black,
+                                      backgroundColor: null),
+                                  textAlign: TextAlign.right,
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    isDense: true,
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.white),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.teal),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    fillColor: Colors.grey[200],
+                                    filled: true,
+                                    prefixIcon: IconButton(
+                                      icon: Icon(
+                                          Icons.clear), // Clear button icon
+                                      onPressed: () {
                                         setState(() {
-                                          isChecked2 = value!;
+                                          passwordConfirmController.clear();
                                         });
                                       },
                                     ),
-                                    // SizedBox(
-                                    //   width: 20,
-                                    // ),
-                                    Text(
-                                      'مدني',
-                                      style: TextStyle(fontSize: 13),
-                                    ),
-                                    // SizedBox(height: 10),
-                                    Checkbox(
-                                      activeColor: Color(0xFF008080),
-                                      value: isChecked3,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          isChecked3 = value!;
-                                        });
+                                    suffixIcon: IconButton(
+                                      onPressed: () {
+                                        setState(
+                                          () {
+                                            passwordVisible = !passwordVisible;
+                                          },
+                                        );
                                       },
+                                      icon: passwordVisible
+                                          ? Icon(
+                                              Icons.visibility,
+                                            )
+                                          : Icon(
+                                              Icons.visibility_off,
+                                            ),
                                     ),
-                                    // SizedBox(
-                                    //   width: 20,
-                                    // ),
-                                    Text(
-                                      'تجاري',
-                                      style: TextStyle(fontSize: 13),
-                                    ),
-                                    //SizedBox(height: 10),
-                                    Checkbox(
-                                      activeColor: Color(0xFF008080),
-                                      value: isChecked4,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          isChecked4 = value!;
-                                        });
-                                      },
-                                    ),
-                                  ]),
+                                    alignLabelWithHint: false,
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty)
+                                      return 'الرجاء تعبأة الخانة';
+                                    else if (value.length < 8)
+                                      return '  الرجاء ادخال 8 خانات و رقم واحد على الأقل';
+                                    else if (passwordController.text !=
+                                        passwordConfirmController.text)
+                                      return "لا يوجد تطابق";
+                                    else
+                                      return null;
+                                  },
+                                  keyboardType: TextInputType.visiblePassword,
+                                  textInputAction: TextInputAction.done),
+                            ),
+                          ],
+                        )),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Container(
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
-                                children: <Widget>[
+                                children: [
+                                  AnimatedContainer(
+                                    duration: Duration(milliseconds: 500),
+                                    width: 20,
+                                    height: 20,
+                                    decoration: BoxDecoration(
+                                        color: _isPasswordEightCharacters
+                                            ? Colors.green
+                                            : Colors.transparent,
+                                        border: _isPasswordEightCharacters
+                                            ? Border.all(
+                                                color: Colors.transparent)
+                                            : Border.all(
+                                                color: Colors.grey.shade400),
+                                        borderRadius:
+                                            BorderRadius.circular(50)),
+                                    child: Center(
+                                      child: Icon(
+                                        Icons.check,
+                                        color: Colors.white,
+                                        size: 15,
+                                      ),
+                                    ),
+                                  ),
                                   SizedBox(
-                                    width: 60,
+                                    width: 5,
                                   ),
-                                  Text(
-                                    textSpec,
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        color: const Color.fromARGB(
-                                            255, 172, 50, 41)),
+                                  Text("تتكون من 8 خانات على الأقل",
+                                      textAlign: TextAlign.right,
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          color: Color.fromRGBO(
+                                              104, 102, 102, 1))),
+                                  SizedBox(
+                                    width: 10,
                                   ),
                                 ],
                               ),
-                            ]
-                          )
+                              SizedBox(
+                                height: 2,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  AnimatedContainer(
+                                    duration: Duration(milliseconds: 500),
+                                    width: 20,
+                                    height: 20,
+                                    decoration: BoxDecoration(
+                                        color: _hasPasswordOneNumber
+                                            ? Colors.green
+                                            : Colors.transparent,
+                                        border: _hasPasswordOneNumber
+                                            ? Border.all(
+                                                color: Colors.transparent)
+                                            : Border.all(
+                                                color: Colors.grey.shade400),
+                                        borderRadius:
+                                            BorderRadius.circular(50)),
+                                    child: Center(
+                                      child: Icon(
+                                        Icons.check,
+                                        color: Colors.white,
+                                        size: 15,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text("تحتوي على رقم واحد على الأقل",
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          color: Color.fromRGBO(
+                                              104, 102, 102, 1))),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                ],
+                              ),
+                            ])),
+                        SizedBox(
+                          height: 5,
                         ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    TextFormField(
-                      controller: ibanController,
-                      style: TextStyle(
-                          fontSize: 13, height: 1.1, color: Colors.black),
-                      textAlign: TextAlign.right,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+                        Container(
+                          alignment: Alignment.topRight,
+                          child: Text(
+                            '* الجنس ',
+                            textAlign: TextAlign.right,
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: Color.fromARGB(255, 78, 76, 76),
+                            ),
+                          ),
                         ),
-                        hintStyle: TextStyle(color: Colors.grey[800]),
-                        hintText: "(SA __________ )  رقم الأيبان",
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'الرجاء تعبأة الخانة';
-                        } else if (value.length > 27 || value.length < 22)
-                          return 'يجب أن يكون عدد خانات الأيبان من 23-26 خانة';
-                        else if (!validateIban(value))
-                          return ' (SA _______  )  الرجاء إدخال رقم ايبان صحيح';
-
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    TextFormField(
-                      controller: priceController,
-                      style: TextStyle(
-                          fontSize: 13, height: 1.1, color: Colors.black),
-                      textAlign: TextAlign.right,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: FractionallySizedBox(
+                            widthFactor: 1,
+                            child: Container(
+                              height: 95,
+                              padding: const EdgeInsets.fromLTRB(2, 4, 2, 2),
+                              margin: EdgeInsets.all(2),
+                              child: DropdownButtonFormField<String>(
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  isDense: true,
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.teal),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  fillColor: Colors.grey[200],
+                                  filled: true,
+                                ),
+                                value: selectedItem,
+                                items: itemsList
+                                    .map(
+                                      (item) => DropdownMenuItem(
+                                        value: item,
+                                        child: Align(
+                                          alignment: Alignment.centerRight,
+                                          child: Text(
+                                            item,
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                              color: Color.fromRGBO(
+                                                  123, 121, 121, 1),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                                onChanged: (item) => setState(
+                                    () => selectedItem = item.toString()),
+                                validator: (value) {
+                                  if (value == "الجنس")
+                                    return 'الرجاء تحديد الجنس';
+                                  else
+                                    return null;
+                                },
+                                isExpanded: true,
+                              ),
+                            ),
+                          ),
                         ),
-                        hintStyle: TextStyle(color: Colors.grey[800]),
-                        hintText: "حدد/ي سعر جلسة الاستشارة للساعة الواحدة",
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'الرجاء تعبأة الخانة';
-                        } else if (value.length > 50)
-                          return ' الرجاء تعبأة الخانة بشكل صحيح';
-                        else if (!isNumericUsingRegularExpression(value))
-                          return '(الرجاء تعبأة الخانة بأعداد فقط (من 0-9';
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    TextFormField(
-                      controller: bioController,
-                      keyboardType: TextInputType.multiline,
-                      minLines: 3, //Normal textInputField will be displayed
-                      maxLines: 5,
-                      style: TextStyle(
-                          fontSize: 13, height: 1.1, color: Colors.black),
-                      textAlign: TextAlign.right,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+
+                        ///////////////LAWYER////////////////
+                        Container(
+                            child: Column(
+                          children: [
+                            Container(
+                              alignment: Alignment.topRight,
+                              child: Text(
+                                "* رقم ترخيص المحاماة",
+                                textAlign: TextAlign.right,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Color.fromARGB(
+                                    255,
+                                    78,
+                                    76,
+                                    76,
+                                  ), // Customize label color
+                                ),
+                              ),
+                            ),
+                            TextFormField(
+                                onTap: () async {
+                                  print("ontap");
+                                  await fetchMockLicenseNumbersAsync();
+                                  await fetchLicenseNumbersUsedAsync();
+                                },
+                                controller: licenseNumberController,
+                                style: TextStyle(
+                                    fontSize: 13,
+                                    height: 1.1,
+                                    color: Colors.black),
+                                textAlign: TextAlign.right,
+                                maxLength: 5,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  isDense: true,
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.teal),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  fillColor: Colors.grey[200],
+                                  filled: true,
+                                  prefixIcon: IconButton(
+                                    icon:
+                                        Icon(Icons.clear), // Clear button icon
+                                    onPressed: () {
+                                      setState(() {
+                                        licenseNumberController.clear();
+                                      });
+                                    },
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'الرجاء تعبأة الخانة';
+                                  } else if (value.length != 5) {
+                                    return 'الرجاء ادخال رقم الرخصة بالصيغة الصحيحة';
+                                  } else if (!isNumericUsingRegularExpression(
+                                      value)) {
+                                    return 'الرجاء ادخال رقم الرخصة بالصيغة الصحيحة';
+                                  } else if (licenses.contains(value)) {
+                                    return "هذا الرقم مستخدم";
+                                  }
+                                  if (!mockLicenses.contains(value)) {
+                                    return 'الرجاء ادخال رقم صحيح ';
+                                  }
+
+                                  return null;
+                                }),
+                          ],
+                        )),
+                        SizedBox(
+                          height: 15,
                         ),
-                        hintStyle: TextStyle(color: Colors.grey[800]),
-                        hintText:
-                            "(الخبرات السابقة ,التعليم, المهارات)  السيرة الذاتية",
-                      ),
-                    ),
-                    SizedBox(
-                      height: 60,
-                    ),
-                    SizedBox(
-                      width: double.maxFinite,
-                      height: 50,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Color(0xFF008080),
+
+                        //////////////////////////     سكيب خفيف ///////////////////////////
+                        Container(
+                            height: 140,
+                            width: double.infinity,
+                            color: Colors.grey[200],
+                            padding: const EdgeInsets.fromLTRB(2, 4, 2, 2),
+                            margin: EdgeInsets.fromLTRB(2, 2, 2, 9),
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: <Widget>[
+                                      Text(
+                                        " المجالات التي أود تقديم إستشارات فيها",
+                                        style: TextStyle(fontSize: 13.5),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: <Widget>[
+                                        // Text(
+                                        //   'أخرى',
+                                        //   style: TextStyle(fontSize: 13),
+                                        // ),
+                                        // SizedBox(height: 10),
+                                        // Checkbox(
+                                        //   activeColor: Colors.teal,
+                                        //   value: otherIsChecked,
+                                        //   onChanged: (value) {
+                                        //     setState(() {
+                                        //       otherIsChecked = value!;
+                                        //     });
+                                        //   },
+                                        // ),
+                                        // SizedBox(
+                                        //   width: 20,
+                                        // ),
+                                        // Text(
+                                        //   'جنائي',
+                                        //   style: TextStyle(fontSize: 13),
+                                        // ),
+                                        // //SizedBox(height: 10),
+                                        // Checkbox(
+                                        //   activeColor: Colors.teal,
+                                        //   value: isChecked0,
+                                        //   onChanged: (value) {
+                                        //     setState(() {
+                                        //       isChecked0 = value!;
+                                        //     });
+                                        //   },
+                                        // ),
+                                        // SizedBox(
+                                        //   width: 20,
+                                        //),
+                                        Text(
+                                          'مواريث',
+                                          style: TextStyle(fontSize: 13),
+                                        ),
+                                        // SizedBox(height: 10),
+                                        Checkbox(
+                                          activeColor: Colors.teal,
+                                          value: isChecked1,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              isChecked1 = value!;
+                                            });
+                                          },
+                                        ),
+                                        // SizedBox(
+                                        //   width: 20,
+                                        // ),
+                                        Text(
+                                          'إداري',
+                                          style: TextStyle(fontSize: 13),
+                                        ),
+                                        // SizedBox(height: 10),
+                                        Checkbox(
+                                          activeColor: Colors.teal,
+                                          value: isChecked2,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              isChecked2 = value!;
+                                            });
+                                          },
+                                        ),
+                                        // SizedBox(
+                                        //   width: 20,
+                                        // ),
+                                        Text(
+                                          'مدني',
+                                          style: TextStyle(fontSize: 13),
+                                        ),
+                                        // SizedBox(height: 10),
+                                        Checkbox(
+                                          activeColor: Colors.teal,
+                                          value: isChecked3,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              isChecked3 = value!;
+                                            });
+                                          },
+                                        ),
+                                        // SizedBox(
+                                        //   width: 20,
+                                        // ),
+                                        Text(
+                                          'تجاري',
+                                          style: TextStyle(fontSize: 13),
+                                        ),
+                                        //SizedBox(height: 10),
+                                        Checkbox(
+                                          activeColor: Colors.teal,
+                                          value: isChecked4,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              isChecked4 = value!;
+                                            });
+                                          },
+                                        ),
+                                      ]),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: <Widget>[
+                                      SizedBox(
+                                        width: 60,
+                                      ),
+                                      Text(
+                                        textSpec,
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color: const Color.fromARGB(
+                                                255, 172, 50, 41)),
+                                      ),
+                                    ],
+                                  ),
+                                ])),
+
+                        //////////////////////////     سكيب خفيف ///////////////////////////
+                        SizedBox(
+                          height: 15,
                         ),
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate() &&
-                              atLeastOneCheckboxSelected()) {
-                            //authentication
-                            createUserWithEmailAndPassword(
-                                emailController.text.trim(),
-                                passwordController.text.trim());
 
-                            //storing in DB
+                        Container(
+                            child: Column(
+                          children: [
+                            Container(
+                              alignment: Alignment.topRight,
+                              child: Text(
+                                ' * رقم الايبان ',
+                                textAlign: TextAlign.right,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Color.fromARGB(
+                                    255,
+                                    78,
+                                    76,
+                                    76,
+                                  ), // Customize label color
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            TextFormField(
+                              controller: ibanController,
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  height: 1.1,
+                                  color: Colors.black),
+                              textAlign: TextAlign.right,
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  isDense: true,
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.teal),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  fillColor: Colors.grey[200],
+                                  filled: true,
+                                  prefixIcon: IconButton(
+                                    icon:
+                                        Icon(Icons.clear), // Clear button icon
+                                    onPressed: () {
+                                      setState(() {
+                                        ibanController.clear();
+                                      });
+                                    },
+                                  ),
+                                  prefixText: "SA",
+                                  prefixStyle: TextStyle(
+                                    color: Color.fromARGB(255, 78, 80, 78),
+                                  )),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'الرجاء تعبأة الخانة';
+                                } else if (!isNumericUsingRegularExpression(
+                                    value))
+                                  return '  الرجاء إدخال أرقام فقط';
+                                else if (value.length > 27 || value.length < 22)
+                                  return 'يجب أن يكون عدد خانات الأيبان من 23-26 خانة';
 
-                            // if (isChecked0 == true) specialities.add("جنائي");
-                            // if (isChecked1 == true) specialities.add("مواريث");
-                            // if (isChecked2 == true) specialities.add("إداري");
-                            // if (isChecked3 == true) specialities.add("مدني");
-                            // if (isChecked4 == true) specialities.add("تجاري");
-                            // if (otherIsChecked == true)
-                            //   specialities.add("أخرى");
+                                return null;
+                              },
+                            ),
+                          ],
+                        )),
 
-                            //modified for the overflow 
-                            if (isChecked0 == true) specialities.add("مواريث");
-                            if (isChecked0 == true) specialities.add("إداري");                            if (isChecked0 == true) specialities.add("مواريث");
-                            if (isChecked0 == true) specialities.add("مدني");                            if (isChecked0 == true) specialities.add("مواريث");
-                            if (isChecked0 == true) specialities.add("جنائي");
+                        SizedBox(
+                          height: 15,
+                        ),
 
+                        Container(
+                            child: Column(
+                          children: [
+                            Container(
+                              alignment: Alignment.topRight,
+                              child: Text(
+                                "* سعر جلسة الاستشارة للساعة الواحدة",
+                                textAlign: TextAlign.right,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Color.fromARGB(
+                                    255,
+                                    78,
+                                    76,
+                                    76,
+                                  ), // Customize label color
+                                ),
+                              ),
+                            ),
+                            TextFormField(
+                              controller: priceController,
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  height: 1.1,
+                                  color: Colors.black),
+                              textAlign: TextAlign.right,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                isDense: true,
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.teal),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                fillColor: Colors.grey[200],
+                                filled: true,
+                                prefixIcon: IconButton(
+                                  icon: Icon(Icons.clear), // Clear button icon
+                                  onPressed: () {
+                                    setState(() {
+                                      fNameController.clear();
+                                    });
+                                  },
+                                ),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'الرجاء تعبأة الخانة';
+                                } else if (value.length > 50)
+                                  return ' الرجاء تعبأة الخانة بشكل صحيح';
+                                else if (!isNumericUsingRegularExpression(
+                                    value))
+                                  return '(الرجاء تعبأة الخانة بأعداد فقط (من 0-9';
+                                return null;
+                              },
+                            ),
+                          ],
+                        )),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Container(
+                            child: Column(
+                          children: [
+                            Container(
+                              alignment: Alignment.topRight,
+                              child: Text(
+                                " السيرة الذاتية",
+                                textAlign: TextAlign.right,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Color.fromARGB(
+                                    255,
+                                    78,
+                                    76,
+                                    76,
+                                  ), // Customize label color
+                                ),
+                              ),
+                            ),
+                            TextFormField(
+                              controller: bioController,
+                              keyboardType: TextInputType.multiline,
+                              minLines: 3,
+                              maxLines: 5,
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  height: 1.1,
+                                  color: Colors.black),
+                              textAlign: TextAlign.right,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                hintText:
+                                    'الخبرات السابقة    ,التعليم    , المهارات',
+                                isDense: true,
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.teal),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                fillColor: Colors.grey[200],
+                                filled: true,
+                                prefixIcon: IconButton(
+                                  icon: Icon(Icons.clear), // Clear button icon
+                                  onPressed: () {
+                                    setState(() {
+                                      bioController.clear();
+                                    });
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
+                        )),
+                        SizedBox(
+                          height: 60,
+                        ),
+                        SizedBox(
+                          width: double.maxFinite,
+                          height: 50,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(0xFF008080),
+                            ),
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate() &&
+                                  atLeastOneCheckboxSelected()) {
+                                //authentication
+                                createUserWithEmailAndPassword(
+                                    emailController.text.trim(),
+                                    passwordController.text.trim());
 
+                                //storing in DB
 
-                            final lawyer = lawyerModel(
-                                firstName: fNameController.text.trim(),
-                                lastName: lNameController.text.trim(),
-                                dateOfBirth: dOBController.text.trim(),
-                                email: emailController.text.trim(),
-                                password: passwordController.text.trim(),
-                                phone: phoneNumController.text.trim(),
-                                gender: selectedItem,
-                                licenseNumber:
-                                    licenseNumberController.text.trim(),
-                                iban: ibanController.text.trim(),
-                                price: priceController.text.trim(),
-                                specialties: specialities,
-                                bio: bioController.text.trim(),
-                                photoURL: "");
+                                // if (isChecked0 == true) specialities.add("جنائي");
+                                // if (isChecked1 == true) specialities.add("مواريث");
+                                // if (isChecked2 == true) specialities.add("إداري");
+                                // if (isChecked3 == true) specialities.add("مدني");
+                                // if (isChecked4 == true) specialities.add("تجاري");
+                                // if (otherIsChecked == true)
+                                //   specialities.add("أخرى");
 
-                            createUser(lawyer);
-                            await signInWithEmailAndPassword(
-                                emailController.text.trim(),
-                                passwordController.text.trim());
+                                //modified for the overflow
+                                if (isChecked0 == true)
+                                  specialities.add("مواريث");
+                                if (isChecked0 == true)
+                                  specialities.add("إداري");
+                                if (isChecked0 == true)
+                                  specialities.add("مواريث");
+                                if (isChecked0 == true)
+                                  specialities.add("مدني");
+                                if (isChecked0 == true)
+                                  specialities.add("مواريث");
+                                if (isChecked0 == true)
+                                  specialities.add("جنائي");
 
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => LogoutPageLawyer(),
-                            ));
+                                final lawyer = lawyerModel(
+                                    firstName: fNameController.text.trim(),
+                                    lastName: lNameController.text.trim(),
+                                    dateOfBirth: dOBController.text.trim(),
+                                    email: emailController.text.trim(),
+                                    password: passwordController.text.trim(),
+                                    phone: phoneNumController.text.trim(),
+                                    gender: selectedItem,
+                                    licenseNumber:
+                                        licenseNumberController.text.trim(),
+                                    iban: "SA" + ibanController.text.trim(),
+                                    price: priceController.text.trim(),
+                                    specialties: specialities,
+                                    bio: bioController.text.trim(),
+                                    photoURL: "");
+
+                                createUser(lawyer);
+                                await signInWithEmailAndPassword(
+                                    emailController.text.trim(),
+                                    passwordController.text.trim());
+
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => LogoutPageLawyer(),
+                                ));
 
 // Replace '/login' with your login screen route
 
-                            //ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Processing Data')),);
-                          }
-                          if (!atLeastOneCheckboxSelected()) changeTextColor();
-                          if (atLeastOneCheckboxSelected()) changeTextColor();
-                        },
-                        child: Text('تسجيل'),
-                      ),
-                    ),
-                  ] //children
-                  ) //column
-              ), //form
-        ) //container
+                                //ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Processing Data')),);
+                              }
+                              if (!atLeastOneCheckboxSelected())
+                                changeTextColor();
+                              if (atLeastOneCheckboxSelected())
+                                changeTextColor();
+                            },
+                            child: Text('تسجيل'),
+                          ),
+                        ),
+                      ] //children
+                      ) //column
+                  ), //form
+            ) //container
             ));
   }
 }
