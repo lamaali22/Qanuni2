@@ -1210,7 +1210,7 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                                       });
                                     },
                                   ),
-                                  prefixText: "SA",
+                                  prefixText: "SA | ",
                                   prefixStyle: TextStyle(
                                     color: Color.fromARGB(255, 78, 80, 78),
                                   )),
