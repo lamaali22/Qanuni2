@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:qanuni/clientSignUp.dart';
 import 'package:qanuni/firebase_options.dart';
+import 'package:qanuni/homePageLawyer.dart';
 import 'package:qanuni/presentation/screens/boarding_screen/view.dart';
+import 'package:qanuni/presentation/screens/lawyer_sceens/add_timeslots_Screen.dart';
 import 'package:qanuni/providers/boarding/cubit/boarding_cubit.dart';
 
 import 'providers/auth/login/cubit/login_cubit.dart';
@@ -52,7 +55,9 @@ class MyApp extends StatelessWidget {
                   fontSizeFactor: 1.sp,
                 ),
               ),
-              home: child,
+              home: //LogoutPageLawyer()
+                  // TimeSlotScreen()
+                  child,
             );
           },
           child: const BoardingScreen(),
