@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:qanuni/data/auth_api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'login_state.dart';
 
@@ -70,7 +71,7 @@ class LoginCubit extends Cubit<LoginState> {
       }
     } catch (e) {
       if (e is FirebaseAuthException) {
-          emit(LoginFailed('البريد الالكتروني أو كلمة المرور غير صحيحة'));
+        emit(LoginFailed('البريد الالكتروني أو كلمة المرور غير صحيحة'));
       } else {
         emit(LoginFailed(e.toString()));
       }

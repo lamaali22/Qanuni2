@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qanuni/homePage.dart';
 import 'package:qanuni/main.dart';
+import 'package:qanuni/presentation/screens/payment_screen/view.dart';
 import 'package:qanuni/presentation/screens/reset_password_screen/view.dart';
 import 'package:qanuni/utils/colors.dart';
 import 'package:qanuni/viewListOfLawyers.dart';
@@ -9,38 +10,39 @@ import 'package:qanuni/viewListOfLawyers.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 //navigation bar method
-void _navigateToScreen(BuildContext context, int index) {
-  switch (index) {
-    case 0:
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => LogoutPage()),
-        (route) => false,
-      );
-      break;
-    case 1:
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => LogoutPage()),
-        (route) => false,
-      );
-      break;
-    case 2:
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => LogoutPage()),
-        (route) => false,
-      );
-      break;
-    case 3:
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
-        (route) => false,
-      );
-      break;
+  void _navigateToScreen(BuildContext context, int index) {
+    switch (index) {
+      case 0:
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LogoutPage()),
+          (route) => false,
+        );
+        break;
+      case 1:
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LogoutPage()),
+          (route) => false,
+        );
+        break;
+      case 2:
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LogoutPage()),
+          (route) => false,
+        );
+        break;
+      case 3:
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+          (route) => false,
+        );
+        break;
+    }
   }
-}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,6 +100,25 @@ void _navigateToScreen(BuildContext context, int index) {
                       fontWeight: FontWeight.w500,
                       color: ColorConstants.primaryColor),
                 ),
+              ),
+            ),
+            10.verticalSpace,
+            GestureDetector(
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PaymentScreen(),
+                  ),
+                );
+              },
+              child: const Text(
+                'صفحة الدفع >',
+                style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: ColorConstants.primaryColor),
               ),
             ),
             ElevatedButton(
