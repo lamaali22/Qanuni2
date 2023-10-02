@@ -138,17 +138,6 @@ class _ClientSignUpScreenState extends State<ClientSignUpScreen> {
         phones.add(phone);
       }
     }
-
-    final QuerySnapshot querySnapshot2 = await _db.collection('lawyers').get();
-    final List<QueryDocumentSnapshot> documents2 = querySnapshot2.docs;
-
-    for (QueryDocumentSnapshot doc in documents2) {
-      final data = doc.data() as Map<String, dynamic>; // Access data as a Map
-      if (data.containsKey('phoneNumber')) {
-        final phone = data['phoneNumber'] as String;
-        phones.add(phone);
-      }
-    }
   }
 
   ////////////
