@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:qanuni/presentation/screens/client_signup_screen/view.dart';
-import 'package:qanuni/presentation/screens/lawyer_sceens/add_timeslots_Screen.dart';
+import 'package:qanuni/presentation/screens/add_timeslots_Screen.dart';
 
 import 'package:qanuni/presentation/screens/login_screen/view.dart';
 import 'package:qanuni/viewListOfLawyers.dart';

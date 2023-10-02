@@ -8,7 +8,7 @@ import 'package:qanuni/clientSignUp.dart';
 import 'package:qanuni/firebase_options.dart';
 import 'package:qanuni/homePageLawyer.dart';
 import 'package:qanuni/presentation/screens/boarding_screen/view.dart';
-import 'package:qanuni/presentation/screens/lawyer_sceens/add_timeslots_Screen.dart';
+import 'package:qanuni/presentation/screens/add_timeslots_Screen.dart';
 import 'package:qanuni/providers/boarding/cubit/boarding_cubit.dart';
 
 import 'providers/auth/login/cubit/login_cubit.dart';
