@@ -434,13 +434,31 @@ class _TimeSlotScreenState extends State<TimeSlotScreen> {
                         style: TextStyle(
                           fontSize: 18,
                           fontFamily: 'Cairo',
-                          color: Colors.black,
+                          color: const Color.fromARGB(255, 246, 86, 75),
                         ),
                         // No need to use textAlign here
                       ),
                     ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          right: 28.0), // Adjust the right padding as needed
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          'التاريخ',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontFamily: 'Cairo',
+                            color: Colors.teal,
+                          ),
+                        ),
+                      ),
+                    ),
                     Container(
-                      width: 325,
+                      width: 300,
                       child: TextFormField(
                         controller: _dateController,
                         textAlign: TextAlign.right,
@@ -490,61 +508,68 @@ class _TimeSlotScreenState extends State<TimeSlotScreen> {
                     SizedBox(
                       height: 16,
                     ),
-                    Align(
-                      child: Container(
-                        width: 325,
-                        child: DropdownButtonFormField<int>(
-                          value: _selectedHour,
-                          onChanged: (int? hour) {
-                            setState(() {
-                              _selectedHour = hour; // Update the selected hour
-                            });
-                          },
-                          items: List.generate(24, (int hour) {
-                            final formattedHour =
-                                hour.toString().padLeft(2, '0');
-                            final formattedTime = '$formattedHour:00';
-
-                            return DropdownMenuItem<int>(
-                              value: hour,
-                              child: Row(
-                                // crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment
-                                    .spaceAround, // Align text to the right
-
-                                children: [
-                                  Text(
-                                    formattedTime,
-                                    //textAlign: TextAlign.right,
-                                    style: TextStyle(
-                                        fontSize: 16, color: Colors.teal),
-                                    textAlign: TextAlign.right,
-                                  ),
-                                ],
-                              ),
-                            );
-                          }),
-                          decoration: InputDecoration(
-                            // labelText: 'الوقت',
-                            alignLabelWithHint: true,
-                            labelStyle:
-                                TextStyle(fontSize: 18, color: Colors.teal),
-                            isDense: true,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:
-                                  BorderSide(color: Colors.teal, width: 2),
-                            ),
-                            contentPadding: EdgeInsets.symmetric(
-                              vertical: 20,
-                              horizontal: 20,
-                            ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          right: 28.0), // Adjust the right padding as needed
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          'الوقت',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontFamily: 'Cairo',
+                            color: Colors.teal,
                           ),
-                          validator: _selectedTimeValidator,
                         ),
+                      ),
+                    ),
+                    Container(
+                      width: 300,
+                      child: DropdownButtonFormField<int>(
+                        isExpanded: true,
+                        value: _selectedHour,
+                        onChanged: (int? hour) {
+                          setState(() {
+                            _selectedHour = hour; // Update the selected hour
+                          });
+                        },
+                        items: List.generate(24, (int hour) {
+                          final formattedHour = hour.toString().padLeft(2, '0');
+                          final formattedTime = '$formattedHour:00';
+
+                          return DropdownMenuItem<int>(
+                            value: hour,
+                            child: Align(
+                              // Align the selected item to the right
+                              alignment: Alignment.centerRight,
+                              child: Text(
+                                formattedTime,
+                                style:
+                                    TextStyle(fontSize: 16, color: Colors.teal),
+                              ),
+                            ),
+                          );
+                        }),
+                        decoration: InputDecoration(
+                          //labelText: 'الوقت',
+                          alignLabelWithHint: true,
+                          labelStyle:
+                              TextStyle(fontSize: 18, color: Colors.teal),
+                          isDense: true,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                                BorderSide(color: Colors.teal, width: 2),
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                            vertical: 20,
+                            horizontal: 20,
+                          ),
+                        ),
+                        validator: _selectedTimeValidator,
                       ),
                     ),
                     SizedBox(
@@ -613,7 +638,7 @@ class _TimeSlotScreenState extends State<TimeSlotScreen> {
                       style: ElevatedButton.styleFrom(
                         primary: Colors.teal,
                         minimumSize:
-                            Size(325, 56), // Set a fixed size for the button
+                            Size(300, 56), // Set a fixed size for the button
                       ),
                       child: Text(
                         'اضافة موعد متاح جديد',
