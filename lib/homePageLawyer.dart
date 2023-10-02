@@ -38,6 +38,33 @@ class _LogoutPageLawyerState extends State<LogoutPageLawyer> {
         .get();
   }
 
+//navigation bar method
+  void _navigateToScreen(BuildContext context, int index) {
+    switch (index) {
+      case 0:
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LogoutPageLawyer()),
+          (route) => false,
+        );
+        break;
+      case 1:
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LogoutPageLawyer()),
+          (route) => false,
+        );
+        break;
+      case 2:
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LogoutPageLawyer()),
+          (route) => false,
+        );
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -148,48 +175,6 @@ class _LogoutPageLawyerState extends State<LogoutPageLawyer> {
               ],
             ),
           ),
-
-          //start of previous code
-          /* Padding(
-            padding: const EdgeInsets.symmetric(
-                vertical: 16.0), // Add vertical padding as needed
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => TimeSlotScreen(),
-                        ),
-                      );
-                    },
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.add_circle,
-                          size: 30,
-                          color: Colors.teal,
-                        ),
-                        Text(
-                          ' مواعيدي المتاحة',
-                          style: TextStyle(
-                            fontFamily: 'Cairo',
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18.12,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),*/ //end of previous code
 
           // Section for displaying and deleting available time slots
           Expanded(
@@ -330,6 +315,26 @@ class _LogoutPageLawyerState extends State<LogoutPageLawyer> {
                 );
               },
             ),
+          ),
+        ],
+      ), //navigation Bar
+      bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Color(0x7F008080),
+        unselectedItemColor: Colors.black,
+        showUnselectedLabels: true,
+        onTap: (index) => _navigateToScreen(context, index),
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_2_outlined),
+            label: 'حسابي',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_month_outlined),
+            label: 'مواعيدي',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined),
+            label: 'الصفحة الرئيسية',
           ),
         ],
       ),

@@ -306,6 +306,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:qanuni/homePageLawyer.dart';
 
 void main() {
   runApp(MyApp());
@@ -364,102 +365,133 @@ class _TimeSlotScreenState extends State<TimeSlotScreen> {
     setState(() {});
   }
 
+//navigation bar method
+  void _navigateToScreen(BuildContext context, int index) {
+    switch (index) {
+      case 0:
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LogoutPageLawyer()),
+          (route) => false,
+        );
+        break;
+      case 1:
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LogoutPageLawyer()),
+          (route) => false,
+        );
+        break;
+      case 2:
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LogoutPageLawyer()),
+          (route) => false,
+        );
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: Color.fromARGB(255, 0, 128, 128),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                // ... Your code to add the time slot ...
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Color.fromARGB(255, 0, 128, 128),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              // ... Your code to add the time slot ...
 
-                // Navigate back and refresh the previous page
-                Navigator.pop(context, true);
-              },
-            ),
-          ],
-          title: const Text("جدول مواعيدي",
-              style:
-                  TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.w500)),
-          centerTitle: true,
-        ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Form(
-                key: _formKey,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Align(
-                        alignment: Alignment
-                            .centerRight, // Adjust the alignment as needed
-                        child: Text(
-                          'مدة الجلسة ساعة واحده*',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontFamily: 'Cairo',
-                            color: Colors.black,
-                          ),
-                          // No need to use textAlign here
+              // Navigate back and refresh the previous page
+              Navigator.pop(context, true);
+            },
+          ),
+        ],
+        title: const Text("جدول مواعيدي",
+            style: TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.w500)),
+        centerTitle: true,
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
+              key: _formKey,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Align(
+                      alignment: Alignment
+                          .centerRight, // Adjust the alignment as needed
+                      child: Text(
+                        'مدة الجلسة ساعة واحده*',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontFamily: 'Cairo',
+                          color: Colors.black,
                         ),
+                        // No need to use textAlign here
                       ),
-                      Container(
-                        height: 70,
-                        width: 325,
-                        child: TextFormField(
-                          controller: _dateController,
-                          decoration: InputDecoration(
-                            labelText: 'التاريخ',
-                            labelStyle:
-                                TextStyle(fontSize: 18, color: Colors.teal),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:
-                                  BorderSide(color: Colors.teal, width: 2),
-                            ),
-                            contentPadding: EdgeInsets.symmetric(
-                              vertical: 20,
-                              horizontal: 20,
-                            ),
-                          ),
-                          style: TextStyle(
-                            fontSize: 16,
+                    ),
+                    Container(
+                      width: 325,
+                      child: TextFormField(
+                        controller: _dateController,
+                        textAlign: TextAlign.right,
+                        decoration: InputDecoration(
+                          // labelText: 'التاريخ',
+                          // floatingLabelBehavior: FloatingLabelBehavior.always,
+                          labelStyle: TextStyle(
+                            fontSize: 18,
                             color: Colors.teal,
                           ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'ادخل التاريخ';
-                            }
-                            return null;
-                          },
-                          onTap: () async {
-                            final selectedDate =
-                                await _showCustomDatePicker(context);
-                            if (selectedDate != null) {
-                              final formattedDate =
-                                  DateFormat('yyyy-MM-dd').format(selectedDate);
-                              _dateController.text = formattedDate;
-                            }
-                          },
+                          // alignLabelWithHint: true,
+                          isDense: true,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                                BorderSide(color: Colors.teal, width: 2),
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                            vertical: 20,
+                            horizontal: 20,
+                          ),
                         ),
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.teal,
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'ادخل التاريخ';
+                          }
+                          return null;
+                        },
+                        onTap: () async {
+                          final selectedDate =
+                              await _showCustomDatePicker(context);
+                          if (selectedDate != null) {
+                            final formattedDate =
+                                DateFormat('yyyy-MM-dd').format(selectedDate);
+                            _dateController.text = formattedDate;
+                          }
+                        },
                       ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Container(
-                        height: 56,
+                    ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Align(
+                      child: Container(
                         width: 325,
                         child: DropdownButtonFormField<int>(
                           value: _selectedHour,
@@ -475,17 +507,29 @@ class _TimeSlotScreenState extends State<TimeSlotScreen> {
 
                             return DropdownMenuItem<int>(
                               value: hour,
-                              child: Text(
-                                formattedTime,
-                                style:
-                                    TextStyle(fontSize: 16, color: Colors.teal),
+                              child: Row(
+                                // crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceAround, // Align text to the right
+
+                                children: [
+                                  Text(
+                                    formattedTime,
+                                    //textAlign: TextAlign.right,
+                                    style: TextStyle(
+                                        fontSize: 16, color: Colors.teal),
+                                    textAlign: TextAlign.right,
+                                  ),
+                                ],
                               ),
                             );
                           }),
                           decoration: InputDecoration(
-                            labelText: 'الوقت',
+                            // labelText: 'الوقت',
+                            alignLabelWithHint: true,
                             labelStyle:
                                 TextStyle(fontSize: 18, color: Colors.teal),
+                            isDense: true,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -502,163 +546,11 @@ class _TimeSlotScreenState extends State<TimeSlotScreen> {
                           validator: _selectedTimeValidator,
                         ),
                       ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      ElevatedButton(
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate() &&
-                              _selectedHour != null) {
-                            final hour = _selectedHour!;
-                            final minute = 0;
-
-                            final dateParts = _dateController.text.split('-');
-                            final year = int.parse(dateParts[0]);
-                            final month = int.parse(dateParts[1]);
-                            final day = int.parse(dateParts[2]);
-
-                            final selectedTime =
-                                DateTime(year, month, day, hour, minute);
-
-                            final endTime =
-                                selectedTime.add(Duration(hours: 1));
-
-                            final existingTimeSlot = await timeSlotsCollection
-                                .where('lawyerEmail', isEqualTo: _user!.email)
-                                .where('startTime',
-                                    isEqualTo: Timestamp.fromDate(selectedTime))
-                                .limit(1)
-                                .get();
-
-                            if (existingTimeSlot.docs.isEmpty) {
-                              await timeSlotsCollection.add({
-                                'startTime': Timestamp.fromDate(selectedTime),
-                                'endTime': Timestamp.fromDate(endTime),
-                                'available': true,
-                                'lawyerEmail': _user!.email,
-                              });
-
-                              showToast(
-                                'تمت إضافة الوقت بنجاح',
-                                backgroundColor: Colors.black,
-                                radius: 10.0,
-                                textStyle: TextStyle(color: Colors.white),
-                                textPadding: EdgeInsets.all(10.0),
-                                position: ToastPosition.bottom,
-                                duration: Duration(seconds: 2),
-                              );
-
-                              _dateController.clear();
-                              setState(() {
-                                _selectedHour = null;
-                              });
-                            } else {
-                              showToast(
-                                'هذا الوقت موجود بالفعل',
-                                backgroundColor: Colors.black,
-                                radius: 10.0,
-                                textStyle: TextStyle(color: Colors.white),
-                                textPadding: EdgeInsets.all(10.0),
-                                position: ToastPosition.bottom,
-                                duration: Duration(seconds: 2),
-                              );
-                            }
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.teal,
-                          minimumSize:
-                              Size(325, 56), // Set a fixed size for the button
-                        ),
-                        child: Text(
-                          'اضافة موعد متاح جديد',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontFamily: 'Cairo',
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        )
-
-        /* Column(
-        children: <Widget>[
-          // Display existing time slots
-          Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: timeSlotsCollection
-                  .where('lawyerEmail', isEqualTo: _user?.email)
-                  .snapshots(), // Filter time slots by lawyer's email
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return CircularProgressIndicator();
-                }
-
-                // Extract time slots from Firestore documents
-                final timeSlots = snapshot.data!.docs;
-
-                // Create a list of time slot widgets
-                final timeSlotWidgets = timeSlots.map((timeSlot) {
-                  final startTime = timeSlot['startTime'] as Timestamp;
-                  final available = timeSlot['available'] as bool;
-                  final lawyerEmail = timeSlot['lawyerEmail'] as String;
-
-                  // Format Timestamp to DateTime
-                  final dateTime = startTime.toDate();
-                  final formattedTime =
-                      '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
-                  final formattedDate =
-                      DateFormat('yyyy-MM-dd').format(dateTime);
-
-                  // Set text colors based on availability
-                  final textColor = available ? Colors.teal : Colors.red;
-
-                  return ListTile(
-                    title: Text(
-                      '$formattedDate'
-                      ":"
-                      "التاريخ",
-                      style: TextStyle(
-                        color: textColor,
-                        fontFamily: 'Cairo',
-                      ),
-                      textAlign: TextAlign.right,
                     ),
-                    subtitle: Text(
-                      ' $formattedTime'
-                      ":"
-                      "الوقت",
-                      style: TextStyle(
-                        color: textColor,
-                        fontFamily: 'Cairo',
-                      ),
-                      textAlign: TextAlign.right,
+                    SizedBox(
+                      height: 16,
                     ),
-                  );
-                }).toList();
-
-                return ListView(
-                  children: timeSlotWidgets,
-                );
-              },
-            ),
-          ),
-          // Add new time slot
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Form(
-              key: _formKey,
-              child: Row(
-                children: <Widget>[
-                  Container(
-                    height: 56,
-                    child: ElevatedButton(
+                    ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate() &&
                             _selectedHour != null) {
@@ -673,10 +565,8 @@ class _TimeSlotScreenState extends State<TimeSlotScreen> {
                           final selectedTime =
                               DateTime(year, month, day, hour, minute);
 
-                          // Calculate endTime as startTime + 1 hour
                           final endTime = selectedTime.add(Duration(hours: 1));
 
-                          // Check if a time slot with the same startTime and lawyer already exists
                           final existingTimeSlot = await timeSlotsCollection
                               .where('lawyerEmail', isEqualTo: _user!.email)
                               .where('startTime',
@@ -685,7 +575,7 @@ class _TimeSlotScreenState extends State<TimeSlotScreen> {
                               .get();
 
                           if (existingTimeSlot.docs.isEmpty) {
-                            // No existing time slot with the same lawyer and startTime, add the new one
+                            print("hello");
                             await timeSlotsCollection.add({
                               'startTime': Timestamp.fromDate(selectedTime),
                               'endTime': Timestamp.fromDate(endTime),
@@ -693,7 +583,6 @@ class _TimeSlotScreenState extends State<TimeSlotScreen> {
                               'lawyerEmail': _user!.email,
                             });
 
-                            // Show a success toast using OkToast
                             showToast(
                               'تمت إضافة الوقت بنجاح',
                               backgroundColor: Colors.black,
@@ -704,13 +593,11 @@ class _TimeSlotScreenState extends State<TimeSlotScreen> {
                               duration: Duration(seconds: 2),
                             );
 
-                            // Clear the input fields
                             _dateController.clear();
                             setState(() {
                               _selectedHour = null;
                             });
                           } else {
-                            // A time slot with the same lawyer and startTime already exists, show an error toast using OkToast
                             showToast(
                               'هذا الوقت موجود بالفعل',
                               backgroundColor: Colors.black,
@@ -725,9 +612,11 @@ class _TimeSlotScreenState extends State<TimeSlotScreen> {
                       },
                       style: ElevatedButton.styleFrom(
                         primary: Colors.teal,
+                        minimumSize:
+                            Size(325, 56), // Set a fixed size for the button
                       ),
                       child: Text(
-                        'اضافة',
+                        'اضافة موعد متاح جديد',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 18,
@@ -735,87 +624,34 @@ class _TimeSlotScreenState extends State<TimeSlotScreen> {
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(width: 16),
-                  Container(
-                    height: 56,
-                    width: 100,
-                    child: DropdownButtonFormField<int>(
-                      value: _selectedHour,
-                      onChanged: (int? hour) {
-                        setState(() {
-                          _selectedHour = hour;
-                        });
-                      },
-                      items: List.generate(24, (int hour) {
-                        final formattedHour = hour.toString().padLeft(2, '0');
-                        final formattedTime = '$formattedHour:00';
-
-                        return DropdownMenuItem<int>(
-                          value: hour,
-                          child: Text(
-                            formattedTime,
-                            style: TextStyle(fontSize: 16, color: Colors.teal),
-                          ),
-                        );
-                      }),
-                      decoration: InputDecoration(
-                        labelText: 'الوقت',
-                        labelStyle: TextStyle(fontSize: 16, color: Colors.teal),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(color: Colors.teal, width: 2),
-                        ),
-                      ),
-                      validator: _selectedTimeValidator,
-                    ),
-                  ),
-                  SizedBox(width: 16),
-                  Expanded(
-                    child: TextFormField(
-                      controller: _dateController,
-                      decoration: InputDecoration(
-                        labelText: 'التاريخ',
-                        labelStyle: TextStyle(fontSize: 18, color: Colors.teal),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(color: Colors.teal, width: 2),
-                        ),
-                      ),
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.teal,
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'ادخل التاريخ';
-                        }
-                        return null;
-                      },
-                      onTap: () async {
-                        final selectedDate =
-                            await _showCustomDatePicker(context);
-                        if (selectedDate != null) {
-                          final formattedDate =
-                              DateFormat('yyyy-MM-dd').format(selectedDate);
-                          _dateController.text = formattedDate;
-                        }
-                      },
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
         ],
-      ),*/
-        );
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Color(0x7F008080),
+        unselectedItemColor: Colors.black,
+        showUnselectedLabels: true,
+        onTap: (index) => _navigateToScreen(context, index),
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_2_outlined),
+            label: 'حسابي',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_month_outlined),
+            label: 'مواعيدي',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined),
+            label: 'الصفحة الرئيسية',
+          ),
+        ],
+      ),
+    );
   }
 
   Future<DateTime?> _showCustomDatePicker(BuildContext context) async {

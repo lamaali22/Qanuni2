@@ -55,7 +55,8 @@ class MyApp extends StatelessWidget {
                   fontSizeFactor: 1.sp,
                 ),
               ),
-              home: //LogoutPageLawyer()
+              home:
+                  //LogoutPageLawyer()
                   // TimeSlotScreen()
                   child,
             );

@@ -10,38 +10,38 @@ import 'package:qanuni/viewListOfLawyers.dart';
 class LogoutPage extends StatelessWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 //navigation bar method
-void _navigateToScreen(BuildContext context, int index) {
-  switch (index) {
-    case 0:
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => LogoutPage()),
-        (route) => false,
-      );
-      break;
-    case 1:
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => LogoutPage()),
-        (route) => false,
-      );
-      break;
-    case 2:
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => LogoutPage()),
-        (route) => false,
-      );
-      break;
-    case 3:
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
-        (route) => false,
-      );
-      break;
+  void _navigateToScreen(BuildContext context, int index) {
+    switch (index) {
+      case 0:
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LogoutPage()),
+          (route) => false,
+        );
+        break;
+      case 1:
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LogoutPage()),
+          (route) => false,
+        );
+        break;
+      case 2:
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LogoutPage()),
+          (route) => false,
+        );
+        break;
+      case 3:
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+          (route) => false,
+        );
+        break;
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -117,58 +117,56 @@ void _navigateToScreen(BuildContext context, int index) {
             ],
           ),
         ),
-      ),//appbar
+      ), //appbar
 
-        //navigation Bar
-        bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: Color(0x7F008080),
-          unselectedItemColor: Colors.black,
-          showUnselectedLabels: true,
-          onTap: (index) => _navigateToScreen(context, index),
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined),
-              label: 'الصفحةالرئيسية',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.message_outlined),
-              label: 'الرسائل',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_month_outlined),
-              label: 'استشاراتي',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person_2_outlined),
-              label: 'حسابي',
-            ),
-          ],
-        ),
-            body: Stack(
-              children:[
-              Align(
-              alignment: Alignment.center,
-              child: GestureDetector(
-                onTap: () {
-  Navigator.pushReplacement(
-    context,
-    MaterialPageRoute(
-      builder: (context) => LawyersList(),
-    ),
-  );
-},
-                child: const Text(
-                  'جميع المحامين >',
-                  style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: ColorConstants.primaryColor),
+      //navigation Bar
+      bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Color(0x7F008080),
+        unselectedItemColor: Colors.black,
+        showUnselectedLabels: true,
+        onTap: (index) => _navigateToScreen(context, index),
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined),
+            label: 'الصفحةالرئيسية',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.message_outlined),
+            label: 'الرسائل',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_month_outlined),
+            label: 'استشاراتي',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_2_outlined),
+            label: 'حسابي',
+          ),
+        ],
+      ),
+      body: Stack(children: [
+        Align(
+          alignment: Alignment.center,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LawyersList(),
                 ),
-              ),
+              );
+            },
+            child: const Text(
+              'جميع المحامين >',
+              style: TextStyle(
+                  decoration: TextDecoration.underline,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: ColorConstants.primaryColor),
             ),
-            ]
-             ),
+          ),
+        ),
+      ]),
     );
   }
 }
