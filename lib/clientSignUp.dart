@@ -2,13 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-<<<<<<< HEAD
 import 'package:qanuni/models/clientModel.dart';
 import 'package:qanuni/presentation/screens/home_screen/view.dart';
-=======
-import 'package:qanuni/data/models/clientModel.dart';
-import 'package:qanuni/models/clientModel.dart';
->>>>>>> main
 import 'firebase_options.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -279,12 +274,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           DateTime? pickedDate = await showDatePicker(
                               context: context,
                               initialDate: DateTime.now(),
-<<<<<<< HEAD
                               firstDate: DateTime(1950),
-=======
-                              firstDate: DateTime(
-                                  1930), //DateTime.now() - not to allow to choose before today.
->>>>>>> lama-sprint
                               lastDate: DateTime.now());
 
                           if (pickedDate != null) {
@@ -302,13 +292,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       height: 15,
                     ),
                     TextFormField(
-<<<<<<< HEAD
                       onTap: () async {
                         print("ontap");
                         await fetchPhonesAsync();
                       },
-=======
->>>>>>> main
                       controller: phoneNumController,
                       style: TextStyle(
                           fontSize: 13, height: 1.1, color: Colors.black),
@@ -338,13 +325,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       height: 15,
                     ),
                     TextFormField(
-<<<<<<< HEAD
                       onTap: () async {
                         print("ontap");
                         await fetchEmailsAsync();
                       },
-=======
->>>>>>> main
                       controller: emailController,
                       style: TextStyle(
                           fontSize: 13, height: 1.1, color: Colors.black),

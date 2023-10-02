@@ -2,12 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:qanuni/firebase_options.dart';
-<<<<<<< HEAD
 import 'package:qanuni/homePage.dart';
 import 'package:qanuni/presentation/screens/home_screen/view.dart';
-=======
-import 'package:qanuni/presentation/screens/client_home_screen/view.dart';
->>>>>>> main
 import 'package:qanuni/viewLawyerProfilePage.dart';
 
 void main() async {
@@ -71,7 +67,6 @@ class LawyersList extends StatelessWidget {
         title: const Text("المحامين",
             style: TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.w500)),
         centerTitle: true,
-<<<<<<< HEAD
         // leading: IconButton(
         //   icon: Icon(Icons.arrow_back), // Back button icon
         //   onPressed: () {
@@ -79,15 +74,6 @@ class LawyersList extends StatelessWidget {
         //     Navigator.pop(context);
         //   },
         // ),
-=======
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back), // Back button icon
-          onPressed: () {
-            // Navigate back to the previous page
-            Navigator.pop(context);
-          },
-        ),
->>>>>>> main
       ),
       //navigation Bar
       bottomNavigationBar: BottomNavigationBar(

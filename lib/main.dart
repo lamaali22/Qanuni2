@@ -7,7 +7,6 @@ import 'package:oktoast/oktoast.dart';
 import 'package:qanuni/firebase_options.dart';
 import 'package:qanuni/presentation/screens/boarding_screen/view.dart';
 import 'package:qanuni/providers/boarding/cubit/boarding_cubit.dart';
-
 import 'providers/auth/login/cubit/login_cubit.dart';
 
 late final FirebaseApp app;
