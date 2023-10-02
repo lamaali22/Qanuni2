@@ -2,8 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+<<<<<<< HEAD
 import 'package:qanuni/models/clientModel.dart';
 import 'package:qanuni/presentation/screens/home_screen/view.dart';
+=======
+import 'package:qanuni/data/models/clientModel.dart';
+import 'package:qanuni/models/clientModel.dart';
+>>>>>>> main
 import 'firebase_options.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -156,17 +161,6 @@ class _MyHomePageState extends State<MyHomePage> {
         emails.add(email);
       }
     }
-
-    final QuerySnapshot querySnapshot2 = await _db.collection('lawyers').get();
-    final List<QueryDocumentSnapshot> documents2 = querySnapshot2.docs;
-
-    for (QueryDocumentSnapshot doc in documents2) {
-      final data = doc.data() as Map<String, dynamic>; // Access data as a Map
-      if (data.containsKey('email')) {
-        final email = data['email'] as String;
-        emails.add(email);
-      }
-    }
   }
 
 //check if phone is used
@@ -202,7 +196,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return MaterialApp(
         theme: ThemeData(primarySwatch: Colors.blue),
         home: Scaffold(
-            body: SingleChildScrollView(
+            body: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
           child: Form(
               key: _formKey,
@@ -285,8 +279,12 @@ class _MyHomePageState extends State<MyHomePage> {
                           DateTime? pickedDate = await showDatePicker(
                               context: context,
                               initialDate: DateTime.now(),
+<<<<<<< HEAD
+                              firstDate: DateTime(1950),
+=======
                               firstDate: DateTime(
                                   1930), //DateTime.now() - not to allow to choose before today.
+>>>>>>> lama-sprint
                               lastDate: DateTime.now());
 
                           if (pickedDate != null) {
@@ -304,10 +302,13 @@ class _MyHomePageState extends State<MyHomePage> {
                       height: 15,
                     ),
                     TextFormField(
+<<<<<<< HEAD
                       onTap: () async {
                         print("ontap");
                         await fetchPhonesAsync();
                       },
+=======
+>>>>>>> main
                       controller: phoneNumController,
                       style: TextStyle(
                           fontSize: 13, height: 1.1, color: Colors.black),
@@ -327,6 +328,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         else if (!isNumericUsingRegularExpression(value))
                           return '(الرجاء تعبأة الخانة بأعداد فقط (من 0-9';
                         else {
+                          fetchPhonesAsync();
                           if (phones.contains(value)) return 'هذا الرقم مستخدم';
                         }
                         return null;
@@ -336,10 +338,13 @@ class _MyHomePageState extends State<MyHomePage> {
                       height: 15,
                     ),
                     TextFormField(
+<<<<<<< HEAD
                       onTap: () async {
                         print("ontap");
                         await fetchEmailsAsync();
                       },
+=======
+>>>>>>> main
                       controller: emailController,
                       style: TextStyle(
                           fontSize: 13, height: 1.1, color: Colors.black),
@@ -359,6 +364,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         else if (!validateEmail(value))
                           return 'الرجاء ادخال بريد الكتروني صحيح';
                         else {
+                          fetchEmailsAsync();
                           if (emails.contains(value))
                             return 'هذا البريد الإلكتروني مستخدم';
                         }
@@ -471,7 +477,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           textInputAction: TextInputAction.done),
                     ),
                     SizedBox(
-                      height: 5,
+                      height: 15,
                     ),
                     Container(
                         child: Column(
@@ -480,6 +486,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
+                              SizedBox(
+                                width: 130,
+                              ),
                               AnimatedContainer(
                                 duration: Duration(milliseconds: 500),
                                 width: 20,
@@ -502,16 +511,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                               ),
                               SizedBox(
-                                width: 5,
+                                width: 10,
                               ),
                               Text("تتكون من 8 خانات على الأقل",
                                   textAlign: TextAlign.right,
                                   style: TextStyle(
                                       fontSize: 13,
-                                      color: Color.fromRGBO(104, 102, 102, 1))),
-                              SizedBox(
-                                width: 10,
-                              ),
+                                      color: Color.fromRGBO(104, 102, 102, 1)))
                             ],
                           ),
                           SizedBox(
@@ -520,6 +526,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
+                              SizedBox(
+                                width: 123,
+                              ),
                               AnimatedContainer(
                                 duration: Duration(milliseconds: 500),
                                 width: 20,
@@ -547,10 +556,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               Text("تحتوي على رقم واحد على الأقل",
                                   style: TextStyle(
                                       fontSize: 13,
-                                      color: Color.fromRGBO(104, 102, 102, 1))),
-                              SizedBox(
-                                width: 5,
-                              ),
+                                      color: Color.fromRGBO(104, 102, 102, 1)))
                             ],
                           ),
                         ])),

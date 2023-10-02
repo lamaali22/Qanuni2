@@ -74,6 +74,7 @@ class _ResetPasswordState extends State<ResetPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+<<<<<<< HEAD
       appBar: AppBar(
         backgroundColor: Colors.teal,
         title: const Text('إعادة ضبط كلمة المرور'),
@@ -91,6 +92,24 @@ class _ResetPasswordState extends State<ResetPassword> {
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.black,
+=======
+        appBar: AppBar(
+          title: const Text('إعادة ضبط كلمة المرور'),
+          centerTitle: true,
+          backgroundColor: Colors.teal,
+        ),
+        body: Directionality(
+          textDirection: TextDirection.rtl,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: Text(
+                  ' ادخل بريدك الالكتروني لارسال رابط تغيير كلمة المرور',
+                  style: TextStyle(fontSize: 15),
+                ),
+>>>>>>> main
               ),
               textAlign: TextAlign.right,
             ),

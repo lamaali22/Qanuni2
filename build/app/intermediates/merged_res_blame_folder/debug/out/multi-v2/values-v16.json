@@ -4,7 +4,11 @@
             "outputFile": "com.example.qanuni.app-mergeDebugResources-16:/values-v16/values-v16.xml",
             "map": [
                 {
+<<<<<<< HEAD
                     "source": "C:\\Users\\LamaAli\\.gradle\\caches\\transforms-3\\6d3237bc319e7b967918f32c402a8d45\\transformed\\core-1.6.0\\res\\values-v16\\values-v16.xml",
+=======
+                    "source": "C:\\Users\\ms-s1\\.gradle\\caches\\transforms-3\\6d3237bc319e7b967918f32c402a8d45\\transformed\\core-1.6.0\\res\\values-v16\\values-v16.xml",
+>>>>>>> main
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

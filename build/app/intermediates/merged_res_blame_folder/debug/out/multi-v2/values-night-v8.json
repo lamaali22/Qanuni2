@@ -4,14 +4,25 @@
             "outputFile": "com.example.qanuni.app-mergeDebugResources-16:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
+<<<<<<< HEAD
                     "source": "C:\\Users\\LamaAli\\Documents\\GitHub\\Qanuni2\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+=======
+                    "source": "C:\\Windows\\development\\Qanuni2\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+>>>>>>> main
                     "from": {
                         "startLines": "3,18",
                         "startColumns": "4,4",
+<<<<<<< HEAD
                         "startOffsets": "175,1106",
                         "endLines": "11,20",
                         "endColumns": "12,12",
                         "endOffsets": "757,1272"
+=======
+                        "startOffsets": "175,831",
+                        "endLines": "7,16",
+                        "endColumns": "12,12",
+                        "endOffsets": "482,997"
+>>>>>>> main
                     },
                     "to": {
                         "startLines": "2,10",

@@ -84,11 +84,9 @@ void _navigateToScreen(BuildContext context, int index) {
               child: GestureDetector(
                 onTap: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => LawyersList(),
-                      ));
-                  ;
+                    context,
+                    MaterialPageRoute(builder: (context) => LawyersList()),
+                  );
                 },
                 child: const Text(
                   'جميع المحامين >',
