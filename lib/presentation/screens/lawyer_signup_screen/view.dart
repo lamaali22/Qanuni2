@@ -178,17 +178,6 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
         phones.add(phone);
       }
     }
-
-    final QuerySnapshot querySnapshot2 = await _db.collection('Clients').get();
-    final List<QueryDocumentSnapshot> documents2 = querySnapshot2.docs;
-
-    for (QueryDocumentSnapshot doc in documents2) {
-      final data = doc.data() as Map<String, dynamic>; // Access data as a Map
-      if (data.containsKey('phoneNumber')) {
-        final phone = data['phoneNumber'] as String;
-        phones.add(phone);
-      }
-    }
   }
 
   //check if license used before
@@ -1210,7 +1199,7 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                                       });
                                     },
                                   ),
-                                  prefixText: "SA",
+                                  prefixText: "SA | ",
                                   prefixStyle: TextStyle(
                                     color: Color.fromARGB(255, 78, 80, 78),
                                   )),
