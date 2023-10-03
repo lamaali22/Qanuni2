@@ -4,9 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:qanuni/consultationFromClint.dart';
+import 'package:qanuni/consultationList.dart';
 import 'package:qanuni/firebase_options.dart';
 import 'package:qanuni/presentation/screens/boarding_screen/view.dart';
 import 'package:qanuni/providers/boarding/cubit/boarding_cubit.dart';
+
 
 import 'providers/auth/login/cubit/login_cubit.dart';
 
@@ -52,7 +55,8 @@ class MyApp extends StatelessWidget {
                   fontSizeFactor: 1.sp,
                 ),
               ),
-              home: child,
+              home: // BookingClientScreen(),
+             child,
             );
           },
           child: const BoardingScreen(),

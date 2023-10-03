@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:qanuni/consultationList.dart';
 import 'package:qanuni/presentation/screens/client_signup_screen/view.dart';
 
 import 'package:qanuni/presentation/screens/login_screen/view.dart';
@@ -7,7 +8,32 @@ import 'package:qanuni/viewListOfLawyers.dart';
 
 class LogoutPageLawyer extends StatelessWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
+void _navigateToScreen(BuildContext context, int index) {
+  switch (index) {
+    case 0:
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => LogoutPageLawyer()),
+        (route) => false,
+      );
+      break;
+    case 1:
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => BookingListScreen()),
+        (route) => false,
+      );
+      break;
+    case 2:
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => LogoutPageLawyer()),
+        (route) => false,
+      );
+      break;
+   
+  }
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,6 +109,27 @@ class LogoutPageLawyer extends StatelessWidget {
           ),
         ),
       ),
+        bottomNavigationBar: BottomNavigationBar(
+          selectedItemColor: Color(0x7F008080),
+          unselectedItemColor: Colors.black,
+          showUnselectedLabels: true,
+          onTap: (index) => _navigateToScreen(context, index),
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_2_outlined),
+              label: 'جسابي',
+            ),
+            
+            BottomNavigationBarItem(
+              icon: Icon(Icons.calendar_month_outlined),
+              label: 'مواعيدي',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_outlined),
+              label: 'الصفحة الرئيسية',
+            ),
+          ],
+        ),
     );
   }
 }
