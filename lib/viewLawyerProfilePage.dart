@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:qanuni/clientBookSession2.dart';
 import 'package:qanuni/homePage.dart';
 import 'package:qanuni/presentation/screens/home_screen/view.dart';
 
@@ -7,6 +9,10 @@ import '../viewListOfLawyers.dart';
 class viewLawyerProfilePage extends StatelessWidget {
   String riyal = "ريال";
   final Lawyer lawyer; // Pass the lawyer object
+  // Convert English number to Arabic
+  String formatNumber(int number) {
+    return NumberFormat.decimalPattern('ar_EG').format(number);
+  }
 
 //navigation bar method
 void _navigateToScreen(BuildContext context, int index) {
@@ -150,14 +156,14 @@ void _navigateToScreen(BuildContext context, int index) {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '${riyal}${lawyer.price}',
+                       '${formatNumber(int.parse(lawyer.price))}' + '${riyal}',
                       textAlign: TextAlign.right,
                       style: TextStyle(
                         color: Colors.black.withOpacity(0.699999988079071),
                         fontSize: 14.0,
                         fontFamily: 'Cairo',
-                        fontWeight: FontWeight.w400,
-                        height: 1,
+                        fontWeight: FontWeight.w800,
+                        height: 2,
                       ),
                     ),
                   ],
@@ -231,7 +237,7 @@ void _navigateToScreen(BuildContext context, int index) {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: lawyer.specialties.map((specialty) {
                         return Container(
-                          width: lawyer.specialties.length * 30.0,
+                           constraints: BoxConstraints(minWidth: 50),
                           height: 24,
                           margin:
                               EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -263,11 +269,8 @@ void _navigateToScreen(BuildContext context, int index) {
                 ),
                 Expanded(
                   child: Container(
-                    width: double
-                        .infinity, // Set the desired width of the container
-
-                    padding: EdgeInsets.all(
-                        20), // Set the padding around the container content
+                    width: double.infinity, // Set the desired width of the container
+                    padding: EdgeInsets.all(20), // Set the padding around the container content
 
                     decoration: ShapeDecoration(
                       color: Color.fromARGB(255, 255, 255, 255),
@@ -323,13 +326,45 @@ void _navigateToScreen(BuildContext context, int index) {
                           thickness: 0.5,
                         ), // Add a vertical spacing between the text and buttons
 
-                        Text(
-                          'المراجعات',
-                          style: TextStyle(
-                            fontFamily: 'Cairo',
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
+                        // Text(
+                        //   'المراجعات',
+                        //   textAlign: TextAlign.right,
+                        //   style: TextStyle(
+                        //     fontFamily: 'Cairo',
+                        //     fontSize: 16,
+                        //     fontWeight: FontWeight.w600,
+                        //   ),
+                        // ),
+                        Row(
+                          children: [
+                              TextButton(
+                                onPressed: () {
+                                  // Handle button press
+                                },
+                                child: Text('رؤية الكل' , style: TextStyle(
+                                  fontFamily: 'Cairo',
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  decoration: TextDecoration.underline,
+                                  color: Colors.teal
+                                ),),
+                              ),
+                           
+                            Expanded(
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child: Text(
+                                  'المراجعات',
+                                  textAlign: TextAlign.right,
+                                   style: TextStyle(
+                                    fontFamily: 'Cairo',
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
 
                         Card(
@@ -381,7 +416,14 @@ void _navigateToScreen(BuildContext context, int index) {
                             Expanded(
                               child: ElevatedButton(
                                 onPressed: () {
-                                  // Button action
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => BookingPage(lawyer)),
+                                  );
+                                  //  Navigator.pushNamed(
+                                  //   context,
+                                  //   '/BookingPage()', arguments:lawyer
+                                  // );
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Color(

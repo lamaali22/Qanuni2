@@ -5,6 +5,8 @@ import 'package:qanuni/firebase_options.dart';
 import 'package:qanuni/homePage.dart';
 import 'package:qanuni/presentation/screens/home_screen/view.dart';
 import 'package:qanuni/viewLawyerProfilePage.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/locale.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +25,13 @@ class MyApp extends StatelessWidget {
 }
 
 class LawyersList extends StatelessWidget {
+
+
   String riyal = "ريال";
+// Convert English number to Arabic
+  String formatNumber(int number) {
+    return NumberFormat.decimalPattern('ar_EG').format(number);
+  }
 //navigation bar method
 void _navigateToScreen(BuildContext context, int index) {
   switch (index) {
@@ -105,7 +113,7 @@ void _navigateToScreen(BuildContext context, int index) {
         future: getLawyers(), // Fetch lawyers from Firebase Firestore
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator(); // Loading indicator
+            return Center(child: CircularProgressIndicator()); // Loading indicator
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
@@ -212,28 +220,28 @@ void _navigateToScreen(BuildContext context, int index) {
                                   fontSize: 12,
                                   fontWeight: FontWeight.normal)),
                         ),
-                        SizedBox(height: 8),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                color: Colors.teal,
-                                borderRadius: BorderRadius.circular(25),
-                              ),
-                              padding: EdgeInsets.all(3),
-                              child: Text(
-                                '${riyal}${lawyer.price}',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: 'Cairo',
-                                    fontSize: 12),
-                              ),
-                            ),
-                          ],
+                        SizedBox(height: 1),
+             
+              
+                  Align(
+                      alignment: Alignment.bottomLeft,
+                    child: Container(
+                      decoration: BoxDecoration(
+                      ),
+                      child: Text(
+                        '${formatNumber(int.parse(lawyer.price))}' + '${riyal}',
+                        style: TextStyle(
+                          color: Colors.teal,
+                          fontFamily: 'Cairo',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700
                         ),
-                      ],
+                      ),
                     ),
+                  ),
+                ],
+    
+          ),
                     onTap: () {
                       Navigator.push(
                         context,
@@ -277,6 +285,7 @@ class Lawyer {
   final String price;
   final String photoURL;
   final String bio; // URL to the lawyer's photo
+  final String email;
 
   Lawyer({
     // required this.ID,
@@ -285,7 +294,7 @@ class Lawyer {
     required this.specialties,
     required this.price,
     required this.photoURL,
-    required this.bio,
+    required this.bio, required this.email,
   });
 
   factory Lawyer.fromMap(Map<String, dynamic> map) {
@@ -297,6 +306,7 @@ class Lawyer {
       price: map['price'],
       photoURL: map['photoURL'],
       bio: map['bio'],
+      email: map['email']
     );
   }
 }

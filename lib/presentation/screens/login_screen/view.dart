@@ -30,23 +30,21 @@ class LoginScreen extends StatelessWidget {
         if (state is LoginSuccess) {
           showToast('مرحبا', position: ToastPosition.bottom);
           LoginCubit.get(context).reset();
-           if (BoardingCubit.get(context).selectedOption ==0) {
-               Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => HomeScreen(),
-      ),
-    );
-           }else {
-               Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => LogoutPageLawyer(),
-      ),
-    );
-           }
- 
-
+          if (BoardingCubit.get(context).selectedOption == 0) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HomeScreen(),
+              ),
+            );
+          } else {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LogoutPageLawyer(),
+              ),
+            );
+          }
         }
       },
       builder: (context, state) {
@@ -66,12 +64,13 @@ class LoginScreen extends StatelessWidget {
                             height: 0.1.sh,
                             width: 1.sw,
                             child: GestureDetector(
-                             onTap: () {
-  Navigator.pushReplacement(
-    context,
-    MaterialPageRoute(builder: (context) => BoardingScreen()),
-  );
-},
+                              onTap: () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => BoardingScreen()),
+                                );
+                              },
                               child: Icon(
                                 Icons.chevron_right_outlined,
                                 size: 30,
@@ -111,6 +110,7 @@ class LoginScreen extends StatelessWidget {
                                 mycontroller:
                                     LoginCubit.get(context).emailController,
                                 valid: (text) {
+                                  print(text);
                                   if (text!.isEmpty) {
                                     return 'يجب ادخال البريد الالكتروني';
                                   } else {

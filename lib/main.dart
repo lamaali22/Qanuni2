@@ -3,11 +3,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:qanuni/firebase_options.dart';
 import 'package:qanuni/presentation/screens/boarding_screen/view.dart';
 import 'package:qanuni/providers/boarding/cubit/boarding_cubit.dart';
-
+import 'package:qanuni/providers/payment/cubit/payment_cubit.dart';
+import 'package:qanuni/utils/constants.dart';
 import 'providers/auth/login/cubit/login_cubit.dart';
 
 late final FirebaseApp app;
@@ -17,6 +19,7 @@ void main() async {
   app = await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform);
   auth = FirebaseAuth.instanceFor(app: app);
+    Stripe.publishableKey = AppConstants.stripKey;
   runApp(const MyApp());
 }
 
@@ -33,6 +36,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => LoginCubit(),
+        ),
+           BlocProvider(
+          create: (_) => PaymentCubit(),
         ),
       ],
       child: OKToast(

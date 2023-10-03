@@ -4,4 +4,7 @@ class ImageConstants {
   static const uni = 'assets/images/uni.png';
   static const lock = 'assets/images/lock.png';
   static const mail = 'assets/images/mail.png';
+   static const credit = 'assets/images/credit.png';
+
+  static String visaMasterIcon = 'assets/images/visaCardIcon.png';
 }

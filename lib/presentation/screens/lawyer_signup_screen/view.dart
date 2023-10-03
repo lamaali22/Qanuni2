@@ -428,7 +428,7 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                                 context: context,
                                 initialDate: DateTime.now(),
                                 firstDate: DateTime(1930),
-                                lastDate: DateTime.now(),
+                                lastDate: DateTime(2007),
                                 builder: (BuildContext context, Widget? child) {
                                   return Theme(
                                     data: ThemeData.dark().copyWith(
