@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AuthApi {
-  Future<bool> checkClientExistence(String email) async {
+  Future<int> checkClientExistence(String email) async {
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('Clients')
@@ -9,12 +9,20 @@ class AuthApi {
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
-        return true;
+        return 0;
       } else {
-        return false;
+        QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+            .collection('lawyers')
+            .where('email', isEqualTo: email)
+            .get();
+        if (querySnapshot.docs.isNotEmpty) {
+          return 1;
+        } else {
+          return 2;
+        }
       }
     } catch (e) {
-      return false;
+      return 2;
     }
   }
 

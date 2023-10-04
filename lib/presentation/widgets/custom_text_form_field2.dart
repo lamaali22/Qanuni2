@@ -4,7 +4,7 @@ import 'package:qanuni/utils/colors.dart';
 
 class CustomTextFormField2 extends StatelessWidget {
   final String hinttext;
-  final Function? onChanged;
+  final Function(String)? onChanged;
 
   final Widget? prefixWidget;
   final Widget? suffixWidget;
@@ -49,6 +49,11 @@ class CustomTextFormField2 extends StatelessWidget {
           obscureText:
               obscureText == null || obscureText == false ? false : true,
           maxLength: maxLength,
+          onChanged: (value) {
+            if (onChanged != null) {
+              onChanged!(value);
+            }
+          },
           keyboardType: isNumber != null ? TextInputType.number : null,
           decoration: InputDecoration(
               counterText: '',

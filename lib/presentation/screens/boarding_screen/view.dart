@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qanuni/presentation/screens/boarding_screen/widgets/custom_radio.dart';
+import 'package:qanuni/presentation/screens/client_signup_screen/view.dart';
 import 'package:qanuni/presentation/screens/landing_screen/view.dart';
+import 'package:qanuni/presentation/screens/lawyer_signup_screen/view.dart';
 import 'package:qanuni/presentation/screens/login_screen/view.dart';
 import 'package:qanuni/presentation/widgets/custom_button.dart';
 import 'package:qanuni/providers/auth/login/cubit/login_cubit.dart';
@@ -22,8 +24,19 @@ class BoardingScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Column(
               children: [
-                SizedBox(
+                Container(
+                  alignment: Alignment.bottomRight,
                   height: 0.1.sh,
+                  width: 1.sw,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Icon(
+                      Icons.chevron_right_outlined,
+                      size: 30,
+                    ),
+                  ),
                 ),
                 SizedBox(
                   width: 0.4.sw,
@@ -79,13 +92,25 @@ class BoardingScreen extends StatelessWidget {
                 ElevatedButton(
                     onPressed: () {
                       if (BoardingCubit.get(context).selectedOption != null) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const LandingScreen(),
-                            )).then((value) {
-                          LoginCubit.get(context).reset();
-                        });
+                        if (BoardingCubit.get(context).selectedOption == 0) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const ClientSignUpScreen(),
+                              )).then((value) {
+                            LoginCubit.get(context).reset();
+                          });
+                        } else {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const LawyerSignupScreen(),
+                              )).then((value) {
+                            LoginCubit.get(context).reset();
+                          });
+                        }
                       }
                     },
                     style: ElevatedButton.styleFrom(

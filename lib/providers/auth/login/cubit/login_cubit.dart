@@ -14,28 +14,21 @@ class LoginCubit extends Cubit<LoginState> {
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  loginClient() async {
+  loginUser() async {
     emit(SigningIn());
     try {
-      if (formKey.currentState!.validate()) {
-        bool clientExists =
-            await AuthApi().checkClientExistence(emailController.text);
+      int mode = await AuthApi().checkClientExistence(emailController.text);
 
-        if (clientExists) {
-          await FirebaseAuth.instance
-              .signInWithEmailAndPassword(
-                  email: emailController.text,
-                  password: passwordController.text)
-              .then((value) {
-            emit(LoginSuccess());
-          });
-        } else {
-          emit(LoginFailed('البريد الالكتروني أو كلمة المرور غير صحيحة'));
-        }
+      if (mode == 0 || mode == 1) {
+        await FirebaseAuth.instance
+            .signInWithEmailAndPassword(
+                email: emailController.text, password: passwordController.text)
+            .then((value) {
+          emit(LoginSuccess(mode: mode));
+        });
       } else {
-        emit(LoginInitial());
+        emit(LoginFailed('البريد الالكتروني أو كلمة المرور غير صحيحة'));
       }
     } catch (e) {
       if (e is FirebaseAuthException) {
@@ -47,35 +40,30 @@ class LoginCubit extends Cubit<LoginState> {
     }
   }
 
-  loginLawyer() async {
-    emit(SigningIn());
-    try {
-      if (formKey.currentState!.validate()) {
-        bool laywerExists =
-            await AuthApi().checkLawyerExistence(emailController.text);
+  // loginLawyer() async {
+  //   emit(SigningIn());
+  //   try {
+  //     bool laywerExists =
+  //         await AuthApi().checkLawyerExistence(emailController.text);
 
-        if (laywerExists) {
-          await FirebaseAuth.instance
-              .signInWithEmailAndPassword(
-                  email: emailController.text,
-                  password: passwordController.text)
-              .then((value) {
-            emit(LoginSuccess());
-          });
-        } else {
-          emit(LoginFailed('البريد الالكتروني أو كلمة المرور غير صحيحة'));
-        }
-      } else {
-        emit(LoginInitial());
-      }
-    } catch (e) {
-      if (e is FirebaseAuthException) {
-        emit(LoginFailed('البريد الالكتروني أو كلمة المرور غير صحيحة'));
-       } else {
-        emit(LoginFailed(e.toString()));
-      }
-    }
-  }
+  //     if (laywerExists) {
+  //       await FirebaseAuth.instance
+  //           .signInWithEmailAndPassword(
+  //               email: emailController.text, password: passwordController.text)
+  //           .then((value) {
+  //         emit(LoginSuccess());
+  //       });
+  //     } else {
+  //       emit(LoginFailed('البريد الالكتروني أو كلمة المرور غير صحيحة'));
+  //     }
+  //   } catch (e) {
+  //     if (e is FirebaseAuthException) {
+  //       emit(LoginFailed('البريد الالكتروني أو كلمة المرور غير صحيحة'));
+  //     } else {
+  //       emit(LoginFailed(e.toString()));
+  //     }
+  //   }
+  // }
 
   reset() {
     emailController.clear();

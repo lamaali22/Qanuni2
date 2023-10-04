@@ -7,6 +7,7 @@ import 'package:oktoast/oktoast.dart';
 import 'package:qanuni/homePage.dart';
 import 'package:qanuni/presentation/screens/payment_screen/view.dart';
 import 'package:qanuni/providers/auth/login/cubit/login_cubit.dart';
+import 'package:qanuni/providers/payment/cubit/payment_cubit.dart';
 import 'package:qanuni/viewListOfLawyers.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -28,13 +29,13 @@ class _BookingPageState extends State<BookingPage> {
   String _selectedTimeSlot = '';
   bool _isLoading = false;
 
-late User? _user;
+  late User? _user;
 
   @override
   void initState() {
     super.initState();
     fetchAvailableTimeSlots();
-    _user=FirebaseAuth.instance.currentUser;
+    _user = FirebaseAuth.instance.currentUser;
   }
 
   void fetchAvailableTimeSlots() async {
@@ -42,7 +43,8 @@ late User? _user;
       _isLoading = true;
     });
 
-    DateTime startOfDay = DateTime(_selectedDay.year, _selectedDay.month, _selectedDay.day);
+    DateTime startOfDay =
+        DateTime(_selectedDay.year, _selectedDay.month, _selectedDay.day);
     DateTime endOfDay = startOfDay.add(Duration(days: 1));
 
     try {
@@ -51,15 +53,15 @@ late User? _user;
           .where('available', isEqualTo: true)
           .where('lawyerEmail', isEqualTo: widget.lawyer.email)
           .get();
-print('${widget.lawyer.email} at fetch');
+      print('${widget.lawyer.email} at fetch');
       setState(() {
         _events = {};
-print(snapshot.size);
+        print(snapshot.size);
 
         for (var doc in snapshot.docs) {
           DateTime startTime = (doc['startTime'] as Timestamp).toDate();
           if (startTime.isAfter(startOfDay) && startTime.isBefore(endOfDay)) {
-                    print(startTime);
+            print(startTime);
 
             String formattedTime = _formatTime(startTime);
             DateTime date = _selectedDay;
@@ -68,7 +70,6 @@ print(snapshot.size);
           }
         }
         _isLoading = false;
-
       });
     } catch (e) {
       setState(() {
@@ -94,117 +95,26 @@ print(snapshot.size);
     return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
   }
 
-void bookSelectedTimeSlot(String selectedTimeSlot) async {
-  DateTime startOfDay = DateTime(_selectedDay.year, _selectedDay.month, _selectedDay.day);
+  void addBookingToFirestore(DateTime startTime, String timeSlotId) {
+    // Get the client's email from LoginCubit
+    //  String clientEmail = LoginCubit.get(context).email;
 
-  try {
-    // Get the client's email from the current user
-    String? clientEmail = _user?.email;
+    DateTime endTime =
+        startTime.add(Duration(hours: 1)); // Assuming each session is 1 hour
 
-    if (clientEmail != null) {
-      // Query the available time slot
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('timeSlots')
-          .where('available', isEqualTo: true)
-          .where('lawyerEmail', isEqualTo: widget.lawyer.email)
-         // .where('startTime', isEqualTo: Timestamp.fromDate(startOfDay))
-          .get();
-
-      print('Query snapshot size: ${querySnapshot.size}');
-
-      if (querySnapshot.size > 0) {
-        String timeSlotId = querySnapshot.docs[0].id;
-
-        print('Selected time slot: $selectedTimeSlot');
-
-        // Ensure that the selected time slot matches the available time slots
-        if (querySnapshot.docs.any((doc) => _formatTime((doc['startTime'] as Timestamp).toDate()) == selectedTimeSlot)) {
-          // Update 'available' status in 'timeSlots' collection
-          await FirebaseFirestore.instance
-              .collection('timeSlots')
-              .doc(timeSlotId)
-              .update({'available': false});
-
-          // Add a new document to 'bookings' collection
-          await FirebaseFirestore.instance.collection('bookings').add({
-            'clientEmail': clientEmail,
-            'lawyerEmail': widget.lawyer.email,
-            'startTime': startOfDay,
-            'endTime': startOfDay.add(Duration(hours: 1)),
-            'timeSlotId': timeSlotId,
-          });
-
-          showToast(
-            'Your session is booked',
-            position: ToastPosition.center,
-            backgroundColor: Colors.green,
-            textStyle: TextStyle(color: Colors.white, fontSize: 16.0),
-            duration: Duration(seconds: 3),
-          );
-
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => LogoutPage()),
-          );
-        } else {
-          showToast(
-            'Error: Selected time slot is not valid. Please try again.',
-            position: ToastPosition.bottom,
-            backgroundColor: Colors.red,
-            textStyle: TextStyle(color: Colors.white, fontSize: 16.0),
-            duration: Duration(seconds: 5),
-          );
-        }
-      } else {
-        showToast(
-          'Error: Time slot not available. Please choose another time slot.',
-          position: ToastPosition.bottom,
-          backgroundColor: Colors.red,
-          textStyle: TextStyle(color: Colors.white, fontSize: 16.0),
-          duration: Duration(seconds: 5),
-        );
-      }
-    } else {
-      print('Client email is null. Provide a default value or handle accordingly.');
-    }
-  } catch (e) {
-    print('Error booking time slot: $e');
-    showToast(
-      'Error: Something went wrong. Please try again.',
-      position: ToastPosition.bottom,
-      backgroundColor: Colors.red,
-      textStyle: TextStyle(color: Colors.white, fontSize: 16.0),
-      duration: Duration(seconds: 5),
-    );
+    // Add a new document to 'bookings' collection
+    FirebaseFirestore.instance.collection('bookings').add({
+      'clientEmail': _user!.email,
+      'lawyerEmail': widget.lawyer.email,
+      'startTime': startTime,
+      'endTime': endTime,
+      'timeSlotId': timeSlotId,
+    }).then((_) {
+      print('Booking added to Firestore successfully');
+    }).catchError((error) {
+      print('Failed to add booking to Firestore: $error');
+    });
   }
-}
-
-
-
-
-
-void addBookingToFirestore(DateTime startTime, String timeSlotId) {
-   // Get the client's email from LoginCubit
-  //  String clientEmail = LoginCubit.get(context).email;
-
-  DateTime endTime = startTime.add(Duration(hours: 1)); // Assuming each session is 1 hour
-
-  // Add a new document to 'bookings' collection
-  FirebaseFirestore.instance.collection('bookings').add({
-    'clientEmail': _user!.email,
-    'lawyerEmail': widget.lawyer.email,
-    'startTime': startTime,
-    'endTime': endTime,
-    'timeSlotId': timeSlotId,
-  }).then((_) {
-    print('Booking added to Firestore successfully');
-  }).catchError((error) {
-    print('Failed to add booking to Firestore: $error');
-  });
-}
-
-
-
 
   void showOkToast() {
     showToast(
@@ -290,7 +200,8 @@ void addBookingToFirestore(DateTime startTime, String timeSlotId) {
           Expanded(
             child: _isLoading
                 ? Center(child: CircularProgressIndicator())
-                : (_events[_selectedDay] == null || _events[_selectedDay]!.isEmpty)
+                : (_events[_selectedDay] == null ||
+                        _events[_selectedDay]!.isEmpty)
                     ? Center(
                         child: Text(
                           "No available time slots for this day. Please choose another day.",
@@ -316,14 +227,18 @@ void addBookingToFirestore(DateTime startTime, String timeSlotId) {
                           return GestureDetector(
                             onTap: () {
                               selectTimeSlot(timeSlot);
+                              print(timeSlot);
                             },
                             child: Stack(
                               children: [
                                 Container(
                                   decoration: BoxDecoration(
-                                    color: isSelected ? Colors.teal : Colors.white,
+                                    color:
+                                        isSelected ? Colors.teal : Colors.white,
                                     border: Border.all(
-                                      color: isSelected ? Colors.teal : Colors.teal,
+                                      color: isSelected
+                                          ? Colors.teal
+                                          : Colors.teal,
                                       width: 2,
                                     ),
                                     borderRadius: BorderRadius.circular(10),
@@ -332,7 +247,9 @@ void addBookingToFirestore(DateTime startTime, String timeSlotId) {
                                     child: Text(
                                       timeSlot,
                                       style: TextStyle(
-                                        color: isSelected ? Colors.white : Colors.teal,
+                                        color: isSelected
+                                            ? Colors.white
+                                            : Colors.teal,
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -360,30 +277,35 @@ void addBookingToFirestore(DateTime startTime, String timeSlotId) {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                         ),
-                      child : ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PaymentScreen(),//pass 'String selectedTimeSlot'
+                        child: ElevatedButton(
+                          onPressed: () {
+                            PaymentCubit.get(context).init(
+                                _selectedTimeSlot,
+                                widget.lawyer.price,
+                                _selectedDay,
+                                widget.lawyer.email);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const PaymentScreen(), //pass 'String selectedTimeSlot'
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.teal,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.teal,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text(
+                            'الانتقال إلى الدفع',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
                           ),
                         ),
-                        child: Text(
-                          'الانتقال إلى الدفع',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-
                       ),
                     ),
                   ),

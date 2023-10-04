@@ -7,6 +7,8 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:qanuni/firebase_options.dart';
 import 'package:qanuni/presentation/screens/boarding_screen/view.dart';
+import 'package:qanuni/presentation/screens/landing_screen/view.dart';
+import 'package:qanuni/presentation/screens/login_screen/view.dart';
 import 'package:qanuni/providers/boarding/cubit/boarding_cubit.dart';
 import 'package:qanuni/providers/payment/cubit/payment_cubit.dart';
 import 'package:qanuni/utils/constants.dart';
@@ -19,7 +21,7 @@ void main() async {
   app = await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform);
   auth = FirebaseAuth.instanceFor(app: app);
-    Stripe.publishableKey = AppConstants.stripKey;
+  Stripe.publishableKey = AppConstants.stripKey;
   runApp(const MyApp());
 }
 
@@ -32,12 +34,12 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => BoardingCubit(),
+          create: (_) => BoardingCubit()..init(),
         ),
         BlocProvider(
           create: (_) => LoginCubit(),
         ),
-           BlocProvider(
+        BlocProvider(
           create: (_) => PaymentCubit(),
         ),
       ],
@@ -61,7 +63,7 @@ class MyApp extends StatelessWidget {
               home: child,
             );
           },
-          child: const BoardingScreen(),
+          child: const LandingScreen(),
         ),
       ),
     );

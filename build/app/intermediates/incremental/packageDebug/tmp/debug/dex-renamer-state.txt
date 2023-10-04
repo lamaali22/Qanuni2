@@ -1,20 +1,20 @@
-#Tue Oct 03 09:47:28 AST 2023
-base.0=/Users/FAY/Documents/GitHub/Qanuni2/build/app/intermediates/dex/debug/mergeExtDexDebug/classes.dex
-base.1=/Users/FAY/Documents/GitHub/Qanuni2/build/app/intermediates/dex/debug/mergeLibDexDebug/0/classes.dex
-base.2=/Users/FAY/Documents/GitHub/Qanuni2/build/app/intermediates/dex/debug/mergeProjectDexDebug/0/classes.dex
-base.3=/Users/FAY/Documents/GitHub/Qanuni2/build/app/intermediates/dex/debug/mergeProjectDexDebug/1/classes.dex
-base.4=/Users/FAY/Documents/GitHub/Qanuni2/build/app/intermediates/dex/debug/mergeProjectDexDebug/11/classes.dex
-base.5=/Users/FAY/Documents/GitHub/Qanuni2/build/app/intermediates/dex/debug/mergeProjectDexDebug/13/classes.dex
-base.6=/Users/FAY/Documents/GitHub/Qanuni2/build/app/intermediates/dex/debug/mergeExtDexDebug/classes2.dex
-base.7=/Users/FAY/Documents/GitHub/Qanuni2/build/app/intermediates/dex/debug/mergeExtDexDebug/classes3.dex
-base.8=/Users/FAY/Documents/GitHub/Qanuni2/build/app/intermediates/dex/debug/mergeExtDexDebug/classes4.dex
-base.9=/Users/FAY/Documents/GitHub/Qanuni2/build/app/intermediates/dex/debug/mergeExtDexDebug/classes5.dex
+#Wed Oct 04 04:12:21 GMT+03:00 2023
+base.0=C\:\\Users\\44220\\OneDrive\\Documents\\GitHub\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
+base.1=C\:\\Users\\44220\\OneDrive\\Documents\\GitHub\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeLibDexDebug\\0\\classes.dex
+base.2=C\:\\Users\\44220\\OneDrive\\Documents\\GitHub\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
+base.3=C\:\\Users\\44220\\OneDrive\\Documents\\GitHub\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\11\\classes.dex
+base.4=C\:\\Users\\44220\\OneDrive\\Documents\\GitHub\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\13\\classes.dex
+base.5=C\:\\Users\\44220\\OneDrive\\Documents\\GitHub\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\1\\classes.dex
+base.6=C\:\\Users\\44220\\OneDrive\\Documents\\GitHub\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes2.dex
+base.7=C\:\\Users\\44220\\OneDrive\\Documents\\GitHub\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes3.dex
+base.8=C\:\\Users\\44220\\OneDrive\\Documents\\GitHub\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes4.dex
+base.9=C\:\\Users\\44220\\OneDrive\\Documents\\GitHub\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes5.dex
 path.0=classes.dex
 path.1=0/classes.dex
 path.2=0/classes.dex
-path.3=1/classes.dex
-path.4=11/classes.dex
-path.5=13/classes.dex
+path.3=11/classes.dex
+path.4=13/classes.dex
+path.5=1/classes.dex
 path.6=classes2.dex
 path.7=classes3.dex
 path.8=classes4.dex

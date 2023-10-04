@@ -16,20 +16,31 @@ import '../../../utils/colors.dart';
 import '../../../utils/images.dart';
 import '../reset_password_screen/view.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<LoginCubit, LoginState>(
       listener: (context, state) {
         if (state is LoginFailed) {
-          showToast(state.error, position: ToastPosition.bottom);
+          showToast(state.error,
+              position: ToastPosition.bottom,
+              backgroundColor: Colors.red,
+              textStyle: TextStyle(color: Colors.white));
         }
 
         if (state is LoginSuccess) {
           showToast('مرحبا', position: ToastPosition.bottom);
           LoginCubit.get(context).reset();
+          BoardingCubit.get(context).selectOption(state.mode);
           if (BoardingCubit.get(context).selectedOption == 0) {
             Navigator.pushReplacement(
               context,
@@ -63,19 +74,6 @@ class LoginScreen extends StatelessWidget {
                             alignment: Alignment.bottomRight,
                             height: 0.1.sh,
                             width: 1.sw,
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => BoardingScreen()),
-                                );
-                              },
-                              child: Icon(
-                                Icons.chevron_right_outlined,
-                                size: 30,
-                              ),
-                            ),
                           ),
                           SizedBox(
                             width: 0.2.sh,
@@ -96,7 +94,7 @@ class LoginScreen extends StatelessWidget {
                     SizedBox(
                       height: 0.5.sh,
                       child: Form(
-                          key: LoginCubit.get(context).formKey,
+                          key: formKey,
                           child: Column(
                             children: [
                               20.verticalSpace,
@@ -163,12 +161,8 @@ class LoginScreen extends StatelessWidget {
                               10.verticalSpace,
                               ElevatedButton(
                                   onPressed: () {
-                                    if (BoardingCubit.get(context)
-                                            .selectedOption ==
-                                        0) {
-                                      LoginCubit.get(context).loginClient();
-                                    } else {
-                                      LoginCubit.get(context).loginLawyer();
+                                    if (formKey.currentState!.validate()) {
+                                      LoginCubit.get(context).loginUser();
                                     }
                                   },
                                   style: ElevatedButton.styleFrom(
@@ -212,22 +206,12 @@ class LoginScreen extends StatelessWidget {
                             3.horizontalSpace,
                             GestureDetector(
                               onTap: () {
-                                if (BoardingCubit.get(context).selectedOption ==
-                                    0) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            ClientSignUpScreen(),
-                                      ));
-                                } else {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            LawyerSignupScreen(),
-                                      ));
-                                }
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const BoardingScreen(),
+                                    ));
                               },
                               child: const Text(
                                 'حساب جديد',
