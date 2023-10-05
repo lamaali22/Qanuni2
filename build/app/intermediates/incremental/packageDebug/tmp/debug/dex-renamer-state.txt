@@ -1,14 +1,14 @@
-#Thu Oct 05 12:17:03 GMT+03:00 2023
-base.0=C\:\\Users\\44220\\OneDrive\\Documents\\GitHub\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
-base.1=C\:\\Users\\44220\\OneDrive\\Documents\\GitHub\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeLibDexDebug\\0\\classes.dex
-base.2=C\:\\Users\\44220\\OneDrive\\Documents\\GitHub\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
-base.3=C\:\\Users\\44220\\OneDrive\\Documents\\GitHub\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\11\\classes.dex
-base.4=C\:\\Users\\44220\\OneDrive\\Documents\\GitHub\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\13\\classes.dex
-base.5=C\:\\Users\\44220\\OneDrive\\Documents\\GitHub\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\1\\classes.dex
-base.6=C\:\\Users\\44220\\OneDrive\\Documents\\GitHub\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes2.dex
-base.7=C\:\\Users\\44220\\OneDrive\\Documents\\GitHub\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes3.dex
-base.8=C\:\\Users\\44220\\OneDrive\\Documents\\GitHub\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes4.dex
-base.9=C\:\\Users\\44220\\OneDrive\\Documents\\GitHub\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes5.dex
+#Thu Oct 05 14:48:13 AST 2023
+base.0=C\:\\Windows\\development\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
+base.1=C\:\\Windows\\development\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeLibDexDebug\\0\\classes.dex
+base.2=C\:\\Windows\\development\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
+base.3=C\:\\Windows\\development\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\11\\classes.dex
+base.4=C\:\\Windows\\development\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\13\\classes.dex
+base.5=C\:\\Windows\\development\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\1\\classes.dex
+base.6=C\:\\Windows\\development\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes2.dex
+base.7=C\:\\Windows\\development\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes3.dex
+base.8=C\:\\Windows\\development\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes4.dex
+base.9=C\:\\Windows\\development\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes5.dex
 path.0=classes.dex
 path.1=0/classes.dex
 path.2=0/classes.dex

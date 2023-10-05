@@ -15,40 +15,38 @@ class viewLawyerProfilePage extends StatelessWidget {
   }
 
 //navigation bar method
-void _navigateToScreen(BuildContext context, int index) {
-  switch (index) {
-    case 0:
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => LogoutPage()),
-        (route) => false,
-      );
-      break;
-    case 1:
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => LogoutPage()),
-        (route) => false,
-      );
-      break;
-    case 2:
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => LogoutPage()),
-        (route) => false,
-      );
-      break;
-    case 3:
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
-        (route) => false,
-      );
-      break;
+  void _navigateToScreen(BuildContext context, int index) {
+    switch (index) {
+      case 0:
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LogoutPage()),
+          (route) => false,
+        );
+        break;
+      case 1:
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LogoutPage()),
+          (route) => false,
+        );
+        break;
+      case 2:
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LogoutPage()),
+          (route) => false,
+        );
+        break;
+      case 3:
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+          (route) => false,
+        );
+        break;
+    }
   }
-}
-
-
 
   viewLawyerProfilePage(this.lawyer);
 
@@ -156,7 +154,7 @@ void _navigateToScreen(BuildContext context, int index) {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                       '${formatNumber(int.parse(lawyer.price))}' + '${riyal}',
+                      '${formatNumber(int.parse(lawyer.price))}' + '${riyal}',
                       textAlign: TextAlign.right,
                       style: TextStyle(
                         color: Colors.black.withOpacity(0.699999988079071),
@@ -237,7 +235,7 @@ void _navigateToScreen(BuildContext context, int index) {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: lawyer.specialties.map((specialty) {
                         return Container(
-                           constraints: BoxConstraints(minWidth: 50),
+                          constraints: BoxConstraints(minWidth: 50),
                           height: 24,
                           margin:
                               EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -269,8 +267,10 @@ void _navigateToScreen(BuildContext context, int index) {
                 ),
                 Expanded(
                   child: Container(
-                    width: double.infinity, // Set the desired width of the container
-                    padding: EdgeInsets.all(20), // Set the padding around the container content
+                    width: double
+                        .infinity, // Set the desired width of the container
+                    padding: EdgeInsets.all(
+                        20), // Set the padding around the container content
 
                     decoration: ShapeDecoration(
                       color: Color.fromARGB(255, 255, 255, 255),
@@ -337,26 +337,27 @@ void _navigateToScreen(BuildContext context, int index) {
                         // ),
                         Row(
                           children: [
-                              TextButton(
-                                onPressed: () {
-                                  // Handle button press
-                                },
-                                child: Text('رؤية الكل' , style: TextStyle(
-                                  fontFamily: 'Cairo',
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
-                                  decoration: TextDecoration.underline,
-                                  color: Colors.teal
-                                ),),
+                            TextButton(
+                              onPressed: () {
+                                // Handle button press
+                              },
+                              child: Text(
+                                'رؤية الكل',
+                                style: TextStyle(
+                                    fontFamily: 'Cairo',
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                    decoration: TextDecoration.underline,
+                                    color: Colors.teal),
                               ),
-                           
+                            ),
                             Expanded(
                               child: Align(
                                 alignment: Alignment.centerRight,
                                 child: Text(
                                   'المراجعات',
                                   textAlign: TextAlign.right,
-                                   style: TextStyle(
+                                  style: TextStyle(
                                     fontFamily: 'Cairo',
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
@@ -418,7 +419,9 @@ void _navigateToScreen(BuildContext context, int index) {
                                 onPressed: () {
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => BookingPage(lawyer)),
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            BookingPage(lawyer)),
                                   );
                                   //  Navigator.pushNamed(
                                   //   context,

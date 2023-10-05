@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:qanuni/consultationFromClient.dart';
 import 'package:qanuni/firebase_options.dart';
 import 'package:qanuni/homePage.dart';
 import 'package:qanuni/presentation/screens/home_screen/view.dart';
@@ -25,46 +26,38 @@ class MyApp extends StatelessWidget {
 }
 
 class LawyersList extends StatelessWidget {
-
-
   String riyal = "ريال";
 // Convert English number to Arabic
   String formatNumber(int number) {
     return NumberFormat.decimalPattern('ar_EG').format(number);
   }
+
 //navigation bar method
-void _navigateToScreen(BuildContext context, int index) {
-  switch (index) {
-    case 0:
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => LogoutPage()),
-        (route) => false,
-      );
-      break;
-    case 1:
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => LogoutPage()),
-        (route) => false,
-      );
-      break;
-    case 2:
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => LogoutPage()),
-        (route) => false,
-      );
-      break;
-    case 3:
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
-        (route) => false,
-      );
-      break;
+  void _navigateToScreen(BuildContext context, int index) {
+    switch (index) {
+      case 0:
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LogoutPage()),
+          (route) => false,
+        );
+        break;
+      case 1:
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => BookingClientScreen()),
+          (route) => false,
+        );
+        break;
+      case 2:
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LogoutPage()),
+          (route) => false,
+        );
+        break;
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +76,7 @@ void _navigateToScreen(BuildContext context, int index) {
         //   },
         // ),
       ),
-      //navigation Bar
+      //navigation bar
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Color(0x7F008080),
         unselectedItemColor: Colors.black,
@@ -91,20 +84,16 @@ void _navigateToScreen(BuildContext context, int index) {
         onTap: (index) => _navigateToScreen(context, index),
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            label: 'الصفحةالرئيسية',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.message_outlined),
-            label: 'الرسائل',
+            icon: Icon(Icons.person_2_outlined),
+            label: 'جسابي',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_month_outlined),
-            label: 'استشاراتي',
+            label: 'مواعيدي',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person_2_outlined),
-            label: 'حسابي',
+            icon: Icon(Icons.home_outlined),
+            label: 'الصفحة الرئيسية',
           ),
         ],
       ),
@@ -113,7 +102,8 @@ void _navigateToScreen(BuildContext context, int index) {
         future: getLawyers(), // Fetch lawyers from Firebase Firestore
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator()); // Loading indicator
+            return Center(
+                child: CircularProgressIndicator()); // Loading indicator
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
@@ -221,27 +211,23 @@ void _navigateToScreen(BuildContext context, int index) {
                                   fontWeight: FontWeight.normal)),
                         ),
                         SizedBox(height: 1),
-             
-              
-                  Align(
-                      alignment: Alignment.bottomLeft,
-                    child: Container(
-                      decoration: BoxDecoration(
-                      ),
-                      child: Text(
-                        '${formatNumber(int.parse(lawyer.price))}' + '${riyal}',
-                        style: TextStyle(
-                          color: Colors.teal,
-                          fontFamily: 'Cairo',
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700
+                        Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Container(
+                            decoration: BoxDecoration(),
+                            child: Text(
+                              '${formatNumber(int.parse(lawyer.price))}' +
+                                  '${riyal}',
+                              style: TextStyle(
+                                  color: Colors.teal,
+                                  fontFamily: 'Cairo',
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                  ),
-                ],
-    
-          ),
                     onTap: () {
                       Navigator.push(
                         context,
@@ -294,19 +280,19 @@ class Lawyer {
     required this.specialties,
     required this.price,
     required this.photoURL,
-    required this.bio, required this.email,
+    required this.bio,
+    required this.email,
   });
 
   factory Lawyer.fromMap(Map<String, dynamic> map) {
     return Lawyer(
-      // ID: map['ID'],
-      firstName: map['firstName'],
-      lastName: map['lastName'],
-      specialties: List<String>.from(map['specialties']),
-      price: map['price'],
-      photoURL: map['photoURL'],
-      bio: map['bio'],
-      email: map['email']
-    );
+        // ID: map['ID'],
+        firstName: map['firstName'],
+        lastName: map['lastName'],
+        specialties: List<String>.from(map['specialties']),
+        price: map['price'],
+        photoURL: map['photoURL'],
+        bio: map['bio'],
+        email: map['email']);
   }
 }

@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:qanuni/homePage.dart';
 import 'package:qanuni/homePageLawyer.dart';
 import 'package:qanuni/presentation/screens/boarding_screen/view.dart';
 import 'package:qanuni/presentation/screens/client_signup_screen/view.dart';
-import 'package:qanuni/presentation/screens/home_screen/view.dart';
+//import 'package:qanuni/presentation/screens/home_screen/view.dart';
 import 'package:qanuni/presentation/screens/landing_screen/view.dart';
 import 'package:qanuni/presentation/screens/lawyer_signup_screen/view.dart';
 import 'package:qanuni/presentation/widgets/custom_text_form_field.dart';
@@ -45,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => HomeScreen(),
+                builder: (context) => LogoutPage(),
               ),
             );
           } else {

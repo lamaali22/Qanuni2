@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:qanuni/consultationLawyer.dart';
 import 'package:qanuni/presentation/screens/client_signup_screen/view.dart';
 import 'package:qanuni/presentation/screens/add_timeslots_Screen.dart';
 
@@ -51,7 +52,7 @@ class _LogoutPageLawyerState extends State<LogoutPageLawyer> {
       case 1:
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => LogoutPageLawyer()),
+          MaterialPageRoute(builder: (context) => BookingListScreen()),
           (route) => false,
         );
         break;
