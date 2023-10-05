@@ -1,4 +1,4 @@
-#Thu Oct 05 09:07:51 GMT+03:00 2023
+#Thu Oct 05 12:17:03 GMT+03:00 2023
 base.0=C\:\\Users\\44220\\OneDrive\\Documents\\GitHub\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
 base.1=C\:\\Users\\44220\\OneDrive\\Documents\\GitHub\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeLibDexDebug\\0\\classes.dex
 base.2=C\:\\Users\\44220\\OneDrive\\Documents\\GitHub\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
