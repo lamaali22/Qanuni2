@@ -9,6 +9,7 @@ import 'package:qanuni/firebase_options.dart';
 import 'package:qanuni/homePageLawyer.dart';
 import 'package:qanuni/presentation/screens/boarding_screen/view.dart';
 import 'package:qanuni/presentation/screens/add_timeslots_Screen.dart';
+import 'package:qanuni/presentation/screens/toggleBar.dart';
 import 'package:qanuni/providers/boarding/cubit/boarding_cubit.dart';
 
 import 'providers/auth/login/cubit/login_cubit.dart';
@@ -55,7 +56,7 @@ class MyApp extends StatelessWidget {
                   fontSizeFactor: 1.sp,
                 ),
               ),
-              home:
+              home: //ToggleBarExample()
                   //LogoutPageLawyer()
                   // TimeSlotScreen()
                   child,
