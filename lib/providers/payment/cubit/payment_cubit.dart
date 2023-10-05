@@ -99,8 +99,12 @@ class PaymentCubit extends Cubit<PaymentState> {
   }
 
   void bookSelectedTimeSlot() async {
-    DateTime startOfDay =
-        DateTime(selectedDate!.year, selectedDate!.month, selectedDate!.day);
+    DateTime startOfDay = DateTime(
+        selectedDate!.year,
+        selectedDate!.month,
+        selectedDate!.day,
+        int.parse(timeslot.split(':').first),
+        int.parse(timeslot.split(':').last));
 
     try {
       // Get the client's email from the current user
@@ -112,7 +116,7 @@ class PaymentCubit extends Cubit<PaymentState> {
             .collection('timeSlots')
             .where('available', isEqualTo: true)
             .where('lawyerEmail', isEqualTo: lawyerEmail)
-            // .where('startTime', isEqualTo: Timestamp.fromDate(startOfDay))
+            .where('startTime', isEqualTo: Timestamp.fromDate(startOfDay))
             .get();
 
         print('Query snapshot size: ${querySnapshot.size}');

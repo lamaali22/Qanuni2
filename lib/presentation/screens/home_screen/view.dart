@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qanuni/homePage.dart';
 import 'package:qanuni/main.dart';
+import 'package:qanuni/presentation/screens/landing_screen/view.dart';
 import 'package:qanuni/presentation/screens/reset_password_screen/view.dart';
 import 'package:qanuni/utils/colors.dart';
 import 'package:qanuni/viewListOfLawyers.dart';
@@ -9,38 +10,39 @@ import 'package:qanuni/viewListOfLawyers.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 //navigation bar method
-void _navigateToScreen(BuildContext context, int index) {
-  switch (index) {
-    case 0:
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => LogoutPage()),
-        (route) => false,
-      );
-      break;
-    case 1:
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => LogoutPage()),
-        (route) => false,
-      );
-      break;
-    case 2:
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => LogoutPage()),
-        (route) => false,
-      );
-      break;
-    case 3:
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
-        (route) => false,
-      );
-      break;
+  void _navigateToScreen(BuildContext context, int index) {
+    switch (index) {
+      case 0:
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LogoutPage()),
+          (route) => false,
+        );
+        break;
+      case 1:
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LogoutPage()),
+          (route) => false,
+        );
+        break;
+      case 2:
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LogoutPage()),
+          (route) => false,
+        );
+        break;
+      case 3:
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+          (route) => false,
+        );
+        break;
+    }
   }
-}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,7 +108,7 @@ void _navigateToScreen(BuildContext context, int index) {
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => LogoutPage(),
+                        builder: (context) => LandingScreen(),
                       ));
                 },
                 child: Text('تسجيل الخروج'))

@@ -23,6 +23,7 @@ class _LandingScreenState extends State<LandingScreen> {
     // TODO: implement initState
     super.initState();
     initShared();
+    BoardingCubit.get(context).init();
   }
 
   initShared() async {
@@ -39,10 +40,8 @@ class _LandingScreenState extends State<LandingScreen> {
         builder: (context, snapshot) {
           if (snapshot.hasData && selectedOption == 0) {
             return LogoutPage();
-          } else {
-            if (snapshot.hasData && selectedOption == 1) {
-              return LogoutPageLawyer();
-            }
+          } else if (snapshot.hasData && selectedOption == 1) {
+            return LogoutPageLawyer();
           }
           return const LoginScreen();
         },

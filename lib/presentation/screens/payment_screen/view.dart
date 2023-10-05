@@ -10,8 +10,7 @@ import 'package:qanuni/providers/payment/cubit/payment_cubit.dart';
 import 'package:qanuni/utils/colors.dart';
 import 'package:qanuni/utils/images.dart';
 
-// pass lawyer price to include in the summary
-// pass timeslot to make it available=false
+
 
 class PaymentScreen extends StatefulWidget {
   const PaymentScreen({Key? key}) : super(key: key);

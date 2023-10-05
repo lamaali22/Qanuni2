@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => BoardingCubit()..init(),
+          create: (_) => BoardingCubit(),
         ),
         BlocProvider(
           create: (_) => LoginCubit(),
