@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:qanuni/consultationLawyer.dart';
 import 'package:qanuni/presentation/screens/client_signup_screen/view.dart';
 import 'package:qanuni/presentation/screens/add_timeslots_Screen.dart';
+import 'package:qanuni/Notifications';
 
 import 'package:qanuni/presentation/screens/login_screen/view.dart';
 import 'package:qanuni/viewListOfLawyers.dart';
@@ -20,10 +22,25 @@ class _LogoutPageLawyerState extends State<LogoutPageLawyer> {
   final CollectionReference timeSlotsCollection =
       FirebaseFirestore.instance.collection('timeSlots');
 
+  String? email = "";
+  Future<void> getEmail() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      email = user.email!;
+
+      print('User email: $email');
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     _user = FirebaseAuth.instance.currentUser;
+
+    Notifications().requestPermission;
+
+    getEmail();
+    Token().updateTokenIfEmailMatches(email, true);
   }
 
   Future<QuerySnapshot> getAvailableTimeSlots() async {
@@ -97,6 +114,7 @@ class _LogoutPageLawyerState extends State<LogoutPageLawyer> {
                     size: 30,
                   ),
                   onPressed: () async {
+                    Token().updateTokenIfEmailMatches(email, false);
                     await _auth.signOut();
                     Navigator.pushReplacement(
                       context,

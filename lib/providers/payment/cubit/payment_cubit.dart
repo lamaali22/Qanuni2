@@ -8,6 +8,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
+import 'package:qanuni/Notifications';
+
 import 'package:qanuni/utils/constants.dart';
 part 'payment_state.dart';
 
@@ -145,6 +147,7 @@ class PaymentCubit extends Cubit<PaymentState> {
               'timeSlotId': timeSlotId,
             });
 
+            Token().getLawyerTokenAndSend(lawyerEmail);
             emit(PaymentSuccess());
           }
         }

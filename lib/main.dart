@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:qanuni/Notifications';
 import 'package:qanuni/firebase_options.dart';
 import 'package:qanuni/presentation/screens/boarding_screen/view.dart';
 import 'package:qanuni/presentation/screens/landing_screen/view.dart';
@@ -16,12 +18,23 @@ import 'providers/auth/login/cubit/login_cubit.dart';
 
 late final FirebaseApp app;
 late final FirebaseAuth auth;
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print(message.data.toString());
+  print(message.notification!.toString());
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   app = await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform);
   auth = FirebaseAuth.instanceFor(app: app);
   Stripe.publishableKey = AppConstants.stripKey;
+
+  Notifications.initalize();
+  Notifications.onRecieveNotification();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
   runApp(const MyApp());
 }
 
