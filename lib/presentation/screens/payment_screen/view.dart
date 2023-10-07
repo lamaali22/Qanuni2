@@ -75,7 +75,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 backgroundColor: Colors.red,
                 textStyle: const TextStyle(color: Colors.white));
           } else if (state.error == "Your card's expiration year is invalid.") {
-            showToast("تاريخ انهاء البطاقة غير صحيح",
+            showToast("تاريخ انتهاء البطاقة غير صحيح",
+                position: ToastPosition.bottom,
+                backgroundColor: Colors.red,
+                textStyle: const TextStyle(color: Colors.white));
+          } else if (state.error == "Your card number is incorrect.") {
+            showToast("البطاقة غير موجودة",
                 position: ToastPosition.bottom,
                 backgroundColor: Colors.red,
                 textStyle: const TextStyle(color: Colors.white));
