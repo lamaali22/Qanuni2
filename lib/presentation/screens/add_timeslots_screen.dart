@@ -307,7 +307,7 @@ class _TimeSlotScreenState extends State<TimeSlotScreen> {
 
                             showToast(
                               'تمت إضافة الوقت بنجاح',
-                              backgroundColor: Colors.black,
+                              backgroundColor: Colors.green,
                               radius: 10.0,
                               textStyle: TextStyle(color: Colors.white),
                               textPadding: EdgeInsets.all(10.0),
@@ -322,7 +322,7 @@ class _TimeSlotScreenState extends State<TimeSlotScreen> {
                           } else {
                             showToast(
                               'هذا الموعد موجود بالفعل',
-                              backgroundColor: Colors.black,
+                              backgroundColor: Colors.red,
                               radius: 10.0,
                               textStyle: TextStyle(color: Colors.white),
                               textPadding: EdgeInsets.all(10.0),
@@ -380,7 +380,8 @@ class _TimeSlotScreenState extends State<TimeSlotScreen> {
     DateTime currentDate = DateTime.now();
     DateTime? selectedDate = currentDate;
 
-    DateTime lastDateIn2023 = DateTime(2023, 12, 31);
+    // Calculate the last date as 10 days from the current date
+    DateTime lastDate = currentDate.add(Duration(days: 10));
 
     selectedDate = await showDialog<DateTime>(
       context: context,
@@ -392,7 +393,7 @@ class _TimeSlotScreenState extends State<TimeSlotScreen> {
             child: CalendarDatePicker(
               initialDate: currentDate,
               firstDate: currentDate,
-              lastDate: lastDateIn2023,
+              lastDate: lastDate,
               onDateChanged: (DateTime? newDate) {
                 if (newDate != null && !newDate.isBefore(currentDate)) {
                   selectedDate = newDate;
