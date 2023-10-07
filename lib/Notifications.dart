@@ -54,6 +54,7 @@ class Notifications {
     FirebaseMessaging.onMessage.listen((message) {
       initalize(context, message);
       display(message);
+      print("after display is called");
     });
   }
 
@@ -75,10 +76,11 @@ class Notifications {
               "status": "done",
               "message": body,
               'title': title,
-              'payload': 'BookingScreen'
             },
             'to': '$token'
           }));
+
+      print("inside send");
     } catch (e) {
       print('inside catch HHHHmmHHH');
     }
@@ -86,7 +88,10 @@ class Notifications {
 
   //called inside initState() inside raghad's page (the lawyer's one)
   Future<void> display(RemoteMessage message) async {
+    print("inside display berfore try");
+
     try {
+      print("inside display");
       Random random = new Random();
       int id = random.nextInt(1000);
 
@@ -100,8 +105,6 @@ class Notifications {
               priority: Priority.high,
               ticker: "ticker"));
 
-      print("my id is ${id.toString()}");
-
       Future.delayed(Duration.zero, () {
         _flutterLocalNotificationsPlugin.show(
           id,
@@ -109,6 +112,7 @@ class Notifications {
           message.notification!.body,
           notificationDetails,
         );
+        print("something went wrong");
       });
     } catch (e) {
       print("something went wrong");
