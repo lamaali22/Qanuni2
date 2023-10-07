@@ -155,6 +155,7 @@ class _TimeSlotScreenState extends State<TimeSlotScreen> {
                       ),
                     ),
                     Container(
+                      alignment: Alignment.centerRight,
                       width: 300,
                       child: TextFormField(
                         controller: _dateController,
@@ -380,19 +381,22 @@ class _TimeSlotScreenState extends State<TimeSlotScreen> {
     DateTime currentDate = DateTime.now();
     DateTime? selectedDate = currentDate;
 
-    DateTime lastDateIn2023 = DateTime(2023, 12, 31);
+    // Calculate the last date as 10 days from the current date
+    DateTime lastDate = currentDate.add(Duration(days: 10));
 
     selectedDate = await showDialog<DateTime>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Select Date'),
+          title: Text(
+            'اختر التاريخ',
+          ),
           content: Container(
             width: double.maxFinite,
             child: CalendarDatePicker(
               initialDate: currentDate,
               firstDate: currentDate,
-              lastDate: lastDateIn2023,
+              lastDate: lastDate,
               onDateChanged: (DateTime? newDate) {
                 if (newDate != null && !newDate.isBefore(currentDate)) {
                   selectedDate = newDate;

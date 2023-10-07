@@ -1,4 +1,4 @@
-#Thu Oct 05 14:48:13 AST 2023
+#Sat Oct 07 12:39:34 AST 2023
 base.0=C\:\\Windows\\development\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
 base.1=C\:\\Windows\\development\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeLibDexDebug\\0\\classes.dex
 base.2=C\:\\Windows\\development\\Qanuni2\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
