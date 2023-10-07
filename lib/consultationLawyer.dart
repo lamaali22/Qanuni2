@@ -199,7 +199,7 @@ class _BookingListScreenState extends State<BookingListScreen> {
                                       textAlign: TextAlign.right,
                                     ),
                                     Text(
-                                      "وقت الجلسة: $timeFormatted",
+                                      "موعد الجلسة: $timeFormatted",
                                       style: TextStyle(color: Colors.black),
                                       textAlign: TextAlign.right,
                                     ),
