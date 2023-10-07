@@ -31,9 +31,24 @@ class Notifications {
   void onDidReceiveNotificationResponse(
       BuildContext context, RemoteMessage message) {
     print("inside onDidReceiveNotificationResponse");
+    print(message.notification!.title.toString());
 
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => BookingListScreen()));
+    print("navigation comlete");
+  }
+
+  Future<void> setupInteractMessage(BuildContext context) async {
+    RemoteMessage? initialeMessage =
+        await FirebaseMessaging.instance.getInitialMessage();
+
+    if (initialeMessage != null) {
+      onDidReceiveNotificationResponse(context, initialeMessage);
+    }
+
+    FirebaseMessaging.onMessageOpenedApp.listen((event) {
+      onDidReceiveNotificationResponse(context, event);
+    });
   }
 
   void initalize(BuildContext context, RemoteMessage message) async {
@@ -54,7 +69,7 @@ class Notifications {
     FirebaseMessaging.onMessage.listen((message) {
       initalize(context, message);
       display(message);
-      print("after display is called");
+      print("after display is called ");
     });
   }
 
@@ -112,7 +127,7 @@ class Notifications {
           message.notification!.body,
           notificationDetails,
         );
-        print("something went wrong");
+        print("displying ");
       });
     } catch (e) {
       print("something went wrong");

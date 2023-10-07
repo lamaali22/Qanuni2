@@ -45,7 +45,6 @@ class _LogoutPageLawyerState extends State<LogoutPageLawyer> {
     Notifications().requestPermission;
     Notifications().onRecieveNotification(context);
     Notifications().setupInteractMessage(context);
-
     getEmailAndUpdateToken();
   }
 
