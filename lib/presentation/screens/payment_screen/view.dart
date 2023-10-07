@@ -4,13 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:qanuni/consultationFromClient.dart';
 import 'package:qanuni/presentation/screens/home_screen/view.dart';
 import 'package:qanuni/presentation/widgets/custom_text_form_field2.dart';
 import 'package:qanuni/providers/payment/cubit/payment_cubit.dart';
 import 'package:qanuni/utils/colors.dart';
 import 'package:qanuni/utils/images.dart';
 
-
+// pass lawyer price to include in the summary
+// pass timeslot to make it available=false
 
 class PaymentScreen extends StatefulWidget {
   const PaymentScreen({Key? key}) : super(key: key);
@@ -46,7 +48,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const HomeScreen(),
+                  builder: (context) => BookingClientScreen(),
                 ));
           });
         }
@@ -59,6 +61,21 @@ class _PaymentScreenState extends State<PaymentScreen> {
           } else if (state.error ==
               "The card number is not a valid credit card number.") {
             showToast("رقم البطاقة غير صحيح",
+                position: ToastPosition.bottom,
+                backgroundColor: Colors.red,
+                textStyle: const TextStyle(color: Colors.white));
+          } else if (state.error == 'Your card has insufficient funds.') {
+            showToast("لا يوجد رصيد كافي في البطاقة",
+                position: ToastPosition.bottom,
+                backgroundColor: Colors.red,
+                textStyle: const TextStyle(color: Colors.white));
+          } else if (state.error == 'Your card was declined.') {
+            showToast("تم رفض البطاقة",
+                position: ToastPosition.bottom,
+                backgroundColor: Colors.red,
+                textStyle: const TextStyle(color: Colors.white));
+          } else if (state.error == "Your card's expiration year is invalid.") {
+            showToast("تاريخ انهاء البطاقة غير صحيح",
                 position: ToastPosition.bottom,
                 backgroundColor: Colors.red,
                 textStyle: const TextStyle(color: Colors.white));

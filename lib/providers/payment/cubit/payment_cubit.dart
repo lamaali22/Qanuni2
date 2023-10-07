@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
+import 'package:qanuni/Notifications.dart';
 import 'package:qanuni/utils/constants.dart';
 part 'payment_state.dart';
 
@@ -49,17 +50,20 @@ class PaymentCubit extends Cubit<PaymentState> {
           expirationYear: int.parse(expiryController.text.split('/').last),
           cvc: cvvController.text));
       // 2. Create payment method
-      await Stripe.instance.createPaymentMethod(
+      PaymentMethod paymentMethod = await Stripe.instance.createPaymentMethod(
         params: PaymentMethodParams.card(
           paymentMethodData: PaymentMethodData(
             billingDetails: billingDetails,
           ),
         ),
       );
-      paymentIntent = await createPaymentIntent(price, 'SAR');
-      if (paymentIntent != null &&
-          paymentIntent!['client_secret'] != null &&
-          paymentIntent!['next_action'] == null) {
+
+      paymentIntent = await createPaymentIntent(price, 'SAR', paymentMethod.id);
+
+      PaymentIntent paymentInt = await Stripe.instance.confirmPayment(
+          paymentIntentClientSecret: paymentIntent!['client_secret']);
+
+      if (paymentInt.status == PaymentIntentsStatus.Succeeded) {
         bookSelectedTimeSlot();
       } else {
         emit(InvalidCard());
@@ -67,6 +71,7 @@ class PaymentCubit extends Cubit<PaymentState> {
     } catch (err) {
       print(err);
       if (err is StripeException) {
+        print(err);
         emit(Error(error: err.error.message!));
       } else {
         emit(Error(error: err.toString()));
@@ -74,11 +79,13 @@ class PaymentCubit extends Cubit<PaymentState> {
     }
   }
 
-  createPaymentIntent(String amount, String currency) async {
+  createPaymentIntent(
+      String amount, String currency, String paymentMethodId) async {
     Map<String, dynamic> body = {
       'amount': calculateAmount(amount),
       'currency': currency,
-      'payment_method_types[]': 'card'
+      'payment_method_types[]': 'card',
+      'payment_method': paymentMethodId
     };
 
     //Make post request to Stripe
@@ -145,6 +152,7 @@ class PaymentCubit extends Cubit<PaymentState> {
               'timeSlotId': timeSlotId,
             });
 
+            Token().getLawyerTokenAndSend(lawyerEmail);
             emit(PaymentSuccess());
           }
         }

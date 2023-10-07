@@ -203,15 +203,21 @@ class _BookingPageState extends State<BookingPage> {
                 : (_events[_selectedDay] == null ||
                         _events[_selectedDay]!.isEmpty)
                     ? Center(
+                        child: Container(
+                        padding: EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.red),
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white),
                         child: Text(
-                          "No available time slots for this day. Please choose another day.",
+                          "لا تتوفر أوقات متاحة لهذا اليوم, الرجاء اختيار يوم آخر",
                           style: TextStyle(
                             color: Colors.red,
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                      )
+                      ))
                     : GridView.builder(
                         padding: EdgeInsets.all(10),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
