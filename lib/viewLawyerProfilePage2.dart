@@ -202,7 +202,7 @@ class viewLawyerProfilePage2 extends StatelessWidget {
                             left: 20.40,
                             top: 2.40,
                             child: Text(
-                              '3.8',
+                              '${lawyer.AverageRating}',
                               textAlign: TextAlign.right,
                               style: TextStyle(
                                 color: Colors.black,

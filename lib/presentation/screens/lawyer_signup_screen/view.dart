@@ -1409,7 +1409,8 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                                     price: priceController.text.trim(),
                                     specialties: specialities,
                                     bio: bioController.text.trim(),
-                                    photoURL: "");
+                                    photoURL: "",
+                                    AverageRating: 0.0);
 
                                 createUser(lawyer);
                                 await signInWithEmailAndPassword(

@@ -157,7 +157,7 @@ class LawyersList extends StatelessWidget {
                                 left: 20.40,
                                 top: 2.40,
                                 child: Text(
-                                  '3.8',
+                                  '${lawyer.AverageRating}',
                                   textAlign: TextAlign.right,
                                   style: TextStyle(
                                     color: Colors.black,
@@ -272,6 +272,7 @@ class Lawyer {
   final String photoURL;
   final String bio; // URL to the lawyer's photo
   final String email;
+  final double AverageRating;
 
   Lawyer({
     // required this.ID,
@@ -282,6 +283,7 @@ class Lawyer {
     required this.photoURL,
     required this.bio,
     required this.email,
+    required this.AverageRating,
   });
 
   factory Lawyer.fromMap(Map<String, dynamic> map) {
@@ -293,6 +295,7 @@ class Lawyer {
         price: map['price'],
         photoURL: map['photoURL'],
         bio: map['bio'],
-        email: map['email']);
+        email: map['email'],
+        AverageRating: map['AverageRating']);
   }
 }

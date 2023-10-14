@@ -965,14 +965,16 @@ class _MyHomePageState extends State<MyHomePage> {
                                 price: priceController.text.trim(),
                                 specialties: specialities,
                                 bio: bioController.text.trim(),
-                                photoURL: "");
+                                photoURL: "",
+                                AverageRating: 0.0);
 
                             createUser(lawyer);
 
-Navigator.of(context).pushAndRemoveUntil(
-  MaterialPageRoute(builder: (context) => LogoutPageLawyer()),
-  (Route<dynamic> route) => false,
-);
+                            Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => LogoutPageLawyer()),
+                              (Route<dynamic> route) => false,
+                            );
 
 // Replace '/login' with your login screen route
 
