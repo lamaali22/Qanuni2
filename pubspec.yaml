@@ -57,6 +57,7 @@ dependencies:
   http: ^1.1.0
   awesome_dialog: ^3.1.0
   flutter_local_notifications: ^16.1.0
+  rating_summary: ^1.0.2+1
 
 dev_dependencies:
   flutter_test:

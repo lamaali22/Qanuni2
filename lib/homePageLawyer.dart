@@ -7,6 +7,7 @@ import 'package:qanuni/Notifications.dart';
 import 'package:qanuni/consultationLawyer.dart';
 import 'package:qanuni/presentation/screens/add_timeslots_Screen.dart';
 import 'package:qanuni/presentation/screens/login_screen/view.dart';
+import 'package:qanuni/viewProfileLawyer.dart';
 
 class LogoutPageLawyer extends StatefulWidget {
   @override
@@ -84,7 +85,7 @@ class _LogoutPageLawyerState extends State<LogoutPageLawyer> {
       case 0:
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => LogoutPageLawyer()),
+          MaterialPageRoute(builder: (context) => ViewProfileLawyer()),
           (route) => false,
         );
         break;
@@ -109,64 +110,67 @@ class _LogoutPageLawyerState extends State<LogoutPageLawyer> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(83),
-        child: Container(
-          width: double.infinity,
-          height: 90,
-          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 17),
-          decoration: const ShapeDecoration(
-            color: Color(0xFF008080),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(30),
-                bottomRight: Radius.circular(30),
+        preferredSize: const Size.fromHeight(90), // Adjusted the height
+        child: SafeArea(
+          // Wrap the AppBar with SafeArea
+          child: Container(
+            width: double.infinity,
+            height: 90,
+            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 17),
+            decoration: const ShapeDecoration(
+              color: Color(0xFF008080),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(30),
+                  bottomRight: Radius.circular(30),
+                ),
               ),
             ),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Center(
-                child: IconButton(
-                  icon: const Icon(
-                    Icons.exit_to_app,
-                    color: Colors.white,
-                    size: 30,
-                  ),
-                  onPressed: () async {
-                    Token().updateTokenIfEmailMatches(email, false);
-                    await _auth.signOut();
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => LoginScreen(),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              const Expanded(
-                child: Text.rich(
-                  TextSpan(
-                    children: [
-                      TextSpan(
-                        text: '👋🏼 أهلاً \n ',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18.12,
-                          fontFamily: 'Cairo',
-                          fontWeight: FontWeight.w500,
-                          height: 1.4,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Center(
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.exit_to_app,
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                    onPressed: () async {
+                      Token().updateTokenIfEmailMatches(email, false);
+                      await _auth.signOut();
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LoginScreen(),
                         ),
-                      ),
-                    ],
+                      );
+                    },
                   ),
-                  textAlign: TextAlign.right,
                 ),
-              ),
-            ],
+                const Expanded(
+                  child: Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: '👋🏼 أهلاً \n ',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18.12,
+                            fontFamily: 'Cairo',
+                            fontWeight: FontWeight.w500,
+                            height: 0.1,
+                          ),
+                        ),
+                      ],
+                    ),
+                    textAlign: TextAlign.right,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

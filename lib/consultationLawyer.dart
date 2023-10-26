@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:qanuni/homePageLawyer.dart';
+import 'package:qanuni/viewProfileLawyer.dart';
 
 void main() {
   runApp(MyApp());
@@ -103,7 +104,7 @@ class _BookingListScreenState extends State<BookingListScreen> {
       case 0:
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => LogoutPageLawyer()),
+          MaterialPageRoute(builder: (context) => ViewProfileLawyer()),
           (route) => false,
         );
         break;
