@@ -21,7 +21,7 @@ class _ViewLawyerReviewsState extends State<ViewLawyerReviews> {
   @override
   void initState() {
     super.initState();
-    if (lawyer.AverageRating != null) {
+    if (lawyer.AverageRating != null && lawyer.AverageRating.isNotEmpty) {
       averageRating = double.parse(lawyer.AverageRating);
     }
   }
@@ -30,14 +30,20 @@ class _ViewLawyerReviewsState extends State<ViewLawyerReviews> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.teal,
           elevation: 0,
+          title: const Text("جميع التقييمات",
+              style:
+                  TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.w500)),
+          centerTitle: true,
           actions: [
             IconButton(
               padding: const EdgeInsets.only(right: 30),
               alignment: Alignment.centerRight,
-              icon: const Icon(Icons.arrow_forward, color: Colors.teal),
+              icon: const Icon(Icons.arrow_forward,
+                  color: Color.fromARGB(255, 255, 255, 255)),
               onPressed: () {
                 Navigator.pop(context); // Navigate back to the previous page
               },
@@ -54,16 +60,20 @@ class _ViewLawyerReviewsState extends State<ViewLawyerReviews> {
           ),
         ),
         body: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: const Alignment(0, -1),
-              end: const Alignment(0, 0),
-              colors: [const Color(0x21008080), Colors.white.withOpacity(0)],
-            ),
-          ),
+          // decoration: BoxDecoration(
+          //   gradient: LinearGradient(
+          //     begin: const Alignment(0, -1),
+          //     end: const Alignment(0, 0),
+          //     colors: [const Color(0x21008080), Colors.white.withOpacity(0)],
+          //   ),
+          // ),
+
           child: SafeArea(
             child: ListView(
               children: [
+                const SizedBox(
+                  height: 15.0,
+                ),
                 FutureBuilder<QuerySnapshot>(
                   future: FirebaseFirestore.instance
                       .collection('reviews')
@@ -136,19 +146,20 @@ class _ViewLawyerReviewsState extends State<ViewLawyerReviews> {
                         return Column(
                           children: <Widget>[
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Container(
                                   width: 120,
-                                  height: 18,
+                                  height: 25,
                                   child: Stack(
                                     children: <Widget>[
                                       Positioned(
                                         left: 0,
                                         top: 0,
+                                        bottom: 0, //
                                         child: Container(
                                           width: 120,
-                                          height: 18,
+                                          height: 100,
                                           decoration: ShapeDecoration(
                                             color: const Color(0x26FFC126),
                                             shape: RoundedRectangleBorder(
@@ -167,15 +178,15 @@ class _ViewLawyerReviewsState extends State<ViewLawyerReviews> {
                                           color: Colors.amber[400],
                                         ),
                                       ),
-                                      Positioned(
+                                      const Positioned(
                                         left: 20.40,
                                         top: 2.40,
                                         child: Text(
                                           'لا يوجد تقييمات',
                                           textAlign: TextAlign.right,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             color: Colors.black,
-                                            fontSize: 13.02,
+                                            fontSize: 16,
                                             fontFamily: 'Cairo',
                                             fontWeight: FontWeight.w400,
                                             height: 1,

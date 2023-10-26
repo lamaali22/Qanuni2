@@ -30,8 +30,11 @@ class _LawyerEvaluationsState extends State<LawyerEvaluations> {
 
       if (userData.docs.isNotEmpty) {
         double userAverageRating = 0.0;
-        if (userData.docs[0]['AverageRating'] != null) {
+        if ((userData.docs[0]['AverageRating'] != null) &&
+            (userData.docs[0]['AverageRating'].isNotEmpty)) {
           userAverageRating = double.parse(userData.docs[0]['AverageRating']);
+        } else {
+          userAverageRating = 0.0;
         }
 
         setState(() {
@@ -47,14 +50,20 @@ class _LawyerEvaluationsState extends State<LawyerEvaluations> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.teal,
           elevation: 0,
+          title: const Text("تقييم المستفيدين",
+              style:
+                  TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.w500)),
+          centerTitle: true,
           actions: [
             IconButton(
               padding: const EdgeInsets.only(right: 30),
               alignment: Alignment.centerRight,
-              icon: const Icon(Icons.arrow_forward, color: Colors.teal),
+              icon: const Icon(Icons.arrow_forward,
+                  color: Color.fromARGB(255, 245, 238, 238)),
               onPressed: () {
                 Navigator.pop(context); // Navigate back to the previous page
               },
@@ -71,16 +80,19 @@ class _LawyerEvaluationsState extends State<LawyerEvaluations> {
           ),
         ),
         body: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: const Alignment(0, -1),
-              end: const Alignment(0, 0),
-              colors: [const Color(0x21008080), Colors.white.withOpacity(0)],
-            ),
-          ),
+          // decoration: BoxDecoration(
+          //   gradient: LinearGradient(
+          //     begin: const Alignment(0, -1),
+          //     end: const Alignment(0, 0),
+          //     colors: [const Color(0x21008080), Colors.white.withOpacity(0)],
+          //   ),
+          // ),
           child: SafeArea(
             child: ListView(
               children: [
+                const SizedBox(
+                  height: 15.0,
+                ),
                 FutureBuilder<QuerySnapshot>(
                   future: FirebaseFirestore.instance
                       .collection('reviews')
