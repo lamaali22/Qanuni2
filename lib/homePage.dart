@@ -41,77 +41,69 @@ class LogoutPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(83),
-        child: Container(
-          width: double.infinity,
-          height: 90,
-          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 17),
-          decoration: ShapeDecoration(
-            color: Color(0xFF008080),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(30),
-                bottomRight: Radius.circular(30),
+        preferredSize: const Size.fromHeight(90), // Adjusted the height
+        child: SafeArea(
+          // Wrap the AppBar with SafeArea
+          child: Container(
+            width: double.infinity,
+            height: 90,
+            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 17),
+            decoration: const ShapeDecoration(
+              color: Color(0xFF008080),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(30),
+                  bottomRight: Radius.circular(30),
+                ),
               ),
             ),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Center(
-                child: IconButton(
-                  icon: Icon(
-                    Icons.exit_to_app,
-                    color: Colors.white,
-                    size: 30,
-                  ),
-                  onPressed: () async {
-                    await _auth.signOut();
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            LoginScreen(), // go to sign in page
-                      ),
-                    ); // Replace '/login' with your login screen route
-                  },
-                ),
-              ),
-              Expanded(
-                child: Text.rich(
-                  TextSpan(
-                    children: [
-                      TextSpan(
-                        text: '👋🏼 أهلاً \n ',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18.12,
-                          fontFamily: 'Cairo',
-                          fontWeight: FontWeight.w500,
-                          height: 2.4,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Center(
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.exit_to_app,
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                    onPressed: () async {
+                      await _auth.signOut();
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LoginScreen(),
                         ),
-                      ),
-                      // TextSpan(
-                      //   text: 'محمد الصالح',
-                      //   style: TextStyle(
-                      //     color: Colors.white,
-                      //     fontSize: 18.12,
-                      //     fontFamily: 'Cairo',
-                      //     fontWeight: FontWeight.w600,
-                      //     height: 0.06,
-                      //   ),
-                      // ),
-                    ],
+                      );
+                    },
                   ),
-                  textAlign: TextAlign.right,
                 ),
-              ),
-            ],
+                const Expanded(
+                  child: Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: '👋🏼 أهلاً \n ',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18.12,
+                            fontFamily: 'Cairo',
+                            fontWeight: FontWeight.w500,
+                            height: 0.1,
+                          ),
+                        ),
+                      ],
+                    ),
+                    textAlign: TextAlign.right,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      ), //appbar
+      ),
 
       //navigation bar
       bottomNavigationBar: BottomNavigationBar(
