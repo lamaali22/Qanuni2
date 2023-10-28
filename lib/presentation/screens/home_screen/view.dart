@@ -88,7 +88,7 @@ class HomeScreen extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => LawyersList(),
+                        builder: (context) => LawyersList("الكل"),
                       ));
                   ;
                 },

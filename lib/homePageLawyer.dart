@@ -31,7 +31,7 @@ class _LogoutPageLawyerState extends State<LogoutPageLawyer> {
       email = user.email!;
 
       print('User email: $email');
-      Token().updateTokenIfEmailMatches(email, true);
+      Token().updateTokenInDB(email, true, "lawyers");
     }
   }
 
@@ -139,7 +139,7 @@ class _LogoutPageLawyerState extends State<LogoutPageLawyer> {
                       size: 30,
                     ),
                     onPressed: () async {
-                      Token().updateTokenIfEmailMatches(email, false);
+                      Token().updateTokenInDB(email, false, "lawyers");
                       await _auth.signOut();
                       Navigator.pushReplacement(
                         context,
