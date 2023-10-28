@@ -263,7 +263,7 @@ class _BookingListScreenState extends State<BookingClientScreen> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.person_2_outlined),
-            label: 'جسابي',
+            label: 'حسابي',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_month_outlined),

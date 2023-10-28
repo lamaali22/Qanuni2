@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: LawyersList(),
+      home: LawyersList(""),
     );
   }
 }
@@ -59,6 +59,9 @@ class LawyersList extends StatelessWidget {
     }
   }
 
+  final String speciality;
+  LawyersList(this.speciality);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,7 +88,7 @@ class LawyersList extends StatelessWidget {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.person_2_outlined),
-            label: 'جسابي',
+            label: 'حسابي',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_month_outlined),
@@ -99,7 +102,7 @@ class LawyersList extends StatelessWidget {
       ),
 
       body: FutureBuilder(
-        future: getLawyers(), // Fetch lawyers from Firebase Firestore
+        future: getLawyers(speciality), // Fetch lawyers from Firebase Firestore
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
@@ -247,21 +250,88 @@ class LawyersList extends StatelessWidget {
   }
 }
 
-Future<List<Lawyer>> getLawyers() async {
-  List<Lawyer> lawyers = [];
-  QuerySnapshot querySnapshot =
-      await FirebaseFirestore.instance.collection('lawyers').get();
+// Future<List<Lawyer>> getLawyers(String speciality) async {
+//   List<Lawyer> lawyers = [];
+//   QuerySnapshot querySnapshot =
+//       await FirebaseFirestore.instance.collection('lawyers').get();
 
-  for (QueryDocumentSnapshot doc in querySnapshot.docs) {
-    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-    Lawyer lawyer = Lawyer.fromMap(data);
-    print(
-        'Lawyer Data: ${lawyer.firstName}, ${lawyer.lastName}, ${lawyer.photoURL}, ${lawyer.specialties}');
-    lawyers.add(lawyer);
+//   for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+//     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+//     Lawyer lawyer = Lawyer.fromMap(data);
+//     print(
+//         'Lawyer Data: ${lawyer.firstName}, ${lawyer.lastName}, ${lawyer.photoURL}, ${lawyer.specialties}');
+//     lawyers.add(lawyer);
+//   }
+
+//   return lawyers;
+// }
+
+Future<List<Lawyer>> getLawyers(String speciality) async {
+  List<Lawyer> lawyers = [];
+
+  print("speciality" + speciality);
+  if (speciality != "الكل") {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('lawyers')
+        .orderBy('AverageRating', descending: true)
+        .get();
+
+    for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      Lawyer lawyer = Lawyer.fromMap(data);
+      if (lawyer.specialties.contains(speciality)) {
+        lawyers.add(lawyer);
+        print(
+            'Lawyer Data: ${lawyer.firstName}, ${lawyer.lastName}, ${lawyer.photoURL}, ${lawyer.specialties} ,${lawyer.specialties.length} ');
+      }
+    }
+  } else {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('lawyers')
+        .orderBy('AverageRating', descending: true)
+        .get();
+
+    for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      Lawyer lawyer = Lawyer.fromMap(data);
+      lawyers.add(lawyer);
+      print(
+          'Lawyer Data: ${lawyer.firstName}, ${lawyer.lastName}, ${lawyer.photoURL}, ${lawyer.specialties}');
+    }
   }
 
   return lawyers;
 }
+// Future<List<Lawyer>> getLawyers(String speciality) async {
+//   List<Lawyer> lawyers = [];
+
+//   QuerySnapshot querySnapshot;
+
+//   if (speciality != "الكل") {
+//     querySnapshot = await FirebaseFirestore.instance
+//         .collection('lawyers')
+//         .where('specialties', arrayContains: speciality)
+//         .orderBy('AverageRating',
+//             descending: true) // Sort by AverageRate in descending order
+//         .get();
+//   } else {
+//     querySnapshot = await FirebaseFirestore.instance
+//         .collection('lawyers')
+//         .orderBy('AverageRating',
+//             descending: true) // Sort by AverageRate in descending order
+//         .get();
+//   }
+
+//   for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+//     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+//     Lawyer lawyer = Lawyer.fromMap(data);
+//     print(
+//         'Lawyer Data: ${lawyer.firstName}, ${lawyer.lastName}, ${lawyer.photoURL}, ${lawyer.specialties}, ${lawyer.AverageRating}');
+//     lawyers.add(lawyer);
+//   }
+
+//   return lawyers;
+// }
 
 class Lawyer {
   //final int ID;
@@ -272,7 +342,7 @@ class Lawyer {
   final String photoURL;
   final String bio; // URL to the lawyer's photo
   final String email;
-  final double AverageRating;
+  final String AverageRating;
 
   Lawyer({
     // required this.ID,
