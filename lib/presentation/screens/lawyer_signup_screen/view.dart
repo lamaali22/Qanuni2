@@ -1410,7 +1410,7 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                                     specialties: specialities,
                                     bio: bioController.text.trim(),
                                     photoURL: "",
-                                    AverageRating: 0.0);
+                                    AverageRating: '0.0');
 
                                 createUser(lawyer);
                                 await signInWithEmailAndPassword(

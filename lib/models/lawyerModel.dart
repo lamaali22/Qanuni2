@@ -13,7 +13,7 @@ class lawyerModel {
   final String price;
   final String bio;
   final String photoURL;
-  final double AverageRating;
+  final String AverageRating;
 
   lawyerModel(
       {this.id, // id added

@@ -272,7 +272,7 @@ class Lawyer {
   final String photoURL;
   final String bio; // URL to the lawyer's photo
   final String email;
-  final double AverageRating;
+  final String AverageRating;
 
   Lawyer({
     // required this.ID,

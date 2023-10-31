@@ -6,6 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:qanuni/consultationFromClient.dart';
+import 'package:qanuni/consultationLawyer.dart';
 import 'package:qanuni/firebase_options.dart';
 import 'package:qanuni/presentation/screens/boarding_screen/view.dart';
 import 'package:qanuni/presentation/screens/landing_screen/view.dart';
