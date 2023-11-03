@@ -603,7 +603,7 @@ case 2:
                           ],
                         ),
                       ),
-                      ElevatedButton.icon(
+                      /*ElevatedButton.icon(
                         onPressed: () {
                           // Handle button click here
                         },
@@ -623,7 +623,37 @@ case 2:
                             color: Colors.black,
                           ),
                         ),
-                      ),
+                      ),*/
+    ElevatedButton.icon(
+  onPressed: () {
+    if (appointments[index].startTime.toDate().isBefore(DateTime.now())) {
+      // Handle "Consultation Evaluation" action for previous appointments
+    } else {
+      // Handle "Start Consultation" action for upcoming appointments
+    }
+  },
+  style: ElevatedButton.styleFrom(
+    primary: Colors.white,
+    onPrimary: Colors.blue,
+    minimumSize: const Size(350, 35),
+    side: const BorderSide(color: Colors.black),
+  ),
+  icon: Icon(
+    appointments[index].startTime.toDate().isBefore(DateTime.now())
+        ? Icons.star // Star icon for "Consultation Evaluation" in previous appointments
+        : Icons.chat, // Chat icon for "Start Consultation" in upcoming appointments
+    color: Colors.teal,
+  ),
+  label: Text(
+    appointments[index].startTime.toDate().isBefore(DateTime.now())
+        ? "تقييم الأستشارة" // "Consultation Evaluation" for previous appointments
+        : "ابدأ الأستشارة", // "Start Consultation" for upcoming appointments
+    style: TextStyle(
+      color: Colors.black,
+    ),
+  ),
+)
+
                     ],
                   ),
                 );
