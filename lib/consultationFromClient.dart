@@ -398,11 +398,11 @@ class _BookingListScreenState extends State<BookingClientScreen> with TickerProv
   }
 
   void switchToUpcomingAppointments() {
-    _pageController.animateToPage(0, duration: Duration(milliseconds: 300), curve: Curves.ease);
+    _pageController.animateToPage(0, duration: const Duration(milliseconds: 300), curve: Curves.ease);
   }
 
   void switchToPreviousAppointments() {
-    _pageController.animateToPage(1, duration: Duration(milliseconds: 300), curve: Curves.ease);
+    _pageController.animateToPage(1, duration: const Duration(milliseconds: 300), curve: Curves.ease);
   }
 
   Future<void> fetchUpcomingAppointments(String clientEmail) async {
@@ -478,7 +478,7 @@ case 2:
       child: Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Color.fromARGB(255, 0, 128, 128),
+        backgroundColor: const Color.fromARGB(255, 0, 128, 128),
         title: const Text(
           "استشاراتي",
           style: TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.w500),
@@ -486,7 +486,7 @@ case 2:
         centerTitle: true,
         actions: [],
                 // Add the TabBar to the appBar
-        bottom: TabBar(
+        bottom: const TabBar(
          // controller: _tabController,
           tabs: <Widget>[
             Tab(text: "المواعيد القادمة"),
@@ -502,18 +502,19 @@ case 2:
       future: fetchPreviousAppointments(_user?.email ?? ''),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (snapshot.hasData) {
           final previousAppointments = snapshot.data!;
           if (previousAppointments.isEmpty) {
-            return Center(child: Text('No previous appointments.'));
+            return const Center(child: Text('لايوجد مواعيد محجوزة',
+                             style: TextStyle(color: Colors.black),));
           } else {
             return _buildAppointmentsList(previousAppointments);
           }
         } else {
-          return Center(child: Text('No data available.'));
+          return const Center(child: Text('No data available.'));
         }
       },
     ),
@@ -521,20 +522,20 @@ case 2:
       ),
       // Navigation bar
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Color(0x7F008080),
+        selectedItemColor: const Color(0x7F008080),
         unselectedItemColor: Colors.black,
         showUnselectedLabels: true,
         onTap: (index) => _navigateToScreen(context, index),
         items: [
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.person_2_outlined),
             label: 'جسابي',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.calendar_month_outlined),
             label: 'مواعيدي',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined),
             label: 'الصفحة الرئيسية',
           ),
@@ -546,7 +547,8 @@ case 2:
 
   Widget _buildAppointmentsList(List<Booking> appointments) {
     if (appointments.isEmpty) {
-      return Center(child: Text('لايوجد مواعيد محجوزة'));
+      return const Center (child: Text('لايوجد مواعيد محجوزة',
+                             style: TextStyle(color: Colors.black),));
     } else {
       return ListView.builder(
         itemCount: appointments.length,
@@ -555,7 +557,7 @@ case 2:
             future: fetchLawyerInfo(appointments[index].lawyerEmail),
             builder: (context, lawyerSnapshot) {
               if (lawyerSnapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
+                return const CircularProgressIndicator();
               } else if (lawyerSnapshot.hasError) {
                 return Text('Error: ${lawyerSnapshot.error}');
               } else if (lawyerSnapshot.hasData) {
@@ -566,7 +568,7 @@ case 2:
                 final timeFormatted = DateFormat('HH:mm').format(startTimeDate);
 
                 return Container(
-                  margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
                     borderRadius: BorderRadius.circular(8),
@@ -577,7 +579,7 @@ case 2:
                       ListTile(
                         title: Text(
                           " ${lawyerInfo['firstName']} ${lawyerInfo['lastName']}",
-                          style: TextStyle(color: Colors.black),
+                          style: const TextStyle(color: Colors.black),
                           textAlign: TextAlign.right,
                         ),
                         subtitle: Column(
@@ -585,15 +587,15 @@ case 2:
                           children: [
                             Text(
                               "تاريخ الجلسة: $dateFormatted",
-                              style: TextStyle(color: Colors.black),
+                              style: const TextStyle(color: Colors.black),
                               textAlign: TextAlign.right,
                             ),
                             Text(
                               "موعد الجلسة: $timeFormatted",
-                              style: TextStyle(color: Colors.black),
+                              style: const TextStyle(color: Colors.black),
                               textAlign: TextAlign.right,
                             ),
-                            Text(
+                            const Text(
                               "مدة الجلسة: ساعة واحدة",
                               style: TextStyle(color: Colors.black),
                               textAlign: TextAlign.right,
@@ -608,14 +610,14 @@ case 2:
                         style: ElevatedButton.styleFrom(
                           primary: Colors.white,
                           onPrimary: Colors.blue,
-                          minimumSize: Size(350, 35),
-                          side: BorderSide(color: Colors.black),
+                          minimumSize: const Size(350, 35),
+                          side: const BorderSide(color: Colors.black),
                         ),
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.chat,
                           color: Colors.teal,
                         ),
-                        label: Text(
+                        label: const Text(
                           "ابدأ الاستشارة",
                           style: TextStyle(
                             color: Colors.black,
@@ -626,7 +628,7 @@ case 2:
                   ),
                 );
               } else {
-                return Text('No data available.');
+                return const Text('No data available.');
               }
             },
           );
