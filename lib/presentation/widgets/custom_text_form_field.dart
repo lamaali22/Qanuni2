@@ -49,7 +49,7 @@ class CustomTextFormField extends StatelessWidget {
               obscureText == null || obscureText == false ? false : true,
           maxLength: maxLength,
           decoration: InputDecoration(
-              counterText: '',
+              counterText:maxLength != null ? null:'',
               errorStyle: TextStyle(color: Colors.red, fontSize: 14),
               fillColor: filledColor,
               filled: filledColor != null,
