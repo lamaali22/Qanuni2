@@ -622,7 +622,7 @@ class _BookingListScreenState extends State<BookingClientScreen>
                           ],
                         ),
                       ),
-                      ElevatedButton.icon(
+                    /*ElevatedButton.icon(
                         onPressed: () {
                           // Handle button click here
                           if (booking.review != null &&
@@ -673,7 +673,61 @@ class _BookingListScreenState extends State<BookingClientScreen>
                                 : Colors.black,
                           ),
                         ),
-                      ),
+                      ),*/
+                      ElevatedButton.icon(
+  onPressed: () {
+    if (appointments[index].startTime.toDate().isBefore(DateTime.now())) {
+       // Handle button click here
+                          if (booking.review != null &&
+                              booking.review!.isNotEmpty &&
+                              booking.rate != null) {
+                                showToast('تم التقييم مسبقا',position:ToastPosition.bottom);
+                          } else {
+                            ClientReviewCubit.get(context).init(
+                                lawyerInfo['firstName'] +
+                                    ' ' +
+                                    lawyerInfo['lastName'],
+                                lawyerInfo['photoURL'],
+                                lawyerInfo['AverageRating'],
+                                booking.bookingId,
+                                lawyerInfo['specialties'],
+                                booking.lawyerEmail,
+                                booking.review,
+                                booking.rate);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const ClientReviewScreen(),
+                                ));
+                          }
+      // Handle "Consultation Evaluation" action for previous appointments
+    } else {
+      // Handle "Start Consultation" action for upcoming appointments
+    }
+  },
+  style: ElevatedButton.styleFrom(
+    primary: Colors.white,
+    onPrimary: Colors.blue,
+    minimumSize: const Size(350, 35),
+    side: const BorderSide(color: Colors.black),
+  ),
+  icon: Icon(
+    appointments[index].startTime.toDate().isBefore(DateTime.now())
+        ? Icons.star // Star icon for "Consultation Evaluation" in previous appointments
+        : Icons.chat, // Chat icon for "Start Consultation" in upcoming appointments
+    color: Colors.teal,
+  ),
+  label: Text(
+    appointments[index].startTime.toDate().isBefore(DateTime.now())
+        ? "تقييم الأستشارة" // "Consultation Evaluation" for previous appointments
+        : "أبدأ الأستشارة", // "Start Consultation" for upcoming appointments
+    style: TextStyle(
+      color: Colors.black,
+    ),
+  ),
+)
+
                     ],
                   ),
                 );
