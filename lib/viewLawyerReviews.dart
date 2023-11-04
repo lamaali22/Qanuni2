@@ -32,7 +32,7 @@ class _ViewLawyerReviewsState extends State<ViewLawyerReviews> {
       home: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.teal,
+        backgroundColor: Color.fromARGB(255, 0, 128, 128),
           elevation: 0,
           title: const Text("جميع التقييمات",
               style:

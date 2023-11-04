@@ -283,6 +283,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:qanuni/homePageLawyer.dart';
+import 'package:qanuni/viewProfileLawyer.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 
 void main() {
   runApp(MyApp());
@@ -292,11 +294,14 @@ class Booking {
   final String clientEmail;
   final Timestamp startTime;
   final Timestamp endTime;
+   final String bookingId;
 
   Booking({
     required this.clientEmail,
     required this.startTime,
     required this.endTime,
+    required this.bookingId,
+
   });
 
   factory Booking.fromFirestore(DocumentSnapshot doc) {
@@ -305,6 +310,8 @@ class Booking {
       clientEmail: data['clientEmail'],
       startTime: data['startTime'],
       endTime: data['endTime'],
+      bookingId: doc.id,
+
     );
   }
 }
@@ -434,12 +441,12 @@ Future<List<Booking>> fetchPreviousAppointments(String lawyerEmail) async {
 
 
 
-void _navigateToScreen(BuildContext context, int index) {
+  void _navigateToScreen(BuildContext context, int index) {
     switch (index) {
       case 0:
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => LogoutPageLawyer()),
+          MaterialPageRoute(builder: (context) => ViewProfileLawyer()),
           (route) => false,
         );
         break;
@@ -541,7 +548,7 @@ void _navigateToScreen(BuildContext context, int index) {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.person_2_outlined),
-            label: 'جسابي',
+            label: 'حسابي',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_month_outlined),
@@ -581,6 +588,9 @@ void _navigateToScreen(BuildContext context, int index) {
                       final startTimeDate = booking.startTime.toDate();
                       final dateFormatted = DateFormat('yyyy-MM-dd').format(startTimeDate);
                       final timeFormatted = DateFormat('HH:mm').format(startTimeDate);
+                      final currentTime = DateTime.now();
+                        final scheduledTime = startTimeDate;
+                        final endTimeDate= booking.endTime.toDate();
 
                       return Container(
                         margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -643,22 +653,45 @@ void _navigateToScreen(BuildContext context, int index) {
                                 if (booking.endTime.toDate().isAfter(DateTime.now())) // Show the button only for upcoming appointments
                       ElevatedButton.icon(
                         onPressed: () {
-                          // Handle button click here
-                        },
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.white,
-                          onPrimary: Colors.blue,
+                         // Handle button click here to initiate a video call
+                          // You can use Zego or any other video call implementation
+                          if (currentTime.isAfter(scheduledTime)&& currentTime.isBefore(endTimeDate)) {
+                            // Allow the session to start only if it's after the scheduled time
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CallPage(
+                                  callID: booking.bookingId,
+                                ),
+                              ),
+                            );
+                          }
+                },
+                style: ElevatedButton.styleFrom(
+                          primary: currentTime.isAfter(scheduledTime) && currentTime.isBefore(endTimeDate)
+                              ? Color.fromARGB(255, 0, 128, 128) // Active session style
+                              : Colors.white, // Inactive session style
+                          onPrimary: currentTime.isAfter(scheduledTime)
+                              ? Colors.white // Text color for active session
+                              : Color.fromARGB(255, 0, 128, 128), // Text color for inactive session
                           minimumSize: Size(350, 35),
                           side: BorderSide(color: Colors.black),
                         ),
                         icon: Icon(
                           Icons.chat,
-                          color: Colors.teal,
+                          color: currentTime.isAfter(scheduledTime) && currentTime.isBefore(endTimeDate)
+                              ? Colors.white // Icon color for active session
+                              : Color.fromARGB(255, 0, 128, 128), // Icon color for inactive session
                         ),
                         label: Text(
-                          "ابدأ الأستشارة",
+                          "ابدأ الاستشارة",
                           style: TextStyle(
-                            color: Colors.black,
+                            color: currentTime.isAfter(scheduledTime) && currentTime.isBefore(endTimeDate)
+                                ? Colors.white // Text color for active session
+                                : Color.fromARGB(255, 0, 128, 128), // Text color for inactive session
+                            fontWeight: currentTime.isAfter(scheduledTime) && currentTime.isBefore(endTimeDate)
+                                ? FontWeight.bold // Bold text for active session
+                                : FontWeight.normal, // Normal text for inactive session
                           ),
                         ),
                       ),
@@ -691,5 +724,27 @@ Future<Map<String, String>> fetchClientInfo(String clientEmail) async {
   }
 
 }
-   
+class CallPage extends StatelessWidget {
+  const CallPage({Key? key, required this.callID}) : super(key: key);
+  final String callID;
+
+  @override
+  Widget build(BuildContext context) {
+    // Assuming you have a way to get the lawyer's first and last name
+    final lawyerFirstName = 'Lawyer First Name';  // Replace with the actual lawyer's first name
+    final lawyerLastName = 'Lawyer Last Name';    // Replace with the actual lawyer's last name
+    final lawyerName = '$lawyerFirstName $lawyerLastName';
+
+    return ZegoUIKitPrebuiltCall(
+      appID: 1464607761,
+      appSign: 'c10ad908a7e7cb650c8d4c27f74be82d0645530aebd37f670361d49d5d90b9ec',
+      userID: FirebaseAuth.instance.currentUser?.email ?? '',
+      userName: lawyerName,
+      callID: callID,
+      config: ZegoUIKitPrebuiltCallConfig.oneOnOneVideoCall()
+        ..onOnlySelfInRoom = (context) => Navigator.of(context).pop(),
+    );
+  }
+}
+
 

@@ -87,7 +87,7 @@ class viewLawyerProfilePage2 extends StatelessWidget {
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.person_2_outlined),
-              label: 'جسابي',
+              label: 'حسابي',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.calendar_month_outlined),

@@ -80,7 +80,7 @@ class _LogoutPageLawyerState extends State<LogoutPageLawyer> {
     super.dispose();
   }
 
-  void _navigateToScreen(BuildContext context, int index) {
+    void _navigateToScreen(BuildContext context, int index) {
     switch (index) {
       case 0:
         Navigator.pushAndRemoveUntil(
