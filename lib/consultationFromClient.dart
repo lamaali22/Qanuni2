@@ -249,8 +249,8 @@ class _BookingListScreenState extends State<BookingClientScreen>
   }
 
   Widget _buildAppointmentsList(List<Booking> appointments) {
-    // Sort the appointments in reverse order (latest first)
-  appointments.sort((a, b) => b.startTime.compareTo(a.startTime));
+    // Sort the appointments in ascending order (oldest first)
+  appointments.sort((a, b) => a.startTime.compareTo(b.startTime));
     if (appointments.isEmpty) {
       return Center(child: Text('لايوجد مواعيد محجوزة'));
     } else {
