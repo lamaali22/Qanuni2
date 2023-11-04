@@ -130,7 +130,7 @@ class LawyersList extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.white),
                 child: Text(
-                  "لا تتوفر أوقات متاحة لهذا اليوم, الرجاء اختيار يوم آخر",
+                  "نعتذر, لا يوجد محامين بهذا الاختصاص في الوقت الحالي",
                   style: TextStyle(
                     color: Colors.teal,
                     fontSize: 16,
