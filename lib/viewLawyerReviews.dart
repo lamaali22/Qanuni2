@@ -92,6 +92,7 @@ class _ViewLawyerReviewsState extends State<ViewLawyerReviews> {
                           children: <Widget>[
                             RatingSummary(
                               counter: numberOfClientsWithRatings,
+                              label: ": عدد التقييمات",
                               average: averageRating,
                               showAverage: true,
                               counterFiveStars: reviews
