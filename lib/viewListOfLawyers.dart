@@ -68,7 +68,7 @@ class LawyersList extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Color.fromARGB(255, 0, 128, 128),
-        title: const Text("المحامين",
+        title: Text("محامين $speciality",
             style: TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.w500)),
         centerTitle: true,
         // leading: IconButton(
@@ -78,6 +78,16 @@ class LawyersList extends StatelessWidget {
         //     Navigator.pop(context);
         //   },
         // ),
+        actions: [
+          IconButton(
+            padding: EdgeInsets.only(right: 30),
+            alignment: Alignment.centerRight,
+            icon: Icon(Icons.arrow_forward, color: Colors.white),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
       ),
       //navigation bar
       bottomNavigationBar: BottomNavigationBar(
@@ -111,138 +121,157 @@ class LawyersList extends StatelessWidget {
             return Text('Error: ${snapshot.error}');
           } else {
             List<Lawyer> lawyers = snapshot.data as List<Lawyer>;
-            return ListView.builder(
-              itemCount: lawyers.length,
-              itemBuilder: (context, index) {
-                Lawyer lawyer = lawyers[index];
-                return Container(
-                  margin: EdgeInsets.all(10.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15.0),
-                    border: Border.all(
-                      color: Colors.grey
-                          .withOpacity(0.3), // Adjust the border color
-                      width: 1.0, // Adjust the border width
-                    ),
+            if (lawyers.isEmpty) {
+              return Center(
+                  child: Container(
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.teal),
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white),
+                child: Text(
+                  "لا تتوفر أوقات متاحة لهذا اليوم, الرجاء اختيار يوم آخر",
+                  style: TextStyle(
+                    color: Colors.teal,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
                   ),
-                  child: ListTile(
-                    leading: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Container(
-                          width: 42,
-                          height: 18,
-                          child: Stack(
-                            children: [
-                              Positioned(
-                                left: 0,
-                                top: 0,
-                                child: Container(
-                                  width: 42,
-                                  height: 18,
-                                  decoration: ShapeDecoration(
-                                    color: Color(0x26FFC126),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(6)),
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                left: 2.0,
-                                top: 0,
-                                child: Icon(
-                                  Icons.star,
-                                  size: 17.0,
-                                  color: Colors.amber[400],
-                                ),
-                              ),
-                              Positioned(
-                                left: 20.40,
-                                top: 2.40,
-                                child: Text(
-                                  '${lawyer.AverageRating}',
-                                  textAlign: TextAlign.right,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 13.02,
-                                    fontFamily: 'Cairo',
-                                    fontWeight: FontWeight.w400,
-                                    height: 1,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                ),
+              ));
+            } else
+              return ListView.builder(
+                itemCount: lawyers.length,
+                itemBuilder: (context, index) {
+                  Lawyer lawyer = lawyers[index];
+                  return Container(
+                    margin: EdgeInsets.all(10.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15.0),
+                      border: Border.all(
+                        color: Colors.grey
+                            .withOpacity(0.3), // Adjust the border color
+                        width: 1.0, // Adjust the border width
+                      ),
                     ),
-                    trailing: ClipOval(
-                        child: Image.network(
-                      lawyer.photoURL,
-                      width: 60,
-                      height: 60,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Image.asset(
-                          'assets/default_photo.jpg',
-                          width: 60,
-                          height: 60,
-                          fit: BoxFit.cover,
-                        );
-                      },
-                    )),
-                    title: Text('${lawyer.firstName} ${lawyer.lastName}',
-                        textAlign: TextAlign.right,
-                        // Align text to the right
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'Cairo',
-                          fontWeight: FontWeight.w500,
-                          fontSize: 17,
-                        )),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Align(
-                          alignment: Alignment
-                              .centerRight, // Align specialties text to the right
-                          child: Text(lawyer.specialties.join(' | '),
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: 'Cairo',
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.normal)),
-                        ),
-                        SizedBox(height: 1),
-                        Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Container(
-                            decoration: BoxDecoration(),
-                            child: Text(
-                              '${formatNumber(int.parse(lawyer.price))}' +
-                                  '${riyal}',
-                              style: TextStyle(
-                                  color: Colors.teal,
-                                  fontFamily: 'Cairo',
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700),
+                    child: ListTile(
+                      leading: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            width: 42,
+                            height: 18,
+                            child: Stack(
+                              children: [
+                                Positioned(
+                                  left: 0,
+                                  top: 0,
+                                  child: Container(
+                                    width: 42,
+                                    height: 18,
+                                    decoration: ShapeDecoration(
+                                      color: Color(0x26FFC126),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(6)),
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                  left: 2.0,
+                                  top: 0,
+                                  child: Icon(
+                                    Icons.star,
+                                    size: 17.0,
+                                    color: Colors.amber[400],
+                                  ),
+                                ),
+                                Positioned(
+                                  left: 20.40,
+                                  top: 2.40,
+                                  child: Text(
+                                    '${lawyer.AverageRating}',
+                                    textAlign: TextAlign.right,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 13.02,
+                                      fontFamily: 'Cairo',
+                                      fontWeight: FontWeight.w400,
+                                      height: 1,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
+                      trailing: ClipOval(
+                          child: Image.network(
+                        lawyer.photoURL,
+                        width: 60,
+                        height: 60,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Image.asset(
+                            'assets/default_photo.jpg',
+                            width: 60,
+                            height: 60,
+                            fit: BoxFit.cover,
+                          );
+                        },
+                      )),
+                      title: Text('${lawyer.firstName} ${lawyer.lastName}',
+                          textAlign: TextAlign.right,
+                          // Align text to the right
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Cairo',
+                            fontWeight: FontWeight.w500,
+                            fontSize: 17,
+                          )),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Align(
+                            alignment: Alignment
+                                .centerRight, // Align specialties text to the right
+                            child: Text(lawyer.specialties.join(' | '),
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'Cairo',
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.normal)),
+                          ),
+                          SizedBox(height: 1),
+                          Align(
+                            alignment: Alignment.bottomLeft,
+                            child: Container(
+                              decoration: BoxDecoration(),
+                              child: Text(
+                                '${formatNumber(int.parse(lawyer.price))}' +
+                                    '${riyal}',
+                                style: TextStyle(
+                                    color: Colors.teal,
+                                    fontFamily: 'Cairo',
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => viewLawyerProfilePage(lawyer),
+                          ),
+                        );
+                      },
                     ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => viewLawyerProfilePage(lawyer),
-                        ),
-                      );
-                    },
-                  ),
-                );
-              },
-            );
+                  );
+                },
+              );
           }
         },
       ),

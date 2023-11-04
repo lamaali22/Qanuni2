@@ -187,7 +187,7 @@ class _LogoutPageState extends State<LogoutPage> {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.pushReplacement(
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => LawyersList("الكل"),
@@ -218,7 +218,7 @@ class _LogoutPageState extends State<LogoutPage> {
                 InkWell(
                   //القانون الدولي
                   onTap: () {
-                    Navigator.pushReplacement(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => LawyersList("القانون الدولي"),
@@ -245,7 +245,7 @@ class _LogoutPageState extends State<LogoutPage> {
                 InkWell(
                   //القانون التجاري
                   onTap: () {
-                    Navigator.pushReplacement(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => LawyersList("القانون التجاري"),
@@ -272,7 +272,7 @@ class _LogoutPageState extends State<LogoutPage> {
                 InkWell(
                   //قانون العمل
                   onTap: () {
-                    Navigator.pushReplacement(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => LawyersList("قانون العمل"),
@@ -299,7 +299,7 @@ class _LogoutPageState extends State<LogoutPage> {
                 InkWell(
                   //مدني
                   onTap: () {
-                    Navigator.pushReplacement(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => LawyersList("القانون المدني"),
@@ -338,7 +338,7 @@ class _LogoutPageState extends State<LogoutPage> {
                 InkWell(
                   //القانون المالي
                   onTap: () {
-                    Navigator.pushReplacement(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => LawyersList("القانون المالي"),
@@ -365,7 +365,7 @@ class _LogoutPageState extends State<LogoutPage> {
                 InkWell(
                   //القانون الجنائي
                   onTap: () {
-                    Navigator.pushReplacement(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => LawyersList("القانون الجنائي"),
@@ -392,7 +392,7 @@ class _LogoutPageState extends State<LogoutPage> {
                 InkWell(
                   //مواريث
                   onTap: () {
-                    Navigator.pushReplacement(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => LawyersList("قانون المواريث"),
@@ -419,7 +419,7 @@ class _LogoutPageState extends State<LogoutPage> {
                 InkWell(
                   //القانون الاداري
                   onTap: () {
-                    Navigator.pushReplacement(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => LawyersList("القانون الإداري"),
