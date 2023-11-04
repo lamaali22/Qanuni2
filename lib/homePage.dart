@@ -169,7 +169,76 @@ class _LogoutPageState extends State<LogoutPage> {
         Column(
           children: [
             SizedBox(
-              height: 300,
+              height: 70,
+            ),
+            Container(
+              width: 350,
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 255, 255, 255),
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                    color: Color.fromARGB(255, 14, 14, 14).withOpacity(0.2),
+                    offset: Offset(0, 10),
+                    blurRadius: 10,
+                  ),
+                ],
+              ),
+              height: 180,
+              child: ListView(
+                scrollDirection:
+                    Axis.horizontal, // Set the scroll direction to horizontal
+                children: <Widget>[
+                  Container(
+                    width: 350,
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(171, 28, 157, 148),
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          offset: Offset(0, 10),
+                          blurRadius: 10,
+                        ),
+                      ],
+                    ),
+                    child: Center(child: Text('Element 1')),
+                  ),
+                  Container(
+                    width: 350,
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(171, 28, 157, 148),
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          offset: Offset(0, 10),
+                          blurRadius: 10,
+                        ),
+                      ],
+                    ),
+                    child: Center(child: Text('Element 2')),
+                  ),
+                  Container(
+                    width: 350,
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(171, 28, 157, 148),
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          offset: Offset(0, 10),
+                          blurRadius: 10,
+                        ),
+                      ],
+                    ),
+                    child: Center(child: Text('Element 3')),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 80,
             ),
             Align(
               alignment: Alignment.topRight,
@@ -178,7 +247,7 @@ class _LogoutPageState extends State<LogoutPage> {
                 style: TextStyle(
                     fontSize: 19,
                     fontWeight: FontWeight.w600,
-                    color: Color.fromARGB(255, 24, 21, 74)),
+                    color: Color.fromARGB(255, 0, 7, 106)),
               ),
             ),
             Row(children: [
@@ -187,7 +256,7 @@ class _LogoutPageState extends State<LogoutPage> {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.pushReplacement(
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => LawyersList("الكل"),
@@ -218,7 +287,7 @@ class _LogoutPageState extends State<LogoutPage> {
                 InkWell(
                   //القانون الدولي
                   onTap: () {
-                    Navigator.pushReplacement(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => LawyersList("القانون الدولي"),

@@ -68,7 +68,7 @@ class LawyersList extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Color.fromARGB(255, 0, 128, 128),
-        title: const Text("المحامين",
+        title: Text("المحامين",
             style: TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.w500)),
         centerTitle: true,
         // leading: IconButton(
