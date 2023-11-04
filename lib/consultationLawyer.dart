@@ -568,7 +568,11 @@ Future<List<Booking>> fetchPreviousAppointments(String lawyerEmail) async {
           
           
           
-          Widget _buildAppointmentsList(List<Booking> appointments) {
+       
+   Widget _buildAppointmentsList(List<Booking> appointments) {
+    // Sort the appointments in reverse order (latest first)
+  appointments.sort((a, b) => b.startTime.compareTo(a.startTime));
+  
     if (appointments.isEmpty) {
       return Center(child: Text('لايوجد مواعيد محجوزة'));
     } else {
