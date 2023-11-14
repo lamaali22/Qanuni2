@@ -3,11 +3,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:qanuni/Notifications.dart';
 import 'package:qanuni/consultationLawyer.dart';
 import 'package:qanuni/presentation/screens/add_timeslots_Screen.dart';
 import 'package:qanuni/presentation/screens/login_screen/view.dart';
 import 'package:qanuni/viewProfileLawyer.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class LogoutPageLawyer extends StatefulWidget {
   @override
@@ -15,14 +17,20 @@ class LogoutPageLawyer extends StatefulWidget {
 }
 
 class _LogoutPageLawyerState extends State<LogoutPageLawyer> {
+  CalendarFormat _calendarFormat = CalendarFormat.month;
+  Map<DateTime, List<dynamic>> _events = {};
+  String _selectedTimeSlot = '';
+  bool _isLoading = false;
+  late DateTime _selectedDay = DateTime.now();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   late User? _user;
   final CollectionReference timeSlotsCollection =
       FirebaseFirestore.instance.collection('timeSlots');
   late List<DateTime> availableDates;
-  late DateTime? selectedDate;
-  Map<DateTime, List<DocumentSnapshot>> timeSlotsMap = {};
+  //late DateTime? selectedDate;
+  //Map<DateTime, List<DocumentSnapshot>> timeSlotsMap = {};
   StreamSubscription<QuerySnapshot>? timeSlotsSubscription;
+  List<String> lawyerTimeSlots = [];
 
   String? email = "";
   Future<void> getEmailAndUpdateToken() async {
@@ -39,7 +47,7 @@ class _LogoutPageLawyerState extends State<LogoutPageLawyer> {
   void initState() {
     super.initState();
     _user = FirebaseAuth.instance.currentUser;
-    selectedDate = DateTime.now();
+    _selectedDay = DateTime.now();
     availableDates = [];
     fetchAvailableTimeSlots();
 
@@ -49,7 +57,7 @@ class _LogoutPageLawyerState extends State<LogoutPageLawyer> {
     getEmailAndUpdateToken();
   }
 
-  void fetchAvailableTimeSlots() {
+  /*void fetchAvailableTimeSlots() {
     timeSlotsSubscription = timeSlotsCollection
         .where('lawyerEmail', isEqualTo: _user!.email)
         .where('available', isEqualTo: true)
@@ -59,7 +67,8 @@ class _LogoutPageLawyerState extends State<LogoutPageLawyer> {
       for (var timeSlot in snapshot.docs) {
         final startTime =
             (timeSlot['startTime'] as Timestamp).toDate().toLocal();
-        final date = DateTime(startTime.year, startTime.month, startTime.day);
+        final date = _selectedDay;
+        //DateTime(startTime.year, startTime.month, startTime.day);
 
         if (map.containsKey(date)) {
           map[date]!.add(timeSlot);
@@ -72,6 +81,62 @@ class _LogoutPageLawyerState extends State<LogoutPageLawyer> {
         timeSlotsMap = map;
       });
     });
+  }*/
+  void fetchAvailableTimeSlots() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    DateTime startOfDay =
+        DateTime(_selectedDay.year, _selectedDay.month, _selectedDay.day);
+    DateTime endOfDay = startOfDay.add(Duration(days: 1));
+
+    try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection('timeSlots')
+          .where('available', isEqualTo: true)
+          .where('lawyerEmail', isEqualTo: _user!.email)
+          .get();
+
+      setState(() {
+        _events = {};
+        print(snapshot.size);
+
+        for (var doc in snapshot.docs) {
+          DateTime startTime = (doc['startTime'] as Timestamp).toDate();
+          if (startTime.isAfter(startOfDay) && startTime.isBefore(endOfDay)) {
+            print(startTime);
+
+            String formattedTime = _formatTime(startTime);
+            DateTime date = _selectedDay;
+            _events[date] = _events[date] ?? [];
+            _events[date]?.add(formattedTime);
+          }
+        }
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+
+      if (e is FirebaseException && e.code == 'failed-precondition') {
+        // Firestore is temporarily in read-only mode
+        showToast(
+          'Error: Internet connection issue. Please check your internet connection.',
+          position: ToastPosition.bottom,
+          backgroundColor: Colors.red,
+          textStyle: TextStyle(color: Colors.white, fontSize: 16.0),
+          duration: Duration(seconds: 5),
+        );
+      } else {
+        print('Error fetching available time slots: $e');
+      }
+    }
+  }
+
+  String _formatTime(DateTime time) {
+    return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
   }
 
   @override
@@ -217,56 +282,64 @@ class _LogoutPageLawyerState extends State<LogoutPageLawyer> {
               ],
             ),
           ),
-          Container(
-            height: 50,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: timeSlotsMap.keys.length,
-              reverse: true, // Set reverse to true to start from the right
-              itemBuilder: (context, index) {
-                final date = timeSlotsMap.keys.elementAt(index);
-                final formattedDate = DateFormat('yyyy-MM-dd').format(date);
-                final isSelected = date == selectedDate;
+          TableCalendar(
+            headerStyle: HeaderStyle(
+              formatButtonDecoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.teal,
+              ),
+              formatButtonTextStyle: TextStyle(color: Colors.white),
+              formatButtonVisible: false,
+              titleTextStyle: TextStyle(color: Colors.teal),
+            ),
+            calendarFormat: _calendarFormat,
+            onFormatChanged: (format) {
+              setState(() {
+                _calendarFormat = format;
+              });
+            },
+            focusedDay: _selectedDay,
+            firstDay: DateTime.now(),
+            lastDay: DateTime.now().add(Duration(days: 10)),
+            selectedDayPredicate: (day) {
+              return isSameDay(_selectedDay, day);
+            },
+            onDaySelected: (selectedDay, focusedDay) {
+              setState(() {
+                _selectedDay = selectedDay;
+              });
 
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        selectedDate = date;
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: isSelected ? Colors.teal : Colors.grey,
-                      onPrimary: Colors.white,
-                    ),
-                    child: Text(
-                      formattedDate,
-                      style: TextStyle(
-                        color: isSelected ? Colors.white : Colors.black,
-                        fontSize: 18.0,
-                        fontFamily: 'Cairo',
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                );
-              },
+              fetchAvailableTimeSlots();
+            },
+            calendarStyle: CalendarStyle(
+              todayTextStyle: TextStyle(color: Colors.black),
+              todayDecoration: BoxDecoration(
+                color: Colors.transparent,
+                border: Border.all(color: Colors.teal),
+              ),
+              selectedTextStyle: TextStyle(color: Colors.white),
+              selectedDecoration: BoxDecoration(
+                color: Colors.teal,
+              ),
+              weekendTextStyle: TextStyle(color: Colors.black),
+              outsideTextStyle: TextStyle(color: Colors.grey),
+              defaultTextStyle: TextStyle(color: Colors.black),
             ),
           ),
-          const SizedBox(
-            height: 16,
-          ),
+          SizedBox(height: 20),
           Expanded(
             child: ListView.builder(
-              itemCount: timeSlotsMap.containsKey(selectedDate)
-                  ? timeSlotsMap[selectedDate]!.length
+              itemCount: _events.containsKey(_selectedDay)
+                  ? _events[_selectedDay]!.length
                   : 0,
               itemBuilder: (context, index) {
-                final timeSlot = timeSlotsMap[selectedDate]![index];
-                final startTime = timeSlot['startTime'] as Timestamp;
-                final formattedTime =
-                    DateFormat('HH:mm').format(startTime.toDate());
+                final timeSlot = _events[_selectedDay]![index];
+                //  String startTime = timeSlot['startTime'] as Timestamp;
+                /* final formattedTime =
+                    DateFormat('HH:mm').format(startTime.toDate());*/
+                String _formatTime(DateTime time) {
+                  return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
+                }
 
                 return Container(
                   decoration: const BoxDecoration(
@@ -279,7 +352,7 @@ class _LogoutPageLawyerState extends State<LogoutPageLawyer> {
                   ),
                   child: ListTile(
                     title: Text(
-                      '$formattedTime'
+                      '$_formatTime' //the proble is here
                       " :"
                       " الوقت",
                       style: const TextStyle(
@@ -375,3 +448,44 @@ class _LogoutPageLawyerState extends State<LogoutPageLawyer> {
     );
   }
 }
+
+      /*Container(
+            height: 50,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: timeSlotsMap.keys.length,
+              reverse: true, // Set reverse to true to start from the right
+              itemBuilder: (context, index) {
+                final date = timeSlotsMap.keys.elementAt(index);
+                final formattedDate = DateFormat('yyyy-MM-dd').format(date);
+                final isSelected = date == selectedDate;
+
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        selectedDate = date;
+                      });
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: isSelected ? Colors.teal : Colors.grey,
+                      onPrimary: Colors.white,
+                    ),
+                    child: Text(
+                      formattedDate,
+                      style: TextStyle(
+                        color: isSelected ? Colors.white : Colors.black,
+                        fontSize: 18.0,
+                        fontFamily: 'Cairo',
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          const SizedBox(
+            height: 16,
+          ),*/
