@@ -252,7 +252,19 @@ class _BookingListScreenState extends State<BookingClientScreen>
     // Sort the appointments in ascending order (oldest first)
   appointments.sort((a, b) => a.startTime.compareTo(b.startTime));
     if (appointments.isEmpty) {
-      return Center(child: Text('لايوجد مواعيد محجوزة'));
+      return Center( child: Container(
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.teal),
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white),
+                child: Text('لايوجد مواعيد محجوزة',
+                  style: TextStyle(
+                    color: Colors.teal,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),)));
+
     } else {
       return ListView.builder(
         itemCount: appointments.length,
