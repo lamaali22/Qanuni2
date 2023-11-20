@@ -60,6 +60,9 @@ dependencies:
   rating_summary: ^1.0.2+1
   flutter_rating_bar: ^4.0.1
   zego_uikit_prebuilt_call: ^3.17.9
+  chat_gpt_sdk: ^2.2.5
+  speech_to_text: ^6.1.1
+  flutter_riverpod: ^2.4.7
 
 dev_dependencies:
   flutter_test:

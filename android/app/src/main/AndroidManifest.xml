@@ -11,7 +11,15 @@ package="com.example.qanuni">
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 <uses-permission android:name="android.permission.WAKE_LOCK" />
+<uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+<uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
 
+<queries>
+    <intent>
+        <action android:name="android.speech.RecognitionService" />
+    </intent>
+    </queries>
+    
     <application
         android:label="qanuni"
         android:name="${applicationName}"
