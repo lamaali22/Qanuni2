@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:qanuni/ClientProfile.dart';
 import 'package:qanuni/Notifications.dart';
 import 'package:qanuni/consultationFromClient.dart';
 import 'package:qanuni/presentation/screens/boarding_screen/view.dart';
@@ -47,7 +48,7 @@ class _LogoutPageState extends State<LogoutPage> {
       case 0:
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => LogoutPage()),
+          MaterialPageRoute(builder: (context) => ClientProfile()),
           (route) => false,
         );
         break;
@@ -91,26 +92,26 @@ class _LogoutPageState extends State<LogoutPage> {
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Center(
-                child: IconButton(
-                  icon: Icon(
-                    Icons.exit_to_app,
-                    color: Colors.white,
-                    size: 30,
-                  ),
-                  onPressed: () async {
-                    Token().updateTokenInDB(email, false, "Clients");
-                    await _auth.signOut();
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            LoginScreen(), // go to sign in page
-                      ),
-                    ); // Replace '/login' with your login screen route
-                  },
-                ),
-              ),
+              // Center(
+              //   child: IconButton(
+              //     icon: Icon(
+              //       Icons.exit_to_app,
+              //       color: Colors.white,
+              //       size: 30,
+              //     ),
+              //     onPressed: () async {
+              //       Token().updateTokenInDB(email, false, "Clients");
+              //       await _auth.signOut();
+              //       Navigator.pushReplacement(
+              //         context,
+              //         MaterialPageRoute(
+              //           builder: (context) =>
+              //               LoginScreen(), // go to sign in page
+              //         ),
+              //       ); // Replace '/login' with your login screen route
+              //     },
+              //   ),
+              // ),
               Expanded(
                 child: Text.rich(
                   TextSpan(

@@ -1,9 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:qanuni/ClientProfile.dart';
 import 'package:qanuni/homePage.dart';
 import 'package:qanuni/presentation/screens/client_review/view.dart';
 import 'package:qanuni/providers/client_review/cubit/client_review_cubit.dart';
@@ -34,7 +34,7 @@ class Booking {
     return Booking(
       lawyerEmail: data['lawyerEmail'],
       startTime: data['startTime'],
-       endTime: data['endTime'],
+      endTime: data['endTime'],
       bookingId: doc.id,
       review: data['review'] ?? '',
       rate: data['rate'] != null
@@ -152,7 +152,7 @@ class _BookingListScreenState extends State<BookingClientScreen>
       case 0:
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => LogoutPage()),
+          MaterialPageRoute(builder: (context) => ClientProfile()),
           (route) => false,
         );
         break;
@@ -183,7 +183,7 @@ class _BookingListScreenState extends State<BookingClientScreen>
           automaticallyImplyLeading: false,
           backgroundColor: Color.fromARGB(255, 0, 128, 128),
           title: const Text(
-            "استشاراتي",
+            "مواعيدي",
             style: TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.w500),
           ),
           centerTitle: true,
@@ -250,7 +250,7 @@ class _BookingListScreenState extends State<BookingClientScreen>
 
   Widget _buildAppointmentsList(List<Booking> appointments) {
     // Sort the appointments in ascending order (oldest first)
-  appointments.sort((a, b) => a.startTime.compareTo(b.startTime));
+    appointments.sort((a, b) => a.startTime.compareTo(b.startTime));
     if (appointments.isEmpty) {
       return Center(child: Text('لايوجد مواعيد محجوزة'));
     } else {
@@ -272,7 +272,7 @@ class _BookingListScreenState extends State<BookingClientScreen>
                     DateFormat('yyyy-MM-dd').format(startTimeDate);
                 final timeFormatted = DateFormat('HH:mm').format(startTimeDate);
                 final currentTime = DateTime.now();
-                final endTimeDate= booking.endTime.toDate();
+                final endTimeDate = booking.endTime.toDate();
 
                 return Container(
                   margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -310,7 +310,7 @@ class _BookingListScreenState extends State<BookingClientScreen>
                           ],
                         ),
                       ),
-                    /*ElevatedButton.icon(
+                      /*ElevatedButton.icon(
                         onPressed: () {
                           // Handle button click here
                           if (booking.review != null &&
@@ -362,72 +362,114 @@ class _BookingListScreenState extends State<BookingClientScreen>
                           ),
                         ),
                       ),*/
-                     ElevatedButton.icon(
-  onPressed: () {
-    if (appointments[index].startTime.toDate().isBefore(DateTime.now()) && appointments[index].endTime.toDate().isBefore(DateTime.now())) {
-      // Handle button click here
-      if (booking.review != null &&
-          booking.review!.isNotEmpty &&
-          booking.rate != null) {
-        showToast('تم التقييم مسبقا', position: ToastPosition.bottom);
-      } else {
-        ClientReviewCubit.get(context).init(
-          lawyerInfo['firstName'] + ' ' + lawyerInfo['lastName'],
-          lawyerInfo['photoURL'],
-          lawyerInfo['AverageRating'],
-          booking.bookingId,
-          lawyerInfo['specialties'],
-          booking.lawyerEmail,
-          booking.review,
-          booking.rate,
-        );
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const ClientReviewScreen(),
-          ),
-        );
-      }
-      // Handle "Consultation Evaluation" action for previous appointments
-    } else if (currentTime.isAfter(startTimeDate) && currentTime.isBefore(endTimeDate)) {
-      // Handle "Start Session" action when the session is active
-      Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CallPage(
-                        callID: booking.bookingId,
-                      ),
-                    ),
-                  );
-    }
-  },
-  icon: Icon(
-    appointments[index].startTime.toDate().isBefore(DateTime.now())  && appointments[index].endTime.toDate().isBefore(DateTime.now())
-        ? Icons.star // Star icon for "Consultation Evaluation" in previous appointments
-        : Icons.chat, // Chat icon for "Start Consultation" in upcoming appointments
-    color: appointments[index].startTime.toDate().isBefore(DateTime.now())  && appointments[index].endTime.toDate().isBefore(DateTime.now())
-        ? Colors.amber // Set color to yellow for the star icon in past appointments
-        : Color.fromARGB(255, 0, 128, 128),
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          if (appointments[index]
+                                  .startTime
+                                  .toDate()
+                                  .isBefore(DateTime.now()) &&
+                              appointments[index]
+                                  .endTime
+                                  .toDate()
+                                  .isBefore(DateTime.now())) {
+                            // Handle button click here
+                            if (booking.review != null &&
+                                booking.review!.isNotEmpty &&
+                                booking.rate != null) {
+                              showToast('تم التقييم مسبقا',
+                                  position: ToastPosition.bottom);
+                            } else {
+                              ClientReviewCubit.get(context).init(
+                                lawyerInfo['firstName'] +
+                                    ' ' +
+                                    lawyerInfo['lastName'],
+                                lawyerInfo['photoURL'],
+                                lawyerInfo['AverageRating'],
+                                booking.bookingId,
+                                lawyerInfo['specialties'],
+                                booking.lawyerEmail,
+                                booking.review,
+                                booking.rate,
+                              );
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const ClientReviewScreen(),
+                                ),
+                              );
+                            }
+                            // Handle "Consultation Evaluation" action for previous appointments
+                          } else if (currentTime.isAfter(startTimeDate) &&
+                              currentTime.isBefore(endTimeDate)) {
+                            // Handle "Start Session" action when the session is active
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CallPage(
+                                  callID: booking.bookingId,
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                        icon: Icon(
+                          appointments[index]
+                                      .startTime
+                                      .toDate()
+                                      .isBefore(DateTime.now()) &&
+                                  appointments[index]
+                                      .endTime
+                                      .toDate()
+                                      .isBefore(DateTime.now())
+                              ? Icons
+                                  .star // Star icon for "Consultation Evaluation" in previous appointments
+                              : Icons
+                                  .chat, // Chat icon for "Start Consultation" in upcoming appointments
+                          color: appointments[index]
+                                      .startTime
+                                      .toDate()
+                                      .isBefore(DateTime.now()) &&
+                                  appointments[index]
+                                      .endTime
+                                      .toDate()
+                                      .isBefore(DateTime.now())
+                              ? Colors
+                                  .amber // Set color to yellow for the star icon in past appointments
+                              : Color.fromARGB(255, 0, 128, 128),
 // Set color to teal for the chat icon in upcoming appointments
-  ),
-  label: Text(
-    appointments[index].startTime.toDate().isBefore(DateTime.now())  && appointments[index].endTime.toDate().isBefore(DateTime.now())
-        ? "تقييم الاستشارة" // "Consultation Evaluation" for previous appointments
-        : "ابدا الاستشارة", // "Start Session" for upcoming appointments
-    style: TextStyle(
-      color: currentTime.isAfter(startTimeDate) && currentTime.isBefore(endTimeDate)
-          ? Colors.white // Text color is white for "Start Session"
-          : Colors.black, // Text color is black for other cases
-    ),
-  ),
-  style: ElevatedButton.styleFrom(
-    primary: currentTime.isAfter(startTimeDate) && currentTime.isBefore(endTimeDate)
-        ? Color.fromARGB(255, 0, 128, 128) // Active session, background color is teal
-        : Colors.white, // Inactive session, background color is white
-    minimumSize: const Size(350, 35),
-    side: const BorderSide(color: Colors.black),
-  ),
-)
+                        ),
+                        label: Text(
+                          appointments[index]
+                                      .startTime
+                                      .toDate()
+                                      .isBefore(DateTime.now()) &&
+                                  appointments[index]
+                                      .endTime
+                                      .toDate()
+                                      .isBefore(DateTime.now())
+                              ? "تقييم الاستشارة" // "Consultation Evaluation" for previous appointments
+                              : "ابدا الاستشارة", // "Start Session" for upcoming appointments
+                          style: TextStyle(
+                            color: currentTime.isAfter(startTimeDate) &&
+                                    currentTime.isBefore(endTimeDate)
+                                ? Colors
+                                    .white // Text color is white for "Start Session"
+                                : Colors
+                                    .black, // Text color is black for other cases
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          primary: currentTime.isAfter(startTimeDate) &&
+                                  currentTime.isBefore(endTimeDate)
+                              ? Color.fromARGB(255, 0, 128,
+                                  128) // Active session, background color is teal
+                              : Colors
+                                  .white, // Inactive session, background color is white
+                          minimumSize: const Size(350, 35),
+                          side: const BorderSide(color: Colors.black),
+                        ),
+                      )
                     ],
                   ),
                 );
@@ -493,15 +535,17 @@ class CallPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     // Assuming you have a way to get the lawyer's first and last name
-    final clientFirstName = 'Lawyer First Name';  // Replace with the actual lawyer's first name
-    final clientLastName = 'Lawyer Last Name';    // Replace with the actual lawyer's last name
+    // Assuming you have a way to get the lawyer's first and last name
+    final clientFirstName =
+        'Lawyer First Name'; // Replace with the actual lawyer's first name
+    final clientLastName =
+        'Lawyer Last Name'; // Replace with the actual lawyer's last name
     final clientName = '$clientFirstName $clientLastName';
 
-    
     return ZegoUIKitPrebuiltCall(
       appID: 1464607761,
-      appSign: 'c10ad908a7e7cb650c8d4c27f74be82d0645530aebd37f670361d49d5d90b9ec',
+      appSign:
+          'c10ad908a7e7cb650c8d4c27f74be82d0645530aebd37f670361d49d5d90b9ec',
       userID: FirebaseAuth.instance.currentUser?.email ?? '',
       userName: clientName,
       callID: callID,

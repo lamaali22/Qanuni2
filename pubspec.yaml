@@ -42,8 +42,8 @@ dependencies:
   flutter_screenutil:
   flutter_bloc:
   shared_preferences:
-  firebase_auth: ^4.4.0
-  firebase_core: ^2.9.0
+  firebase_auth: ^4.14.0
+  firebase_core: ^2.22.0
   firebase_messaging: ^14.4.0
   firebase_storage: ^11.1.0
   cloud_firestore: ^4.8.1
