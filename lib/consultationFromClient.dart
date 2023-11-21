@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,6 +7,7 @@ import 'package:qanuni/homePage.dart';
 import 'package:qanuni/presentation/screens/client_review/view.dart';
 import 'package:qanuni/providers/client_review/cubit/client_review_cubit.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
+import 'package:qanuni/ClientProfile.dart';
 
 void main() {
   runApp(MyApp());
@@ -152,7 +152,7 @@ class _BookingListScreenState extends State<BookingClientScreen>
       case 0:
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => LogoutPage()),
+          MaterialPageRoute(builder: (context) => ClientProfile()),
           (route) => false,
         );
         break;
@@ -183,7 +183,7 @@ class _BookingListScreenState extends State<BookingClientScreen>
           automaticallyImplyLeading: false,
           backgroundColor: Color.fromARGB(255, 0, 128, 128),
           title: const Text(
-            "استشاراتي",
+            "مواعيدي",
             style: TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.w500),
           ),
           centerTitle: true,

@@ -12,6 +12,7 @@ import 'package:qanuni/presentation/screens/login_screen/view.dart';
 import 'package:qanuni/utils/colors.dart';
 import 'package:qanuni/viewListOfLawyers.dart';
 import 'package:intl/intl.dart';
+import 'package:qanuni/ClientProfile.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 class LogoutPage extends StatefulWidget {
@@ -48,7 +49,7 @@ class _LogoutPageState extends State<LogoutPage> {
       case 0:
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => LogoutPage()),
+          MaterialPageRoute(builder: (context) => ClientProfile()),
           (route) => false,
         );
         break;
@@ -92,26 +93,26 @@ class _LogoutPageState extends State<LogoutPage> {
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Center(
-                child: IconButton(
-                  icon: Icon(
-                    Icons.exit_to_app,
-                    color: Colors.white,
-                    size: 30,
-                  ),
-                  onPressed: () async {
-                    Token().updateTokenInDB(email, false, "Clients");
-                    await _auth.signOut();
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            LoginScreen(), // go to sign in page
-                      ),
-                    ); // Replace '/login' with your login screen route
-                  },
-                ),
-              ),
+              // Center(
+              //   child: IconButton(
+              //     icon: Icon(
+              //       Icons.exit_to_app,
+              //       color: Colors.white,
+              //       size: 30,
+              //     ),
+              //     onPressed: () async {
+              //       Token().updateTokenInDB(email, false, "Clients");
+              //       await _auth.signOut();
+              //       Navigator.pushReplacement(
+              //         context,
+              //         MaterialPageRoute(
+              //           builder: (context) =>
+              //               LoginScreen(), // go to sign in page
+              //         ),
+              //       ); // Replace '/login' with your login screen route
+              //     },
+              //   ),
+              // ),
               Expanded(
                 child: Text.rich(
                   TextSpan(
@@ -167,139 +168,145 @@ class _LogoutPageState extends State<LogoutPage> {
         ],
       ),
       body: Stack(children: [
-                //
+        //
         Align(
-           alignment: Alignment.topCenter,
+          alignment: Alignment.topCenter,
           child: Row(
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 30,left: 30),
+                padding: const EdgeInsets.only(top: 30, left: 30),
                 child: Container(
-                width: 337,
-                height: 200,
-                clipBehavior: Clip.antiAlias,
-                decoration: ShapeDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment(4, 1,),
-                    end: Alignment(-0.85, -1),
-                    colors: [Color(0xFF33CCBE), Color(0xFF93E6DE), Colors.white.withOpacity(0)],
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  shadows: [
-                    BoxShadow(
-                color: Color(0x26008592),
-                blurRadius: 20,
-                offset: Offset(0, 10),
-                spreadRadius: 0,
-                    )
-                  ],
-                ),
-                child: Stack(
-                  children: [
-                    Positioned(
-                left: 80,
-                top: 16,
-                child: Text(
-                  '!دليلك القانوني للقرارات الصائبة',
-                  style: TextStyle(
-                    color: Color(0xFF006771),
-                    fontSize: 20,
-                    fontFamily: 'Cairo',
-                    fontWeight: FontWeight.w700,
-                    height: 0,
-                  ),
-                ),
-                    ),
-                    Positioned(
-                left: 165,
-                top: 49,
-                child: SizedBox(
-                  width: 148,
-                  child: Text(
-                    'محتار في تحديد نوع مشكلتك القانونية وتحتاج مساعدة؟ اسأل روبوت قانوني ',
-                    textAlign: TextAlign.right,
-                    style: TextStyle(
-                      color: Color(0xFF005159),
-                      fontSize: 15,
-                      fontFamily: 'Cairo',
-                      fontWeight: FontWeight.w500,
-                      height: 0,
-                    ),
-                  ),
-                ),
-                    ),
-                    Positioned(
-                left: 156,
-                top: 150,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  width: 337,
+                  height: 200,
                   clipBehavior: Clip.antiAlias,
                   decoration: ShapeDecoration(
-                    color: Colors.white,
+                    gradient: LinearGradient(
+                      begin: Alignment(
+                        4,
+                        1,
+                      ),
+                      end: Alignment(-0.85, -1),
+                      colors: [
+                        Color(0xFF33CCBE),
+                        Color(0xFF93E6DE),
+                        Colors.white.withOpacity(0)
+                      ],
+                    ),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(20),
                     ),
                     shadows: [
                       BoxShadow(
-                        color: Color(0x33005159),
+                        color: Color(0x26008592),
                         blurRadius: 20,
                         offset: Offset(0, 10),
                         spreadRadius: 0,
                       )
                     ],
                   ),
-                  child: GestureDetector(
-   onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => chatbotMain(),
-                    ),
-                  );
-  },
-  child: Container(    
-    child: Row(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(
-          'اسأل روبوت قانوني',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Color(0xFF00616B),
-            fontSize: 12,
-            fontFamily: 'Cairo',
-            fontWeight: FontWeight.w800,
-            height: 0,
-          ),
-        ),
-      ],
-    ),
-  ),
-)
-
-                ),
-                    ),
-                    Positioned(
-                left: 17,
-                top: 49,
-                child: Container(
-                  width: 130,
-                  height: 127,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                       image: AssetImage('assets/images/robot.png'),
-                      fit: BoxFit.fill,
-                    ),
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        left: 80,
+                        top: 16,
+                        child: Text(
+                          '!دليلك القانوني للقرارات الصائبة',
+                          style: TextStyle(
+                            color: Color(0xFF006771),
+                            fontSize: 20,
+                            fontFamily: 'Cairo',
+                            fontWeight: FontWeight.w700,
+                            height: 0,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 165,
+                        top: 49,
+                        child: SizedBox(
+                          width: 148,
+                          child: Text(
+                            'محتار في تحديد نوع مشكلتك القانونية وتحتاج مساعدة؟ اسأل روبوت قانوني ',
+                            textAlign: TextAlign.right,
+                            style: TextStyle(
+                              color: Color(0xFF005159),
+                              fontSize: 15,
+                              fontFamily: 'Cairo',
+                              fontWeight: FontWeight.w500,
+                              height: 0,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 156,
+                        top: 150,
+                        child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 6),
+                            clipBehavior: Clip.antiAlias,
+                            decoration: ShapeDecoration(
+                              color: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              shadows: [
+                                BoxShadow(
+                                  color: Color(0x33005159),
+                                  blurRadius: 20,
+                                  offset: Offset(0, 10),
+                                  spreadRadius: 0,
+                                )
+                              ],
+                            ),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => chatbotMain(),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'اسأل روبوت قانوني',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Color(0xFF00616B),
+                                        fontSize: 12,
+                                        fontFamily: 'Cairo',
+                                        fontWeight: FontWeight.w800,
+                                        height: 0,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )),
+                      ),
+                      Positioned(
+                        left: 17,
+                        top: 49,
+                        child: Container(
+                          width: 130,
+                          height: 127,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('assets/images/robot.png'),
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                    ),
-                  ],
-                ),
-              ),
               ),
             ],
           ),

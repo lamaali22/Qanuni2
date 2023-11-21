@@ -102,16 +102,21 @@ class _TimeSlotScreenState extends State<TimeSlotScreen> {
               // ... Your code to add the time slot ...
 
               // Navigate back and refresh the previous page
-              Navigator.pop(context, true);
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LogoutPageLawyer(),
+                ),
+              );
             },
           ),
         ],
-        title: const Text("جدول مواعيدي",
+        title: const Text("اضافة مواعيدي",
             style: TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.w500)),
         centerTitle: true,
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Padding(
@@ -123,19 +128,19 @@ class _TimeSlotScreenState extends State<TimeSlotScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Align(
-                      alignment: Alignment
-                          .centerRight, // Adjust the alignment as needed
-                      child: Text(
-                        'مدة الجلسة ساعة واحده*',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontFamily: 'Cairo',
-                          color: const Color.fromARGB(255, 246, 86, 75),
-                        ),
-                        // No need to use textAlign here
-                      ),
-                    ),
+                    // Align(
+                    //   alignment: Alignment
+                    //       .centerRight, // Adjust the alignment as needed
+                    //   child: Text(
+                    //     'مدة الجلسة ساعة واحده*',
+                    //     style: TextStyle(
+                    //       fontSize: 18,
+                    //       fontFamily: 'Cairo',
+                    //       color: const Color.fromARGB(255, 246, 86, 75),
+                    //     ),
+                    //     // No need to use textAlign here
+                    //   ),
+                    // ),
                     SizedBox(
                       height: 16,
                     ),
@@ -269,6 +274,22 @@ class _TimeSlotScreenState extends State<TimeSlotScreen> {
                         validator: _selectedTimeValidator,
                       ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 28.0),
+                      child: Align(
+                        alignment: Alignment
+                            .centerRight, // Adjust the alignment as needed
+                        child: Text(
+                          'مدة الجلسة ساعة واحده*',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontFamily: 'Cairo',
+                            color: const Color.fromARGB(255, 246, 86, 75),
+                          ),
+                          // No need to use textAlign here
+                        ),
+                      ),
+                    ),
                     SizedBox(
                       height: 16,
                     ),
@@ -377,7 +398,8 @@ class _TimeSlotScreenState extends State<TimeSlotScreen> {
   }
 
   Future<DateTime?> _showCustomDatePicker(BuildContext context) async {
-    DateTime currentDate = DateTime.now();
+    //DateTime currentDate = (DateTime.now());
+    DateTime currentDate = ((DateTime.now().add(const Duration(days: 1))));
     DateTime? selectedDate = currentDate;
 
     // Calculate the last date as 10 days from the current date
@@ -387,8 +409,8 @@ class _TimeSlotScreenState extends State<TimeSlotScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Select Date'),
-          content: Container(
+          title: const Text('Select Date'),
+          content: SizedBox(
             width: double.maxFinite,
             child: CalendarDatePicker(
               initialDate: currentDate,
@@ -404,15 +426,15 @@ class _TimeSlotScreenState extends State<TimeSlotScreen> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(selectedDate);
+                Navigator.of(context).pop(null);
               },
-              child: Text('OK'),
+              child: Text('الغاء'),
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(null);
+                Navigator.of(context).pop(selectedDate);
               },
-              child: Text('Cancel'),
+              child: Text('اختيار'),
             ),
           ],
         );
