@@ -257,6 +257,12 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
     } else {
       print('No user data found in Firestore for email: $email');
     }
+    initialFirstName = fNameController.text;
+    initialLastName = lNameController.text;
+    initialDOB = dOBController.text;
+    initialPhoneNum = phoneNumController.text;
+    initialEmail = emailController.text;
+    initialGender = selectedItem;
   }
 
 // Function to show a password input dialog
@@ -394,36 +400,43 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                     Text(
                       'الاسم الأول',
                       style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.teal,
+                        fontSize: 13,
+                        color: Color.fromARGB(
+                          255,
+                          78,
+                          76,
+                          76,
+                        ),
                       ),
                     ),
-                    SizedBox(height: 5),
+                    // SizedBox(height: 5),
                     TextFormField(
                       controller: fNameController,
                       focusNode: fNameFocus,
                       style: TextStyle(
-                          fontSize: 13, height: 1.1, color: Colors.black),
+                          fontSize: 13, height: 0.9, color: Colors.black),
                       textAlign: TextAlign.right,
                       decoration: InputDecoration(
-                        labelStyle: TextStyle(
-                          fontSize: 18,
-                          color: Colors.teal,
-                        ),
+                        border: OutlineInputBorder(),
                         isDense: true,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                          borderRadius: BorderRadius.circular(12),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(color: Colors.teal, width: 2),
+                          borderSide: BorderSide(color: Colors.teal),
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        contentPadding: EdgeInsets.symmetric(
-                          vertical: 20,
-                          horizontal: 20,
+                        fillColor: Colors.grey[200],
+                        filled: true,
+                        prefixIcon: IconButton(
+                          icon: Icon(Icons.clear), // Clear button icon
+                          onPressed: () {
+                            setState(() {
+                              fNameController.clear();
+                            });
+                          },
                         ),
-                        hintStyle: TextStyle(color: Colors.grey[800]),
-                        //  hintText: "الاسم الأول",
                       ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
@@ -437,7 +450,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                 ),
               ),
               SizedBox(
-                height: 15,
+                height: 9,
               ),
               Container(
                 child: Column(
@@ -446,36 +459,38 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                     Text(
                       'الاسم الأخير',
                       style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.teal,
+                        fontSize: 13,
+                        color: Color.fromARGB(255, 78, 76, 76),
                       ),
                     ),
-                    SizedBox(height: 5),
+                    // SizedBox(height: 5),
                     TextFormField(
                       controller: lNameController,
                       focusNode: lNameFocus,
                       style: TextStyle(
-                          fontSize: 13, height: 1.1, color: Colors.black),
+                          fontSize: 13, height: 0.9, color: Colors.black),
                       textAlign: TextAlign.right,
                       decoration: InputDecoration(
-                        labelStyle: TextStyle(
-                          fontSize: 18,
-                          color: Colors.teal,
-                        ),
+                        border: OutlineInputBorder(),
                         isDense: true,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                          borderRadius: BorderRadius.circular(12),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(color: Colors.teal, width: 2),
+                          borderSide: BorderSide(color: Colors.teal),
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        contentPadding: EdgeInsets.symmetric(
-                          vertical: 20,
-                          horizontal: 20,
+                        fillColor: Colors.grey[200],
+                        filled: true,
+                        prefixIcon: IconButton(
+                          icon: Icon(Icons.clear), // Clear button icon
+                          onPressed: () {
+                            setState(() {
+                              lNameController.clear();
+                            });
+                          },
                         ),
-                        hintStyle: TextStyle(color: Colors.grey[800]),
-                        // hintText: "الاسم الأخير",
                       ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
@@ -489,7 +504,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                 ),
               ),
               SizedBox(
-                height: 15,
+                height: 9,
               ),
               Container(
                 child: Column(
@@ -498,11 +513,11 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                     Text(
                       'تاريخ الميلاد ',
                       style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.teal,
+                        fontSize: 13,
+                        color: Color.fromARGB(255, 78, 76, 76),
                       ),
                     ),
-                    SizedBox(height: 5),
+                    // SizedBox(height: 5),
                     Container(
                       child: TextFormField(
                         controller: dOBController,
@@ -511,26 +526,19 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                             fontSize: 13, height: 1.1, color: Colors.black),
                         textAlign: TextAlign.right,
                         decoration: InputDecoration(
-                            labelStyle: TextStyle(
-                              fontSize: 18,
-                              color: Colors.teal,
-                            ),
+                            border: OutlineInputBorder(),
                             isDense: true,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(12),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:
-                                  BorderSide(color: Colors.teal, width: 2),
+                              borderSide: BorderSide(color: Colors.teal),
+                              borderRadius: BorderRadius.circular(12),
                             ),
-                            contentPadding: EdgeInsets.symmetric(
-                              vertical: 20,
-                              horizontal: 20,
-                            ),
-                            hintStyle: TextStyle(color: Colors.grey[800]),
-                            // hintText: "تاريخ الميلاد",
-                            prefixIcon: Icon(Icons.calendar_month_rounded)),
+                            fillColor: Colors.grey[200],
+                            filled: true,
+                            suffixIcon: Icon(Icons.calendar_month_rounded)),
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
                             return 'الرجاء تعبئة الخانة';
@@ -545,18 +553,22 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                         onTap: () async {
                           DateTime? pickedDate = await showDatePicker(
                             context: context,
-                            initialDate: DateTime.now(),
+                            initialDate: DateTime(2007),
                             firstDate: DateTime(1930),
-                            lastDate: DateTime.now(),
+                            lastDate: DateTime(2007),
                             builder: (BuildContext context, Widget? child) {
                               return Theme(
-                                data: ThemeData.light().copyWith(
-                                  primaryColor: Colors.teal, // Head color
-                                  hintColor: Colors.teal, // Highlight color
-                                  colorScheme:
-                                      ColorScheme.light(primary: Colors.teal),
-                                  buttonTheme: ButtonThemeData(
-                                      textTheme: ButtonTextTheme.primary),
+                                data: ThemeData.dark().copyWith(
+                                  colorScheme: ColorScheme.dark(
+                                    primary: Colors
+                                        .teal, // Change the primary color to teal
+                                  ),
+                                  textTheme: TextTheme(
+                                    headline1: TextStyle(
+                                      color: Colors
+                                          .teal, // Change the year text color to teal
+                                    ),
+                                  ),
                                 ),
                                 child: child!,
                               );
@@ -577,20 +589,20 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                 ),
               ),
               SizedBox(
-                height: 15,
+                height: 9,
               ),
               Container(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      'رقم الجوال ',
+                      'رقم الهاتف ',
                       style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.teal,
+                        fontSize: 13,
+                        color: Color.fromARGB(255, 78, 76, 76),
                       ),
                     ),
-                    SizedBox(height: 5),
+                    // SizedBox(height: 5),
                     TextFormField(
                       controller: phoneNumController,
                       focusNode: phoneNumFocus,
@@ -599,24 +611,26 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                           fontSize: 13, height: 1.1, color: Colors.black),
                       textAlign: TextAlign.right,
                       decoration: InputDecoration(
-                        labelStyle: TextStyle(
-                          fontSize: 18,
-                          color: Colors.teal,
-                        ),
+                        border: OutlineInputBorder(),
                         isDense: true,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                          borderRadius: BorderRadius.circular(12),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(color: Colors.teal, width: 2),
+                          borderSide: BorderSide(color: Colors.teal),
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        contentPadding: EdgeInsets.symmetric(
-                          vertical: 20,
-                          horizontal: 20,
+                        fillColor: Colors.grey[200],
+                        filled: true,
+                        prefixIcon: IconButton(
+                          icon: Icon(Icons.clear), // Clear button icon
+                          onPressed: () {
+                            setState(() {
+                              phoneNumController.clear();
+                            });
+                          },
                         ),
-                        hintStyle: TextStyle(color: Colors.grey[800]),
-                        // hintText: ' (05x xxxx xxx) رقم الهاتف',
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -634,7 +648,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                 ),
               ),
               SizedBox(
-                height: 15,
+                height: 9,
               ),
               Container(
                 child: Column(
@@ -643,11 +657,11 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                     Text(
                       'البريد الالكتروني ',
                       style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.teal,
+                        fontSize: 13,
+                        color: Color.fromARGB(255, 78, 76, 76),
                       ),
                     ),
-                    SizedBox(height: 5),
+                    // SizedBox(height: 5),
                     TextFormField(
                       onTap: () async {
                         print("ontap");
@@ -659,24 +673,27 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                           fontSize: 13, height: 1.1, color: Colors.black),
                       textAlign: TextAlign.right,
                       decoration: InputDecoration(
-                        labelStyle: TextStyle(
-                          fontSize: 18,
-                          color: Colors.teal,
-                        ),
+                        border: OutlineInputBorder(),
                         isDense: true,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                          borderRadius: BorderRadius.circular(12),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(color: Colors.teal, width: 2),
+                          borderSide: BorderSide(color: Colors.teal),
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        contentPadding: EdgeInsets.symmetric(
-                          vertical: 20,
-                          horizontal: 20,
+                        fillColor: Colors.grey[200],
+                        filled: true,
+                        suffixIcon: Icon(Icons.email),
+                        prefixIcon: IconButton(
+                          icon: Icon(Icons.clear), // Clear button icon
+                          onPressed: () {
+                            setState(() {
+                              emailController.clear();
+                            });
+                          },
                         ),
-                        hintStyle: TextStyle(color: Colors.grey[800]),
-                        //hintText: '(example@gmail.com) البريد الالكتروني',
                       ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
@@ -684,9 +701,9 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                         } else if (value.length > 50)
                           return ' الرجاء تعبئة الخانة بشكل صحيح';
                         else if (!validateEmail(value))
-                          return 'الرجاء ادخال بريد الكتروني صحيح';
+                          return '( Example@gmail.com )الرجاء ادخال بريد الكتروني صحيح';
                         else {
-                          if (emails.contains(value))
+                          if (emails.contains(value) && value != initialEmail)
                             return 'هذا البريد الإلكتروني مستخدم';
                         }
 
@@ -697,7 +714,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                 ),
               ),
               SizedBox(
-                height: 15,
+                height: 9,
               ),
               Container(
                 child: Column(
@@ -706,11 +723,10 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                     Text(
                       'الجنس ',
                       style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.teal,
+                        fontSize: 13,
+                        color: Color.fromARGB(255, 78, 76, 76),
                       ),
                     ),
-                    SizedBox(height: 5),
                     Align(
                       alignment: Alignment.centerRight,
                       child: FractionallySizedBox(

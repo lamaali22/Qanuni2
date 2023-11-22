@@ -426,7 +426,7 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                             onTap: () async {
                               DateTime? pickedDate = await showDatePicker(
                                 context: context,
-                                initialDate: DateTime.now(),
+                                initialDate: DateTime(2007),
                                 firstDate: DateTime(1930),
                                 lastDate: DateTime(2007),
                                 builder: (BuildContext context, Widget? child) {

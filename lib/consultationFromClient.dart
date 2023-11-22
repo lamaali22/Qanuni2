@@ -184,7 +184,10 @@ class _BookingListScreenState extends State<BookingClientScreen>
           backgroundColor: Color.fromARGB(255, 0, 128, 128),
           title: const Text(
             "مواعيدي",
-            style: TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.w500),
+            style: TextStyle(
+                fontFamily: 'Cairo',
+                fontWeight: FontWeight.w500,
+                color: Colors.white),
           ),
           centerTitle: true,
           actions: [],

@@ -17,6 +17,7 @@ class LogoutPageLawyer extends StatefulWidget {
 }
 
 class _LogoutPageLawyerState extends State<LogoutPageLawyer> {
+  bool _isFetchingData = false;
   bool noAvailableTimeSlots = false;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   Map<DateTime, List<dynamic>> _events = {};
@@ -60,6 +61,7 @@ class _LogoutPageLawyerState extends State<LogoutPageLawyer> {
   void fetchAvailableTimeSlots() async {
     setState(() {
       _isLoading = true;
+      _isFetchingData = true;
     });
 
     DateTime startOfDay =
@@ -90,11 +92,13 @@ class _LogoutPageLawyerState extends State<LogoutPageLawyer> {
               _events[date]?.add(formattedTime);
             }
           }
+          _isFetchingData = false;
           _isLoading = false;
         });
       }
     } catch (e) {
       setState(() {
+        _isFetchingData = false;
         _isLoading = false;
       });
 
@@ -343,26 +347,28 @@ class _LogoutPageLawyerState extends State<LogoutPageLawyer> {
         ),
         SizedBox(height: 20),
         Expanded(
-          child: (_isLoading || noAvailableTimeSlots)
+          child: (_isLoading || noAvailableTimeSlots || _isFetchingData)
               ? Center(
-                  child: noAvailableTimeSlots
-                      ? Container(
-                          padding: EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.red),
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white,
-                          ),
-                          child: Text(
-                            "لا توجد لديك مواعيد متاحة في هذا اليوم",
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        )
-                      : CircularProgressIndicator(),
+                  child: _isFetchingData
+                      ? CircularProgressIndicator()
+                      : noAvailableTimeSlots
+                          ? Container(
+                              padding: EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.red),
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white,
+                              ),
+                              child: Text(
+                                "لا توجد لديك مواعيد متاحة في هذا اليوم",
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            )
+                          : CircularProgressIndicator(),
                 )
               : (_events[_selectedDay] == null ||
                       _events[_selectedDay]!.isEmpty)

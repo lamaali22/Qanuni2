@@ -184,7 +184,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                               )))
                                       : const Text(
                                           'تسجيل الدخول',
-                                          style: TextStyle(fontSize: 18),
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.white),
                                         )),
                             ],
                           )),

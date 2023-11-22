@@ -115,7 +115,10 @@ class _ClientProfileState extends State<ClientProfile> {
         backgroundColor: Color.fromARGB(255, 0, 128, 128),
         title: const Text(
           " حسابي",
-          style: TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.w500),
+          style: TextStyle(
+              fontFamily: 'Cairo',
+              fontWeight: FontWeight.w500,
+              color: Colors.white),
         ),
         centerTitle: true,
       ),
