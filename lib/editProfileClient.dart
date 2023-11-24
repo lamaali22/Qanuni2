@@ -194,15 +194,15 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
         if (user.email != emailController.text.trim()) {
           await user.updateEmail(emailController.text.trim());
         }
-        showToast(
-          "تم تحديث المعلومات بنجاح",
-          backgroundColor: Colors.green,
-          radius: 10.0,
-          textStyle: TextStyle(color: Colors.white),
-          textPadding: EdgeInsets.all(10.0),
-          position: ToastPosition.bottom,
-          duration: Duration(seconds: 2),
-        );
+        // showToast(
+        //   "تم تحديث المعلومات بنجاح",
+        //   backgroundColor: Colors.green,
+        //   radius: 10.0,
+        //   textStyle: TextStyle(color: Colors.white),
+        //   textPadding: EdgeInsets.all(10.0),
+        //   position: ToastPosition.bottom,
+        //   duration: Duration(seconds: 2),
+        // );
       } catch (e) {
         print('Failed to re-authenticate user: $e');
         showToast(
@@ -217,7 +217,16 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
         return;
       }
     }
-
+// Show the toast message immediately after updating user data
+    showToast(
+      "تم تحديث المعلومات بنجاح",
+      backgroundColor: Colors.green,
+      radius: 10.0,
+      textStyle: TextStyle(color: Colors.white),
+      textPadding: EdgeInsets.all(10.0),
+      position: ToastPosition.bottom,
+      duration: Duration(seconds: 2),
+    );
     // Now update other user data in Firestore
     QuerySnapshot querySnapshot = await _db
         .collection('Clients')
@@ -240,29 +249,72 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
         'gender': selectedItem,
       });
 
+      QuerySnapshot bookingsQuery = await _db
+          .collection('bookings')
+          .where('clientEmail', isEqualTo: user.email)
+          .get();
+
+      for (QueryDocumentSnapshot appointmentDoc in bookingsQuery.docs) {
+        await appointmentDoc.reference.update({
+          'clientEmail': emailController.text.trim(),
+        });
+      }
+
+      QuerySnapshot reviewsQuery = await _db
+          .collection('reviews')
+          .where('clientEmail', isEqualTo: user.email)
+          .get();
+
+      for (QueryDocumentSnapshot appointmentDoc in reviewsQuery.docs) {
+        await appointmentDoc.reference.update({
+          'clientEmail': emailController.text.trim(),
+        });
+      }
+
+      QuerySnapshot userReportsQuery = await _db
+          .collection('userReports')
+          .where('email', isEqualTo: user.email)
+          .get();
+
+      for (QueryDocumentSnapshot appointmentDoc in userReportsQuery.docs) {
+        await appointmentDoc.reference.update({
+          'email': emailController.text.trim(),
+        });
+      }
+
+      QuerySnapshot reportersQuery = await _db
+          .collection('reporters')
+          .where('clientEmail', isEqualTo: user.email)
+          .get();
+
+      for (QueryDocumentSnapshot appointmentDoc in reportersQuery.docs) {
+        await appointmentDoc.reference.update({
+          'clientEmail': emailController.text.trim(),
+        });
+      }
+      initialFirstName = fNameController.text;
+      initialLastName = lNameController.text;
+      initialDOB = dOBController.text;
+      initialPhoneNum = phoneNumController.text;
+      initialEmail = emailController.text;
+      initialGender = selectedItem;
       // Display a message or navigate to another screen after successful update
       print('User data updated successfully');
-      showToast(
-        "تم تحديث المعلومات بنجاح",
-        backgroundColor: Colors.green,
-        radius: 10.0,
-        textStyle: TextStyle(color: Colors.white),
-        textPadding: EdgeInsets.all(10.0),
-        position: ToastPosition.bottom,
-        duration: Duration(seconds: 2),
-      );
+      // showToast(
+      //   "تم تحديث المعلومات بنجاح",
+      //   backgroundColor: Colors.green,
+      //   radius: 10.0,
+      //   textStyle: TextStyle(color: Colors.white),
+      //   textPadding: EdgeInsets.all(10.0),
+      //   position: ToastPosition.bottom,
+      //   duration: Duration(seconds: 2),
+      // );
       // Print the user email after updating
       print(
           'User email after update in Firestore: ${emailController.text.trim()}');
     } else {
       print('No user data found in Firestore for email: $email');
     }
-    initialFirstName = fNameController.text;
-    initialLastName = lNameController.text;
-    initialDOB = dOBController.text;
-    initialPhoneNum = phoneNumController.text;
-    initialEmail = emailController.text;
-    initialGender = selectedItem;
   }
 
 // Function to show a password input dialog
