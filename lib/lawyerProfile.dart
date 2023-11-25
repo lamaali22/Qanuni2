@@ -6,6 +6,7 @@ import 'package:qanuni/consultationLawyer.dart';
 import 'package:qanuni/homePageLawyer.dart';
 import 'package:qanuni/lawyerEvaluations.dart';
 import 'package:qanuni/presentation/screens/login_screen/view.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ViewProfileLawyer extends StatefulWidget {
   @override
@@ -13,6 +14,8 @@ class ViewProfileLawyer extends StatefulWidget {
 }
 
 class _ViewProfileLawyerState extends State<ViewProfileLawyer> {
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
   late User? _user;
   String? email = "";
@@ -88,14 +91,14 @@ class _ViewProfileLawyerState extends State<ViewProfileLawyer> {
             color: const Color.fromARGB(255, 14, 16, 16),
             fontSize: 16,
             fontWeight: FontWeight.bold,
-          ),
+          ),textAlign: TextAlign.right,
         ),
         content: Text("هل أنت متأكد أنك تريد تسجيل الخروج؟",
           style: TextStyle(
             color: const Color.fromARGB(255, 14, 16, 16),
             fontSize: 16,
             fontWeight: FontWeight.bold,
-          ),
+          ),textAlign: TextAlign.right,
         ),
         actions: [
           TextButton(
@@ -128,10 +131,88 @@ class _ViewProfileLawyerState extends State<ViewProfileLawyer> {
   }
 
   // Function to handle "حذف الحساب"
-  void handleDeleteAccount() {
+  void handleDeleteAccount()async {
     print("Deleting Account");
-    // Add your logic for handling "حذف الحساب"
+    try {
+      User? user = _auth.currentUser;
+
+      if (user != null) {
+        String userEmail = user.email ?? "";
+
+        // Delete user documents in 'Clients' collection
+        await _db
+            .collection('lawyers')
+            .where('email', isEqualTo: userEmail)
+            .get()
+            .then((querySnapshot) {
+          querySnapshot.docs.forEach((doc) {
+            doc.reference.delete();
+          });
+        });
+
+
+ await _db    
+            .collection('bookings')
+            .where('lawyerEmail', isEqualTo: userEmail)
+            .get()
+            .then((querySnapshot) {
+          querySnapshot.docs.forEach((doc) {
+            doc.reference.delete();
+          });
+        });
+
+
+ await _db
+            .collection('reporters')
+            .where('lawyerEmail', isEqualTo: userEmail)
+            .get()
+            .then((querySnapshot) {
+          querySnapshot.docs.forEach((doc) {
+            doc.reference.delete();
+          });
+        });
+
+await _db
+            .collection('reviews')
+            .where('lawyerEmail', isEqualTo: userEmail)
+            .get()
+            .then((querySnapshot) {
+          querySnapshot.docs.forEach((doc) {
+            doc.reference.delete();
+          });
+        });
+     
+     await _db
+            .collection('timeSlots')
+            .where('lawyerEmail', isEqualTo: userEmail)
+            .get()
+            .then((querySnapshot) {
+          querySnapshot.docs.forEach((doc) {
+            doc.reference.delete();
+          });
+        });
+
+        // Add similar code for other collections as needed
+
+        // Finally, delete the user from authentication
+        await user.delete();
+
+        Token().updateTokenInDB(userEmail, false, "Clients");
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LoginScreen(),
+          ),
+        );
+      }
+    } catch (e) {
+      print("Error deleting account and associated documents: $e");
+    }
   }
+
+
+
 
   void handleClientsEvaluations(BuildContext context) {
     print("client evaluations");
