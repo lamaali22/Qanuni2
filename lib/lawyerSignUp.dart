@@ -966,7 +966,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                 specialties: specialities,
                                 bio: bioController.text.trim(),
                                 photoURL: "",
-                                AverageRating: "0.0");
+                                AverageRating: "0.0",
+                                token: "");
 
                             createUser(lawyer);
 

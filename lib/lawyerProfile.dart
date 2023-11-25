@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:qanuni/MyprofileLawyer.dart';
 import 'package:qanuni/Notifications.dart';
 import 'package:qanuni/consultationLawyer.dart';
 import 'package:qanuni/homePageLawyer.dart';
 import 'package:qanuni/lawyerEvaluations.dart';
 import 'package:qanuni/presentation/screens/login_screen/view.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ViewProfileLawyer extends StatefulWidget {
   @override
@@ -63,6 +63,12 @@ class _ViewProfileLawyerState extends State<ViewProfileLawyer> {
   void handleMyProfile() {
     print("Opening My Profile");
     // Add your logic for handling "الملف الشخصي"
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MyProfile_Lawyer(),
+      ),
+    );
   }
 
   // Function to handle "تسجيل الخروج"
@@ -80,85 +86,10 @@ class _ViewProfileLawyerState extends State<ViewProfileLawyer> {
   }
 
   // Function to handle "حذف الحساب"
-  
-Future<void> performDeleteAccount() async {
-  try {
-    // Fetch the current user
-    User? currentUser = _auth.currentUser;
-
-    if (currentUser != null) {
-       // Update token in the database (if needed)
-      Token().updateTokenInDB(email, false, "lawyers");
-
- // Get the user's email
-      String userEmail = currentUser.email ?? "";
-
- // Delete user data in your database (Firestore)
-      await FirebaseFirestore.instance.collection('lawyers').doc(userEmail).delete();
-
-      // Delete user account in Firebase Authentication
-      await currentUser.delete();
-
-
-// Sign out the user after deleting the account
-    await _auth.signOut();
-
-    // After deleting the account, navigate to the login screen
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => LoginScreen(),
-      ),
-    );
-  } else {
-      print("No user found. Unable to delete account.");
-    }
-    }
-    catch (e) {
-    print("Error deleting account: $e");
-    // Handle errors as needed
-  }
-}
-
-
-
   void handleDeleteAccount() {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text("تأكيد حذف الحساب",
-            style: TextStyle(
-              color: const Color.fromARGB(255, 14, 16, 16),
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),),
-        content: Text("هل أنت متأكد أنك تريد حذف حسابك؟",
-            style: TextStyle(
-              color: const Color.fromARGB(255, 14, 16, 16),
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context); // Close the dialog
-            },
-            child: Text("إلغاء"),
-          ),
-          TextButton(
-            onPressed: () async {
-              Navigator.pop(context); // Close the dialog
-              await performDeleteAccount();
-            },
-            child: Text("حذف"),
-          ),
-        ],
-      );
-    },
-  );
-}
-  
+    print("Deleting Account");
+    // Add your logic for handling "حذف الحساب"
+  }
 
   void handleClientsEvaluations(BuildContext context) {
     print("client evaluations");

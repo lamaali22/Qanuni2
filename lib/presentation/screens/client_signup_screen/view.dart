@@ -46,6 +46,15 @@ class _ClientSignUpScreenState extends State<ClientSignUpScreen> {
     return isvalid;
   }
 
+//validatephone
+  bool validatePhoneNum(String phoneNum) {
+    bool isvalid = false;
+    String phoneNumStr = phoneNum.substring(0, 2);
+    if (phoneNumStr == '05' && phoneNum.length == 10) isvalid = true;
+
+    return isvalid && !phoneNum.trim().isEmpty;
+  }
+
 //password visibile or not
   bool passwordVisible = false;
 
@@ -132,17 +141,6 @@ class _ClientSignUpScreenState extends State<ClientSignUpScreen> {
     final List<QueryDocumentSnapshot> documents = querySnapshot.docs;
 
     for (QueryDocumentSnapshot doc in documents) {
-      final data = doc.data() as Map<String, dynamic>; // Access data as a Map
-      if (data.containsKey('phoneNumber')) {
-        final phone = data['phoneNumber'] as String;
-        phones.add(phone);
-      }
-    }
-
-    final QuerySnapshot querySnapshot2 = await _db.collection('lawyers').get();
-    final List<QueryDocumentSnapshot> documents2 = querySnapshot2.docs;
-
-    for (QueryDocumentSnapshot doc in documents2) {
       final data = doc.data() as Map<String, dynamic>; // Access data as a Map
       if (data.containsKey('phoneNumber')) {
         final phone = data['phoneNumber'] as String;
@@ -409,13 +407,13 @@ class _ClientSignUpScreenState extends State<ClientSignUpScreen> {
                                 await fetchPhonesAsync();
                               },
                               controller: phoneNumController,
+                              keyboardType: TextInputType.number,
                               style: TextStyle(
                                   fontSize: 13,
                                   height: 1.1,
                                   color: Colors.black),
                               textAlign: TextAlign.right,
                               decoration: InputDecoration(
-                                prefixText: "05",
                                 border: OutlineInputBorder(),
                                 isDense: true,
                                 enabledBorder: OutlineInputBorder(
@@ -440,8 +438,8 @@ class _ClientSignUpScreenState extends State<ClientSignUpScreen> {
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'الرجاء تعبأة الخانة';
-                                } else if (value.length != 8)
-                                  return '(05x-xxxx-xxx) الرجاء ادخال رقم هاتف صحيح';
+                                } else if (!validatePhoneNum(value))
+                                  return 'الرجاء ادخال رقم هاتف صحيح';
                                 else if (!isNumericUsingRegularExpression(
                                     value))
                                   return '(الرجاء تعبأة الخانة بأعداد فقط (من 0-9';
@@ -886,7 +884,9 @@ class _ClientSignUpScreenState extends State<ClientSignUpScreen> {
                                     firstName: fNameController.text.trim(),
                                     lastName: lNameController.text.trim(),
                                     dateOfBirth: dOBController.text.trim(),
-                                    email: emailController.text.trim(),
+                                    email: emailController.text
+                                        .toLowerCase()
+                                        .trim(),
                                     password: passwordController.text.trim(),
                                     phone: phoneNumController.text.trim(),
                                     gender: selectedItem);

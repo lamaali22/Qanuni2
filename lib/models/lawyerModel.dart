@@ -14,23 +14,26 @@ class lawyerModel {
   final String bio;
   final String photoURL;
   final String AverageRating;
+  final String token;
 
-  lawyerModel(
-      {this.id, // id added
-      required this.firstName,
-      required this.lastName,
-      required this.dateOfBirth,
-      required this.email,
-      required this.password,
-      required this.phone,
-      required this.gender,
-      required this.licenseNumber,
-      required this.iban,
-      required this.specialties,
-      required this.price,
-      required this.bio,
-      required this.photoURL,
-      required this.AverageRating});
+  lawyerModel({
+    this.id, // id added
+    required this.firstName,
+    required this.lastName,
+    required this.dateOfBirth,
+    required this.email,
+    required this.password,
+    required this.phone,
+    required this.gender,
+    required this.licenseNumber,
+    required this.iban,
+    required this.specialties,
+    required this.price,
+    required this.bio,
+    required this.photoURL,
+    required this.AverageRating,
+    required this.token,
+  });
 
   toJson() {
     return {
@@ -47,7 +50,8 @@ class lawyerModel {
       "price": price,
       "bio": bio,
       "photoURL": photoURL,
-      "AverageRating": AverageRating
+      "AverageRating": AverageRating,
+      'token': token
     };
   }
 }

@@ -40,7 +40,7 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
   List<String> itemsList = ['الجنس', 'أنثى', 'ذكر'];
   String selectedItem = 'الجنس';
 
-//DOB
+//INITSTATE
   @override
   void initState() {
     dOBController.text = ""; //set the initial value of text field
@@ -86,7 +86,9 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
   bool isChecked2 = false;
   bool isChecked3 = false;
   bool isChecked4 = false;
-  bool otherIsChecked = false;
+  bool isChecked5 = false;
+  bool isChecked6 = false;
+  bool isChecked7 = false;
 
   bool atLeastOneCheckboxSelected() {
     return isChecked0 ||
@@ -94,7 +96,9 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
         isChecked2 ||
         isChecked3 ||
         isChecked4 ||
-        otherIsChecked;
+        isChecked5 ||
+        isChecked6 ||
+        isChecked7;
   }
 
   String textSpec = "";
@@ -178,17 +182,6 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
         phones.add(phone);
       }
     }
-
-    final QuerySnapshot querySnapshot2 = await _db.collection('Clients').get();
-    final List<QueryDocumentSnapshot> documents2 = querySnapshot2.docs;
-
-    for (QueryDocumentSnapshot doc in documents2) {
-      final data = doc.data() as Map<String, dynamic>; // Access data as a Map
-      if (data.containsKey('phoneNumber')) {
-        final phone = data['phoneNumber'] as String;
-        phones.add(phone);
-      }
-    }
   }
 
   //check if license used before
@@ -219,6 +212,15 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
         mockLicenses.add(license);
       }
     }
+  }
+
+  //phone validation
+  bool validatePhoneNum(String phoneNum) {
+    bool isvalid = false;
+    String phoneNumStr = phoneNum.substring(0, 2);
+    if (phoneNumStr == '05' && phoneNum.length == 10) isvalid = true;
+
+    return isvalid && !phoneNum.trim().isEmpty;
   }
 
   @override
@@ -396,6 +398,7 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                           ),
                           TextFormField(
                             controller: dOBController,
+
                             style: TextStyle(
                                 fontSize: 13, height: 1.1, color: Colors.black),
                             textAlign: TextAlign.right,
@@ -482,13 +485,13 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                                 await fetchPhonesAsync();
                               },
                               controller: phoneNumController,
+                              keyboardType: TextInputType.number,
                               style: TextStyle(
                                   fontSize: 13,
                                   height: 1.1,
                                   color: Colors.black),
                               textAlign: TextAlign.right,
                               decoration: InputDecoration(
-                                prefixText: "05",
                                 prefixStyle: TextStyle(
                                   color: Color.fromARGB(255, 78, 80, 78),
                                 ),
@@ -516,8 +519,8 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'الرجاء تعبأة الخانة';
-                                } else if (value.length != 8)
-                                  return '(05x-xxxx-xxx) الرجاء ادخال رقم هاتف صحيح';
+                                } else if (!validatePhoneNum(value))
+                                  return 'الرجاء ادخال رقم هاتف صحيح';
                                 else if (!isNumericUsingRegularExpression(
                                     value))
                                   return '(الرجاء تعبأة الخانة بأعداد فقط (من 0-9';
@@ -963,6 +966,7 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                                   await fetchLicenseNumbersUsedAsync();
                                 },
                                 controller: licenseNumberController,
+                                keyboardType: TextInputType.number,
                                 style: TextStyle(
                                     fontSize: 13,
                                     height: 1.1,
@@ -1017,65 +1021,58 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
 
                         //////////////////////////     سكيب خفيف ///////////////////////////
                         Container(
-                            height: 140,
+                            height: 289,
                             width: double.infinity,
-                            color: Colors.grey[200],
                             padding: const EdgeInsets.fromLTRB(2, 4, 2, 2),
                             margin: EdgeInsets.fromLTRB(2, 2, 2, 9),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.circular(
+                                  12), // Set the border radius
+                            ),
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  SizedBox(
+                                    height: 3,
+                                  ),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: <Widget>[
                                       Text(
-                                        " المجالات التي أود تقديم إستشارات فيها",
-                                        style: TextStyle(fontSize: 13.5),
+                                        "المجالات التي أود تقديم إستشارات فيها",
+                                        style: TextStyle(fontSize: 14.5),
                                       ),
                                     ],
+                                  ),
+                                  SizedBox(
+                                    height: 5,
                                   ),
                                   Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: <Widget>[
-                                        // Text(
-                                        //   'أخرى',
-                                        //   style: TextStyle(fontSize: 13),
-                                        // ),
-                                        // SizedBox(height: 10),
-                                        // Checkbox(
-                                        //   activeColor: Colors.teal,
-                                        //   value: otherIsChecked,
-                                        //   onChanged: (value) {
-                                        //     setState(() {
-                                        //       otherIsChecked = value!;
-                                        //     });
-                                        //   },
-                                        // ),
-                                        // SizedBox(
-                                        //   width: 20,
-                                        // ),
-                                        // Text(
-                                        //   'جنائي',
-                                        //   style: TextStyle(fontSize: 13),
-                                        // ),
-                                        // //SizedBox(height: 10),
-                                        // Checkbox(
-                                        //   activeColor: Colors.teal,
-                                        //   value: isChecked0,
-                                        //   onChanged: (value) {
-                                        //     setState(() {
-                                        //       isChecked0 = value!;
-                                        //     });
-                                        //   },
-                                        // ),
-                                        // SizedBox(
-                                        //   width: 20,
-                                        //),
                                         Text(
-                                          'مواريث',
+                                          'القانون المدني',
                                           style: TextStyle(fontSize: 13),
                                         ),
-                                        // SizedBox(height: 10),
+                                        SizedBox(height: 10),
+                                        Checkbox(
+                                          activeColor: Colors.teal,
+                                          value: isChecked0,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              isChecked0 = value!;
+                                            });
+                                          },
+                                        ),
+                                        SizedBox(
+                                          width: 30,
+                                        ),
+                                        Text(
+                                          'قانون العمل',
+                                          style: TextStyle(fontSize: 13),
+                                        ),
+                                        //SizedBox(height: 10),
                                         Checkbox(
                                           activeColor: Colors.teal,
                                           value: isChecked1,
@@ -1085,14 +1082,15 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                                             });
                                           },
                                         ),
-                                        // SizedBox(
-                                        //   width: 20,
-                                        // ),
+                                      ]),
+                                  Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: <Widget>[
                                         Text(
-                                          'إداري',
+                                          'القانون التجاري',
                                           style: TextStyle(fontSize: 13),
                                         ),
-                                        // SizedBox(height: 10),
+                                        SizedBox(height: 10),
                                         Checkbox(
                                           activeColor: Colors.teal,
                                           value: isChecked2,
@@ -1102,14 +1100,14 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                                             });
                                           },
                                         ),
-                                        // SizedBox(
-                                        //   width: 20,
-                                        // ),
+                                        SizedBox(
+                                          width: 20,
+                                        ),
                                         Text(
-                                          'مدني',
+                                          'القانون الدولي',
                                           style: TextStyle(fontSize: 13),
                                         ),
-                                        // SizedBox(height: 10),
+                                        //SizedBox(height: 10),
                                         Checkbox(
                                           activeColor: Colors.teal,
                                           value: isChecked3,
@@ -1119,20 +1117,72 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                                             });
                                           },
                                         ),
-                                        // SizedBox(
-                                        //   width: 20,
-                                        // ),
+                                      ]),
+                                  Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: <Widget>[
                                         Text(
-                                          'تجاري',
+                                          "القانون الاداري",
                                           style: TextStyle(fontSize: 13),
                                         ),
-                                        //SizedBox(height: 10),
+                                        SizedBox(height: 10),
                                         Checkbox(
                                           activeColor: Colors.teal,
                                           value: isChecked4,
                                           onChanged: (value) {
                                             setState(() {
                                               isChecked4 = value!;
+                                            });
+                                          },
+                                        ),
+                                        SizedBox(
+                                          width: 13,
+                                        ),
+                                        Text(
+                                          'القانون المواريث',
+                                          style: TextStyle(fontSize: 13),
+                                        ),
+                                        //SizedBox(height: 10),
+                                        Checkbox(
+                                          activeColor: Colors.teal,
+                                          value: isChecked5,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              isChecked5 = value!;
+                                            });
+                                          },
+                                        ),
+                                      ]),
+                                  Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: <Widget>[
+                                        Text(
+                                          'القانون الجنائي',
+                                          style: TextStyle(fontSize: 13),
+                                        ),
+                                        Checkbox(
+                                          activeColor: Colors.teal,
+                                          value: isChecked6,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              isChecked6 = value!;
+                                            });
+                                          },
+                                        ),
+                                        SizedBox(
+                                          width: 27,
+                                        ),
+                                        Text(
+                                          'القانون المالي',
+                                          style: TextStyle(fontSize: 13),
+                                        ),
+                                        //SizedBox(height: 10),
+                                        Checkbox(
+                                          activeColor: Colors.teal,
+                                          value: isChecked7,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              isChecked7 = value!;
                                             });
                                           },
                                         ),
@@ -1183,6 +1233,7 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                             ),
                             TextFormField(
                               controller: ibanController,
+                              keyboardType: TextInputType.number,
                               style: TextStyle(
                                   fontSize: 13,
                                   height: 1.1,
@@ -1254,6 +1305,7 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                             ),
                             TextFormField(
                               controller: priceController,
+                              keyboardType: TextInputType.number,
                               style: TextStyle(
                                   fontSize: 13,
                                   height: 1.1,
@@ -1373,33 +1425,30 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
 
                                 //storing in DB
 
-                                // if (isChecked0 == true) specialities.add("جنائي");
-                                // if (isChecked1 == true) specialities.add("مواريث");
-                                // if (isChecked2 == true) specialities.add("إداري");
-                                // if (isChecked3 == true) specialities.add("مدني");
-                                // if (isChecked4 == true) specialities.add("تجاري");
-                                // if (otherIsChecked == true)
-                                //   specialities.add("أخرى");
-
-                                //modified for the overflow
                                 if (isChecked0 == true)
-                                  specialities.add("مواريث");
-                                if (isChecked0 == true)
-                                  specialities.add("إداري");
-                                if (isChecked0 == true)
-                                  specialities.add("مواريث");
-                                if (isChecked0 == true)
-                                  specialities.add("مدني");
-                                if (isChecked0 == true)
-                                  specialities.add("مواريث");
-                                if (isChecked0 == true)
-                                  specialities.add("جنائي");
+                                  specialities.add("القانون المدني");
+                                if (isChecked1 == true)
+                                  specialities.add("قانون العمل");
+                                if (isChecked2 == true)
+                                  specialities.add("القانون التجاري");
+                                if (isChecked3 == true)
+                                  specialities.add("القانون الدولي");
+                                if (isChecked4 == true)
+                                  specialities.add("القانون الاداري");
+                                if (isChecked5 == true)
+                                  specialities.add("قانون المواريث");
+                                if (isChecked6 == true)
+                                  specialities.add("القانون الجنائي");
+                                if (isChecked7 == true)
+                                  specialities.add("القانون المالي");
 
                                 final lawyer = lawyerModel(
                                     firstName: fNameController.text.trim(),
                                     lastName: lNameController.text.trim(),
                                     dateOfBirth: dOBController.text.trim(),
-                                    email: emailController.text.trim(),
+                                    email: emailController.text
+                                        .toLowerCase()
+                                        .trim(),
                                     password: passwordController.text.trim(),
                                     phone: phoneNumController.text.trim(),
                                     gender: selectedItem,
@@ -1409,8 +1458,10 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                                     price: priceController.text.trim(),
                                     specialties: specialities,
                                     bio: bioController.text.trim(),
-                                    photoURL: "",
-                                    AverageRating: "0.0");
+                                    photoURL:
+                                        "https://firebasestorage.googleapis.com/v0/b/qanunidb-8a6fc.appspot.com/o/istockphoto-1337144146-170667a.jpg?alt=media&token=ae33fde0-bbcd-4dd5-b04a-add743b5c8be",
+                                    AverageRating: "0.0",
+                                    token: "");
 
                                 createUser(lawyer);
                                 await signInWithEmailAndPassword(
