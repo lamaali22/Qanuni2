@@ -76,6 +76,47 @@ class _ViewProfileLawyerState extends State<ViewProfileLawyer> {
     print("Logging Out");
 
     Token().updateTokenInDB(email, false, "lawyers");
+
+
+  // Show confirmation dialog
+  bool confirmLogout = await showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text("تأكيد تسجيل الخروج",
+          style: TextStyle(
+            color: const Color.fromARGB(255, 14, 16, 16),
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        content: Text("هل أنت متأكد أنك تريد تسجيل الخروج؟",
+          style: TextStyle(
+            color: const Color.fromARGB(255, 14, 16, 16),
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context, false); // Close the dialog and pass false
+            },
+            child: Text("إلغاء"),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context, true); // Close the dialog and pass true
+            },
+            child: Text("تسجيل الخروج"),
+          ),
+        ],
+      );
+    },
+  );
+
+   // If the user confirms the logout, proceed with the logout logic
+  if (confirmLogout == true) { 
     await _auth.signOut();
     Navigator.pushReplacement(
       context,
@@ -83,6 +124,7 @@ class _ViewProfileLawyerState extends State<ViewProfileLawyer> {
         builder: (context) => LoginScreen(),
       ),
     );
+  }
   }
 
   // Function to handle "حذف الحساب"

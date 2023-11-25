@@ -215,8 +215,14 @@ class _BookingListScreenState extends State<BookingClientScreen>
                 } else if (snapshot.hasData) {
                   final previousAppointments = snapshot.data!;
                   if (previousAppointments.isEmpty) {
-                    return Center(child: Text('No previous appointments.'));
-                  } else {
+                    return Center(child: Text('لا يوجد مواعيد سابقة',
+                        style: TextStyle(
+                          color: Colors.teal,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),));}
+                        
+                        else {
                     return _buildAppointmentsList(previousAppointments);
                   }
                 } else {
@@ -255,7 +261,12 @@ class _BookingListScreenState extends State<BookingClientScreen>
     // Sort the appointments in ascending order (oldest first)
     appointments.sort((a, b) => a.startTime.compareTo(b.startTime));
     if (appointments.isEmpty) {
-      return Center(child: Text('لايوجد مواعيد محجوزة'));
+      return Center(child: Text('لايوجد مواعيد محجوزة',
+                        style: TextStyle(
+                          color: Colors.teal,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),));
     } else {
       return ListView.builder(
         itemCount: appointments.length,
