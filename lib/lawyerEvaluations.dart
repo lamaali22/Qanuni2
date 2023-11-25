@@ -430,7 +430,6 @@ class _LawyerEvaluationsState extends State<LawyerEvaluations> {
   }
 }
 */
-
 import 'package:firebase_auth/firebase_auth.dart'; // Import FirebaseAuth
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -933,7 +932,7 @@ List<dynamic>? reporters = reviewData?['reporters'];
                                               // Define alignment based on language
                                               if (isNameInEnglish) {
                                                 return Text(
-                                                  '${clientFirstName.substring(0, 2)}****',
+                                                  '${clientFirstName.substring(0, 2)}**',
                                                   textAlign: TextAlign.right,
                                                   style: TextStyle(
                                                     fontFamily: 'Cairo',
@@ -942,7 +941,7 @@ List<dynamic>? reporters = reviewData?['reporters'];
                                                 );
                                               } else {
                                                 return Text(
-                                                  '****${clientFirstName.substring(0, 2)}',
+                                                  '**${clientFirstName.substring(0, 2)}',
                                                   textAlign: TextAlign.right,
                                                   style: TextStyle(
                                                     fontFamily: 'Cairo',
