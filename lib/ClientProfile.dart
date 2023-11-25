@@ -248,7 +248,7 @@ class _ClientProfileState extends State<ClientProfile> {
     }
   }
 
-Future<void> performDeleteAccount(BuildContext context) async {
+/*Future<void> performDeleteAccount(BuildContext context) async {
   try {
     // Fetch the current user
     User? currentUser = _auth.currentUser;
@@ -327,6 +327,88 @@ Future<void> performDeleteAccount(BuildContext context) async {
   );
 }
   
+*/
+// Function to handle "حذف الحساب"
+  
+Future<void> performDeleteAccount() async {
+  try {
+    // Fetch the current user
+    User? currentUser = _auth.currentUser;
+
+    if (currentUser != null) {
+       // Update token in the database (if needed)
+      Token().updateTokenInDB(email, false, "lawyers");
+
+ // Get the user's email
+      String userEmail = currentUser.email ?? "";
+
+ // Delete user data in your database (Firestore)
+      await FirebaseFirestore.instance.collection('lawyers').doc(userEmail).delete();
+
+      // Delete user account in Firebase Authentication
+      await currentUser.delete();
+
+
+// Sign out the user after deleting the account
+    await _auth.signOut();
+
+    // After deleting the account, navigate to the login screen
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LoginScreen(),
+      ),
+    );
+  } else {
+      print("No user found. Unable to delete account.");
+    }
+    }
+    catch (e) {
+    print("Error deleting account: $e");
+    // Handle errors as needed
+  }
+}
+
+
+
+  void handleDeleteAccount() {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text("تأكيد حذف الحساب",
+            style: TextStyle(
+              color: const Color.fromARGB(255, 14, 16, 16),
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),),
+        content: Text("هل أنت متأكد أنك تريد حذف حسابك؟",
+            style: TextStyle(
+              color: const Color.fromARGB(255, 14, 16, 16),
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context); // Close the dialog
+            },
+            child: Text("إلغاء"),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.pop(context); // Close the dialog
+              await performDeleteAccount();
+            },
+            child: Text("حذف"),
+          ),
+        ],
+      );
+    },
+  );
+}
+  
+
 
   List<Map<String, dynamic>> itemList = [
     {"text": "الملف الشخصي", "icon": Icons.person_outline},
