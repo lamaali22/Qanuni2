@@ -80,59 +80,66 @@ class _ViewProfileLawyerState extends State<ViewProfileLawyer> {
 
     Token().updateTokenInDB(email, false, "lawyers");
 
-
-  // Show confirmation dialog
-  bool confirmLogout = await showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text("تأكيد تسجيل الخروج",
-          style: TextStyle(
-            color: const Color.fromARGB(255, 14, 16, 16),
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),textAlign: TextAlign.right,
-        ),
-        content: Text("هل أنت متأكد أنك تريد تسجيل الخروج؟",
-          style: TextStyle(
-            color: const Color.fromARGB(255, 14, 16, 16),
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),textAlign: TextAlign.right,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context, false); // Close the dialog and pass false
-            },
-            child: Text("إلغاء"),
+    // Show confirmation dialog
+    bool confirmLogout = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            "تأكيد تسجيل الخروج",
+            style: TextStyle(
+              color: const Color.fromARGB(255, 14, 16, 16),
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.right,
           ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context, true); // Close the dialog and pass true
-            },
-            child: Text("تسجيل الخروج"),
+          content: Text(
+            "هل أنت متأكد أنك تريد تسجيل الخروج؟",
+            style: TextStyle(
+              color: const Color.fromARGB(255, 14, 16, 16),
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.right,
           ),
-        ],
-      );
-    },
-  );
-
-   // If the user confirms the logout, proceed with the logout logic
-  if (confirmLogout == true) { 
-    await _auth.signOut();
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => LoginScreen(),
-      ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(
+                    context, false); // Close the dialog and pass false
+              },
+              child: Text("إلغاء"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context, true); // Close the dialog and pass true
+              },
+              child: Text("تسجيل الخروج"),
+            ),
+          ],
+        );
+      },
     );
-  }
+
+    // If the user confirms the logout, proceed with the logout logic
+    if (confirmLogout == true) {
+      await _auth.signOut();
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LoginScreen(),
+        ),
+      );
+    }
   }
 
   // Function to handle "حذف الحساب"
-  void handleDeleteAccount()async {
+  void handleDeleteAccount() async {
     print("Deleting Account");
+
+    await showDeleteConfirmationDialog(context);
+
     try {
       User? user = _auth.currentUser;
 
@@ -150,8 +157,7 @@ class _ViewProfileLawyerState extends State<ViewProfileLawyer> {
           });
         });
 
-
- await _db    
+        await _db
             .collection('bookings')
             .where('lawyerEmail', isEqualTo: userEmail)
             .get()
@@ -161,8 +167,7 @@ class _ViewProfileLawyerState extends State<ViewProfileLawyer> {
           });
         });
 
-
- await _db
+        await _db
             .collection('reporters')
             .where('lawyerEmail', isEqualTo: userEmail)
             .get()
@@ -172,7 +177,7 @@ class _ViewProfileLawyerState extends State<ViewProfileLawyer> {
           });
         });
 
-await _db
+        await _db
             .collection('reviews')
             .where('lawyerEmail', isEqualTo: userEmail)
             .get()
@@ -181,8 +186,8 @@ await _db
             doc.reference.delete();
           });
         });
-     
-     await _db
+
+        await _db
             .collection('timeSlots')
             .where('lawyerEmail', isEqualTo: userEmail)
             .get()
@@ -211,8 +216,49 @@ await _db
     }
   }
 
-
-
+  Future<void> showDeleteConfirmationDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'تأكيد الحذف',
+            style: TextStyle(
+              color: const Color.fromARGB(255, 14, 16, 16),
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.right,
+          ),
+          content: Text(
+            'هل أنت متأكد أنك تريد حذف حسابك؟',
+            style: TextStyle(
+              color: const Color.fromARGB(255, 14, 16, 16),
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.right,
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('إلغاء'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Call your delete account function here
+                handleDeleteAccount();
+                Navigator.of(context).pop();
+              },
+              child: Text('حذف'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   void handleClientsEvaluations(BuildContext context) {
     print("client evaluations");
