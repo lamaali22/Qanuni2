@@ -90,7 +90,7 @@ class _LawyersListState extends State<LawyersList> {
         automaticallyImplyLeading: false,
         backgroundColor: Color.fromARGB(255, 0, 128, 128),
         title: Text("محامين ${widget.speciality}",
-            style: TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.w500)),
+            style: TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.w500 ,color: Colors.white)),
         centerTitle: true,
         // leading: IconButton(
         //   icon: Icon(Icons.arrow_back), // Back button icon
@@ -112,7 +112,7 @@ class _LawyersListState extends State<LawyersList> {
       ),
       //navigation bar
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Color(0x7F008080),
+        selectedItemColor:Colors.black,
         unselectedItemColor: Colors.black,
         showUnselectedLabels: true,
         onTap: (index) => _navigateToScreen(context, index),
