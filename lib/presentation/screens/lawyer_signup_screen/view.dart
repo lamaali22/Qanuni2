@@ -1234,6 +1234,7 @@ class _LawyerSignupScreenState extends State<LawyerSignupScreen> {
                             TextFormField(
                               controller: ibanController,
                               keyboardType: TextInputType.number,
+                              maxLength: 24,
                               style: TextStyle(
                                   fontSize: 13,
                                   height: 1.1,

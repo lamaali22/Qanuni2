@@ -1381,6 +1381,7 @@ class _AccountInfoScreenLawyerState extends State<AccountInfoScreenLawyer> {
                                 TextFormField(
                                   controller: ibanController,
                                   focusNode: ibanFocus,
+                                  maxLength: 24,
                                   keyboardType: TextInputType.number,
                                   style: TextStyle(
                                       fontSize: 13,
