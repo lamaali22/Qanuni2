@@ -6,9 +6,10 @@ import 'package:qanuni/presentation/screens/landing_screen/view.dart';
 import 'package:qanuni/presentation/screens/reset_password_screen/view.dart';
 import 'package:qanuni/utils/colors.dart';
 import 'package:qanuni/viewListOfLawyers.dart';
-
+ int _selectedIndex = 0;
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
+  
 //navigation bar method
   void _navigateToScreen(BuildContext context, int index) {
     switch (index) {
@@ -48,8 +49,8 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       //navigation Bar
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Color(0x7F008080),
-        unselectedItemColor: Colors.black,
+        // selectedItemColor: Color(0x7F008080),
+        // unselectedItemColor: Colors.black,
         showUnselectedLabels: true,
         onTap: (index) => _navigateToScreen(context, index),
         items: [
@@ -70,6 +71,9 @@ class HomeScreen extends StatelessWidget {
             label: 'حسابي',
           ),
         ],
+         currentIndex: _selectedIndex,
+        selectedItemColor: Colors.teal,
+        unselectedItemColor: Colors.black,
       ),
 
       body: Center(

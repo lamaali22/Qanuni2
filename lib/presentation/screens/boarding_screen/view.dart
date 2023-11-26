@@ -123,7 +123,7 @@ class BoardingScreen extends StatelessWidget {
                                 : ColorConstants.primaryColor.withOpacity(0.5)),
                     child: Text(
                       'ابدأ',
-                      style: TextStyle(fontSize: 18),
+                      style: TextStyle(fontSize: 18,color: Colors.white),
                     )),
                 SizedBox(
                   height: 0.1.sh,

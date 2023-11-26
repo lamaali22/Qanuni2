@@ -234,7 +234,7 @@ class _BookingListScreenState extends State<BookingClientScreen>
         ),
         // Navigation bar
         bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: Color(0x7F008080),
+          selectedItemColor: Colors.black,
           unselectedItemColor: Colors.black,
           showUnselectedLabels: true,
           onTap: (index) => _navigateToScreen(context, index),
@@ -244,7 +244,7 @@ class _BookingListScreenState extends State<BookingClientScreen>
               label: 'حسابي',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_month_outlined),
+              icon: Icon(Icons.calendar_month_outlined , color: Colors.teal,),
               label: 'مواعيدي',
             ),
             BottomNavigationBarItem(

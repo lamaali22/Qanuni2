@@ -120,7 +120,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       )
                     : Text(
                         'إدفع ${PaymentCubit.get(context).price} ريال',
-                        style: const TextStyle(fontSize: 18),
+                        style: const TextStyle(fontSize: 18, color: Colors.white),
                       )),
           ),
           body: Padding(

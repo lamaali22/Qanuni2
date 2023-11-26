@@ -136,7 +136,8 @@ class _BookingPageState extends State<BookingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('حجز موعد استشارة'),
+        title: Text('حجز موعد استشارة',
+         style: TextStyle(color: Colors.white), ),
         backgroundColor: Color.fromARGB(255, 0, 128, 128),
         automaticallyImplyLeading: false,
         centerTitle: true,
@@ -170,7 +171,7 @@ class _BookingPageState extends State<BookingPage> {
               });
             },
             focusedDay: _selectedDay,
-            firstDay: DateTime.now(),
+            firstDay: DateTime.now().add(Duration(days: 1)),
             lastDay: DateTime.now().add(Duration(days: 10)),
             selectedDayPredicate: (day) {
               return isSameDay(_selectedDay, day);

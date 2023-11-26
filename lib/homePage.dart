@@ -14,7 +14,6 @@ import 'package:qanuni/viewListOfLawyers.dart';
 import 'package:intl/intl.dart';
 import 'package:qanuni/ClientProfile.dart';
 import 'package:timezone/data/latest.dart' as tz;
-
 class LogoutPage extends StatefulWidget {
   @override
   _LogoutPageState createState() => _LogoutPageState();
@@ -95,25 +94,6 @@ class _LogoutPageState extends State<LogoutPage> {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Center(
-                //   child: IconButton(
-                //     icon: const Icon(
-                //       Icons.exit_to_app,
-                //       color: Colors.white,
-                //       size: 30,
-                //     ),
-                //     onPressed: () async {
-                //       Token().updateTokenInDB(email, false, "lawyers");
-                //       await _auth.signOut();
-                //       Navigator.pushReplacement(
-                //         context,
-                //         MaterialPageRoute(
-                //           builder: (context) => LoginScreen(),
-                //         ),
-                //       );
-                //     },
-                //   ),
-                // ),
                 const Expanded(
                   child: Text.rich(
                     TextSpan(
@@ -140,9 +120,8 @@ class _LogoutPageState extends State<LogoutPage> {
       ), //appbar
 
       //navigation bar
+      
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Color(0x7F008080), // Color for selected item
-        unselectedItemColor: Colors.black, // Color for unselected items
         onTap: (index) => _navigateToScreen(context, index),
         items: [
           BottomNavigationBarItem(
@@ -154,10 +133,13 @@ class _LogoutPageState extends State<LogoutPage> {
             label: 'مواعيدي',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
+            icon: Icon(Icons.home_outlined, color: Colors.teal,),
             label: 'الصفحة الرئيسية',
           ),
         ],
+       unselectedItemColor: Colors.black,
+        selectedItemColor: Colors.black,
+
       ),
       body: SingleChildScrollView(
         child: Stack(children: [

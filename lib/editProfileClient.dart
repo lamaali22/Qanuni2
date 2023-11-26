@@ -432,8 +432,13 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF008080),
-        title: Text('الملف الشخصي'),
+        title: Text('الملف الشخصي',
+        style: TextStyle(
+              fontFamily: 'Cairo',
+              fontWeight: FontWeight.w500,
+              color: Colors.white),),
         centerTitle: true,
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),

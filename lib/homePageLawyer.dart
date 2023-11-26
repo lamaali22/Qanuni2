@@ -318,7 +318,7 @@ class _LogoutPageLawyerState extends State<LogoutPageLawyer> {
             });
           },
           focusedDay: _selectedDay,
-          firstDay: DateTime.now(),
+          firstDay: DateTime.now().add(Duration(days: 10)),
           lastDay: DateTime.now().add(Duration(days: 10)),
           selectedDayPredicate: (day) {
             return isSameDay(_selectedDay, day);

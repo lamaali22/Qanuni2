@@ -322,13 +322,13 @@ Future<void> showDeleteConfirmationDialog(BuildContext context) async {
       ),
       // Navigation bar
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Color(0x7F008080),
+        selectedItemColor: Colors.black,
         unselectedItemColor: Colors.black,
         showUnselectedLabels: true,
         onTap: (index) => _navigateToScreen(context, index),
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.person_2_outlined),
+            icon: Icon(Icons.person_2_outlined, color: Colors.teal,),
             label: ' حسابي',
           ),
           BottomNavigationBarItem(
