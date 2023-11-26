@@ -680,6 +680,7 @@ class _AccountInfoScreenLawyerState extends State<AccountInfoScreenLawyer> {
           backgroundColor: const Color(0xFF008080),
           title: Text('الملف الشخصي'),
           centerTitle: true,
+          automaticallyImplyLeading: false,
           actions: [
             IconButton(
               padding: EdgeInsets.only(right: 30),

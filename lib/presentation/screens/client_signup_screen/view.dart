@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:qanuni/homePage.dart';
 import 'package:qanuni/models/clientModel.dart';
 import 'package:qanuni/presentation/screens/home_screen/view.dart';
 import 'package:qanuni/presentation/screens/landing_screen/view.dart';
@@ -900,7 +901,7 @@ class _ClientSignUpScreenState extends State<ClientSignUpScreen> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => HomeScreen(),
+                                      builder: (context) => LogoutPage(),
                                     ));
                               }
                               //ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Processing Data')),);
