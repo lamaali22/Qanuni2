@@ -133,6 +133,9 @@ class _ViewProfileLawyerState extends State<ViewProfileLawyer> {
   // Function to handle "حذف الحساب"
   void handleDeleteAccount()async {
     print("Deleting Account");
+
+          await showDeleteConfirmationDialog(context);
+
     try {
       User? user = _auth.currentUser;
 
@@ -210,6 +213,48 @@ await _db
       print("Error deleting account and associated documents: $e");
     }
   }
+
+Future<void> showDeleteConfirmationDialog(BuildContext context) async {
+  return showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('تأكيد الحذف',
+          style: TextStyle(
+            color: const Color.fromARGB(255, 14, 16, 16),
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ), textAlign: TextAlign.right,),
+
+
+        content: Text('هل أنت متأكد أنك تريد حذف حسابك؟',
+          style: TextStyle(
+            color: const Color.fromARGB(255, 14, 16, 16),
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ), textAlign: TextAlign.right,),
+
+
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text('إلغاء'),
+          ),
+          TextButton(
+            onPressed: () {
+              // Call your delete account function here
+              handleDeleteAccount();
+              Navigator.of(context).pop();
+            },
+            child: Text('حذف'),
+          ),
+        ],
+      );
+    },
+  );
+}
 
 
 
