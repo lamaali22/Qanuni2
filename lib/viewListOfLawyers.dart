@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qanuni/ClientProfile.dart';
 import 'package:qanuni/consultationFromClient.dart';
 import 'package:qanuni/firebase_options.dart';
 import 'package:qanuni/homePage.dart';
@@ -62,7 +63,7 @@ class _LawyersListState extends State<LawyersList> {
       case 0:
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => LogoutPage()),
+          MaterialPageRoute(builder: (context) => ClientProfile()),
           (route) => false,
         );
         break;
