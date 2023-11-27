@@ -232,7 +232,7 @@ class _LogoutPageLawyerState extends State<LogoutPageLawyer> {
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Color(0x7F008080),
+        selectedItemColor: Colors.black,
         unselectedItemColor: Colors.black,
         showUnselectedLabels: true,
         onTap: (index) => _navigateToScreen(context, index),
@@ -248,7 +248,7 @@ class _LogoutPageLawyerState extends State<LogoutPageLawyer> {
             label: 'مواعيدي',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
+            icon: Icon(Icons.home_outlined, color: Colors.teal,),
             label: 'الصفحة الرئيسية',
           ),
         ],
@@ -318,7 +318,7 @@ class _LogoutPageLawyerState extends State<LogoutPageLawyer> {
             });
           },
           focusedDay: _selectedDay,
-          firstDay: DateTime.now().add(Duration(days: 10)),
+          firstDay: DateTime.now(),
           lastDay: DateTime.now().add(Duration(days: 10)),
           selectedDayPredicate: (day) {
             return isSameDay(_selectedDay, day);
@@ -341,7 +341,7 @@ class _LogoutPageLawyerState extends State<LogoutPageLawyer> {
               color: Colors.teal,
             ),
             weekendTextStyle: TextStyle(color: Colors.black),
-            outsideTextStyle: TextStyle(color: Colors.grey),
+            outsideTextStyle: TextStyle(color: Colors.black),
             defaultTextStyle: TextStyle(color: Colors.black),
           ),
         ),

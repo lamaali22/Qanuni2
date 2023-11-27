@@ -171,7 +171,7 @@ class _BookingPageState extends State<BookingPage> {
               });
             },
             focusedDay: _selectedDay,
-            firstDay: DateTime.now().add(Duration(days: 1)),
+            firstDay: DateTime.now(),
             lastDay: DateTime.now().add(Duration(days: 10)),
             selectedDayPredicate: (day) {
               return isSameDay(_selectedDay, day);
@@ -193,7 +193,7 @@ class _BookingPageState extends State<BookingPage> {
                 color: Colors.teal,
               ),
               weekendTextStyle: TextStyle(color: Colors.black),
-              outsideTextStyle: TextStyle(color: Colors.grey),
+              outsideTextStyle: TextStyle(color: Colors.black),
               defaultTextStyle: TextStyle(color: Colors.black),
             ),
           ),
