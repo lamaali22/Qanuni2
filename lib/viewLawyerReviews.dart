@@ -546,7 +546,7 @@ List<dynamic>? reporters = reviewData?['reporters'];
       } else {
         // Display a toast with the success message
         Fluttertoast.showToast(
-          msg: "تم إرسال التقرير بنجاح.",
+          msg: "تم إرسال البلاغ بنجاح.",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,

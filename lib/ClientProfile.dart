@@ -162,7 +162,7 @@ class _ClientProfileState extends State<ClientProfile> {
         });
 
 
- await _db
+ /*await _db
             .collection('reporters')
             .where('clientEmail', isEqualTo: userEmail)
             .get()
@@ -171,7 +171,7 @@ class _ClientProfileState extends State<ClientProfile> {
             doc.reference.delete();
           });
         });
-
+*/
 await _db
             .collection('reviews')
             .where('clientEmail', isEqualTo: userEmail)

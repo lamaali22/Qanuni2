@@ -165,7 +165,7 @@ class _ViewProfileLawyerState extends State<ViewProfileLawyer> {
         });
 
 
- await _db
+ /*await _db
             .collection('reporters')
             .where('lawyerEmail', isEqualTo: userEmail)
             .get()
@@ -174,7 +174,7 @@ class _ViewProfileLawyerState extends State<ViewProfileLawyer> {
             doc.reference.delete();
           });
         });
-
+*/
 await _db
             .collection('reviews')
             .where('lawyerEmail', isEqualTo: userEmail)
