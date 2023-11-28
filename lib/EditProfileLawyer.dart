@@ -794,10 +794,9 @@ class _AccountInfoScreenLawyerState extends State<AccountInfoScreenLawyer> {
                                       imgChanged = true;
                                       count++;
                                     },
-                                    child: Text("حذف صورة الملف",
+                                    child: Text("إزالة الصورة",
                                         style: TextStyle(
-                                          color: const Color.fromARGB(
-                                              255, 166, 32, 22),
+                                          color: Color(0xFF4D4D4D),
                                           fontSize: 13,
                                           decoration: TextDecoration.underline,
                                         )))),
