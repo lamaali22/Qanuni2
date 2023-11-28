@@ -502,9 +502,10 @@ class _ClientProfileState extends State<ClientProfile> {
 
   void handleDeleteAccount()async {
     print("Deleting Account");
-
-      await showDeleteConfirmationDialog(context);
-
+    
+// Show confirmation dialog
+  bool? confirmDelete = await showDeleteConfirmationDialog(context);
+if(confirmDelete == true){
     try {
       User? user = _auth.currentUser;
 
@@ -572,10 +573,12 @@ await _db
     } catch (e) {
       print("Error deleting account and associated documents: $e");
     }
+    }
+
   }
 
-Future<void> showDeleteConfirmationDialog(BuildContext context) async {
-  return showDialog<void>(
+Future<bool?> showDeleteConfirmationDialog(BuildContext context) async {
+  return showDialog<bool>(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
@@ -598,7 +601,7 @@ Future<void> showDeleteConfirmationDialog(BuildContext context) async {
         actions: <Widget>[
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop();
+              Navigator.of(context).pop(false);
             },
             child: Text('إلغاء'),
           ),
@@ -606,7 +609,7 @@ Future<void> showDeleteConfirmationDialog(BuildContext context) async {
             onPressed: () {
               // Call your delete account function here
               handleDeleteAccount();
-              Navigator.of(context).pop();
+              Navigator.of(context).pop(true);
             },
             child: Text('حذف'),
           ),
