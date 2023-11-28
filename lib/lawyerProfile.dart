@@ -109,13 +109,21 @@ class _ViewProfileLawyerState extends State<ViewProfileLawyer> {
                 Navigator.pop(
                     context, false); // Close the dialog and pass false
               },
-              child: Text("إلغاء"),
+              child: Text("إلغاء",  style: TextStyle(
+            color: Color.fromRGBO(16, 156, 226, 0.976),
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),),
             ),
             TextButton(
               onPressed: () {
                 Navigator.pop(context, true); // Close the dialog and pass true
               },
-              child: Text("تسجيل الخروج"),
+              child: Text("تسجيل الخروج",  style: TextStyle(
+            color: Color.fromRGBO(16, 156, 226, 0.976),
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),),
             ),
           ],
         );
@@ -244,7 +252,11 @@ class _ViewProfileLawyerState extends State<ViewProfileLawyer> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('إلغاء'),
+              child: Text('إلغاء',  style: TextStyle(
+            color: Color.fromRGBO(16, 156, 226, 0.976),
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),),
             ),
             TextButton(
               onPressed: () {
@@ -252,7 +264,11 @@ class _ViewProfileLawyerState extends State<ViewProfileLawyer> {
                 handleDeleteAccount();
                 Navigator.of(context).pop();
               },
-              child: Text('حذف'),
+              child: Text('حذف',  style: TextStyle(
+            color: Color.fromRGBO(16, 156, 226, 0.976),
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),),
             ),
           ],
         );
