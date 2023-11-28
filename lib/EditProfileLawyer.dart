@@ -300,7 +300,7 @@ class _AccountInfoScreenLawyerState extends State<AccountInfoScreenLawyer> {
     );
 
     if (imgChanged) {
-      uploadImageToStorage("$email ProfilePicture", img!);
+      if (img != null) uploadImageToStorage("$email ProfilePicture", img!);
     }
     //To Remove a speciality
     if (isChecked0 == false &&
@@ -674,6 +674,8 @@ class _AccountInfoScreenLawyerState extends State<AccountInfoScreenLawyer> {
     }
   }
 
+  int count = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -709,60 +711,96 @@ class _AccountInfoScreenLawyerState extends State<AccountInfoScreenLawyer> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Center(
-                              child: InkWell(
-                                onTap: () {
-                                  // _changeProfileImage();
-                                  // takePhoto(ImageSource.gallery);
-                                  selectImage();
-                                  print(
-                                      "imgchanged = $imgChanged after return");
-                                },
+                              child: Container(
                                 child: Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    img == null
-                                        ? CircleAvatar(
-                                            radius: 64,
-                                            backgroundImage: NetworkImage(
-                                                photoURLController.text),
-                                            backgroundColor:
-                                                const Color.fromARGB(
-                                                    0, 255, 255, 255),
-                                          )
-                                        : CircleAvatar(
-                                            radius: 64,
-                                            backgroundImage: MemoryImage(img!),
-                                            backgroundColor:
-                                                const Color.fromARGB(
-                                                    0, 255, 255, 255),
-                                          ),
-                                    Positioned(
-                                      bottom: 0,
-                                      right: 0,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                                  Colors.black.withOpacity(0.2),
-                                              spreadRadius: 0,
-                                              blurRadius: 3,
-                                              offset: Offset(0, 3),
-                                            ),
-                                          ],
-                                        ),
-                                        child: Icon(
-                                          Icons.camera_alt,
-                                          size: 29,
-                                          color:
-                                              Color.fromARGB(181, 0, 150, 135),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                    alignment: Alignment.center,
+                                    children: [
+                                      InkWell(
+                                          onTap: () {
+                                            // _changeProfileImage();
+                                            // takePhoto(ImageSource.gallery);
+                                            selectImage();
+                                          },
+                                          child: Stack(
+                                              alignment: Alignment.center,
+                                              children: [
+                                                img == null
+                                                    ? CircleAvatar(
+                                                        radius: 64,
+                                                        backgroundImage:
+                                                            NetworkImage(
+                                                                photoURLController
+                                                                    .text),
+                                                        backgroundColor:
+                                                            const Color
+                                                                .fromARGB(0,
+                                                                255, 255, 255),
+                                                      )
+                                                    : CircleAvatar(
+                                                        radius: 64,
+                                                        backgroundImage:
+                                                            MemoryImage(img!),
+                                                        backgroundColor:
+                                                            const Color
+                                                                .fromARGB(0,
+                                                                255, 255, 255),
+                                                      ),
+                                                Positioned(
+                                                  bottom: 0,
+                                                  right: 0,
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color: Colors.black
+                                                              .withOpacity(0.2),
+                                                          spreadRadius: 0,
+                                                          blurRadius: 3,
+                                                          offset: Offset(0, 3),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    child: Icon(
+                                                      Icons.camera_alt,
+                                                      size: 29,
+                                                      color: Color.fromARGB(
+                                                          181, 0, 150, 135),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ])),
+                                    ]),
                               ),
                             ),
+
+                            Center(
+                                child: InkWell(
+                                    onTap: () {
+                                      if (count > 0) {
+                                        showToast(
+                                          "تم حذف الصورة, الرجاء التحديث لتأكيد التغييرات",
+                                          backgroundColor: Color.fromARGB(
+                                              239, 211, 210, 210),
+                                          radius: 10.0,
+                                          textStyle:
+                                              TextStyle(color: Colors.black),
+                                          textPadding: EdgeInsets.all(10.0),
+                                          position: ToastPosition.bottom,
+                                          duration: Duration(seconds: 5),
+                                        );
+                                      }
+                                      photoURLController.text =
+                                          "https://firebasestorage.googleapis.com/v0/b/qanunidb-8a6fc.appspot.com/o/istockphoto-1337144146-170667a.jpg?alt=media&token=ae33fde0-bbcd-4dd5-b04a-add743b5c8be";
+                                      imgChanged = true;
+                                      count++;
+                                    },
+                                    child: Text("حذف صورة الملف",
+                                        style: TextStyle(
+                                          color: const Color.fromARGB(
+                                              255, 166, 32, 22),
+                                          fontSize: 13,
+                                          decoration: TextDecoration.underline,
+                                        )))),
 
                             SizedBox(
                               height: 20,
@@ -1577,6 +1615,7 @@ class _AccountInfoScreenLawyerState extends State<AccountInfoScreenLawyer> {
                                       atLeastOneCheckboxSelected()) {
                                     // Form is valid, check if any fields are changed
                                     if (isFormChanged()) {
+                                      count = 0;
                                       // Fields are changed, update user data
                                       updateUserData();
                                     } else {

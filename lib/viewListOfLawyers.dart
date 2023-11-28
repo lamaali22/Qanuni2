@@ -91,7 +91,10 @@ class _LawyersListState extends State<LawyersList> {
         automaticallyImplyLeading: false,
         backgroundColor: Color.fromARGB(255, 0, 128, 128),
         title: Text("محامين ${widget.speciality}",
-            style: TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.w500 ,color: Colors.white)),
+            style: TextStyle(
+                fontFamily: 'Cairo',
+                fontWeight: FontWeight.w500,
+                color: Colors.white)),
         centerTitle: true,
         // leading: IconButton(
         //   icon: Icon(Icons.arrow_back), // Back button icon
@@ -113,7 +116,7 @@ class _LawyersListState extends State<LawyersList> {
       ),
       //navigation bar
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor:Colors.black,
+        selectedItemColor: Colors.black,
         unselectedItemColor: Colors.black,
         showUnselectedLabels: true,
         onTap: (index) => _navigateToScreen(context, index),
@@ -207,14 +210,15 @@ class _LawyersListState extends State<LawyersList> {
                           border: Border.all(color: Colors.teal),
                           borderRadius: BorderRadius.circular(10),
                           color: Colors.white),
-                      child: Text(
-                        "نعتذر, لا يوجد محامين بهذا الاختصاص في الوقت الحالي",
-                        style: TextStyle(
-                          color: Colors.teal,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      child: Center(
+                          child: Text(
+                              "نعتذر, لا يوجد محامين بهذا الاختصاص في الوقت الحالي",
+                              style: TextStyle(
+                                color: Colors.teal,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center)),
                     ));
                   } else
                     return ListView.builder(
