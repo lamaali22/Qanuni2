@@ -223,6 +223,7 @@ class _AccountInfoScreenLawyerState extends State<AccountInfoScreenLawyer> {
       //
       if (specialitiesController.contains("القانون الاداري")) isChecked4 = true;
       if (specialitiesController.contains("قانون المواريث")) isChecked5 = true;
+      if (specialitiesController.contains("القانون الجنائي")) isChecked6 = true;
       if (specialitiesController.contains("القانون المالي")) isChecked7 = true;
     }
   }
