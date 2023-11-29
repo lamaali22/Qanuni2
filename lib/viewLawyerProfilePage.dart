@@ -274,8 +274,7 @@ Column(
       ),
     ),
   ],
-)
-,
+),
                 //end specality box
 
                 SizedBox(
