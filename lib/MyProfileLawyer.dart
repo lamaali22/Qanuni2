@@ -283,38 +283,55 @@ class _MyProfile_LawyerState extends State<MyProfile_Lawyer> {
                     )
 
                     //specality box
-                    ,
-                    Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: lawyer.specialties.map((specialty) {
-                            return Container(
-                              constraints: BoxConstraints(minWidth: 50),
-                              height: 24,
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 4),
-                              padding: EdgeInsets.symmetric(horizontal: 5),
-                              decoration: BoxDecoration(
-                                color: Color(0x7F008080),
-                                borderRadius: BorderRadius.circular(11.74),
-                              ),
-                              child: Text(
-                                specialty,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontFamily: 'Cairo',
-                                  fontWeight: FontWeight.w500,
-                                  height: 0,
-                                ),
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                      ],
+                 ,
+Column(
+  children: [
+    SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: List.generate(
+          (lawyer.specialties.length / 4).ceil(), // Calculate the number of rows
+          (index) {
+            int startIndex = index * 4;
+            int endIndex = (index + 1) * 4;
+            endIndex = endIndex > lawyer.specialties.length
+                ? lawyer.specialties.length
+                : endIndex;
+
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: lawyer.specialties.sublist(startIndex, endIndex).map((specialty) {
+                return Container(
+                  constraints: BoxConstraints(minWidth: 50),
+                  height: 24,
+                  margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: EdgeInsets.symmetric(horizontal: 5),
+                  decoration: BoxDecoration(
+                    color: Color(0x7F008080),
+                    borderRadius: BorderRadius.circular(11.74),
+                  ),
+                  child: Text(
+                    specialty,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontFamily: 'Cairo',
+                      fontWeight: FontWeight.w500,
+                      height: 0,
                     ),
+                  ),
+                );
+              }).toList(),
+            );
+          },
+        ),
+      ),
+    ),
+  ],
+)
+,
                     //end specality box
 
                     SizedBox(
