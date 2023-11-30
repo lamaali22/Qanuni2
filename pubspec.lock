@@ -1195,13 +1195,13 @@ packages:
     source: hosted
     version: "9.4.0"
   stripe_ios:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: stripe_ios
-      sha256: ddcf87cacf3a6fa482568d099332bae69326acfab51a726af9faa31a8ef30af8
+      sha256: "4b176f4ee7eaf229815b90c3ff78935da9e01765f4d3153b76fd0d3d64680294"
       url: "https://pub.dev"
     source: hosted
-    version: "9.4.1"
+    version: "9.6.0"
   stripe_platform_interface:
     dependency: transitive
     description:
