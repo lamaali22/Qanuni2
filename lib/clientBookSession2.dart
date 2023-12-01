@@ -136,8 +136,10 @@ class _BookingPageState extends State<BookingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('حجز موعد استشارة',
-         style: TextStyle(color: Colors.white), ),
+        title: Text(
+          'حجز موعد استشارة',
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: Color.fromARGB(255, 0, 128, 128),
         automaticallyImplyLeading: false,
         centerTitle: true,
@@ -152,175 +154,189 @@ class _BookingPageState extends State<BookingPage> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          TableCalendar(
-            headerStyle: HeaderStyle(
-              formatButtonDecoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.teal,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            TableCalendar(
+              headerStyle: HeaderStyle(
+                formatButtonDecoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.teal,
+                ),
+                formatButtonTextStyle: TextStyle(color: Colors.white),
+                formatButtonVisible: false,
+                titleTextStyle: TextStyle(color: Colors.teal),
               ),
-              formatButtonTextStyle: TextStyle(color: Colors.white),
-              formatButtonVisible: false,
-              titleTextStyle: TextStyle(color: Colors.teal),
+              calendarFormat: _calendarFormat,
+              onFormatChanged: (format) {
+                setState(() {
+                  _calendarFormat = format;
+                });
+              },
+              focusedDay: _selectedDay,
+              firstDay: DateTime.now(),
+              lastDay: DateTime.now().add(Duration(days: 10)),
+              selectedDayPredicate: (day) {
+                return isSameDay(_selectedDay, day);
+              },
+              onDaySelected: (selectedDay, focusedDay) {
+                setState(() {
+                  _selectedDay = selectedDay;
+                });
+                fetchAvailableTimeSlots();
+              },
+              calendarStyle: CalendarStyle(
+                todayTextStyle: TextStyle(color: Colors.black),
+                todayDecoration: BoxDecoration(
+                  color: Colors.transparent,
+                  border: Border.all(color: Colors.teal),
+                ),
+                selectedTextStyle: TextStyle(color: Colors.white),
+                selectedDecoration: BoxDecoration(
+                  color: Colors.teal,
+                ),
+                weekendTextStyle: TextStyle(color: Colors.black),
+                outsideTextStyle: TextStyle(color: Colors.black),
+                defaultTextStyle: TextStyle(color: Colors.black),
+              ),
             ),
-            calendarFormat: _calendarFormat,
-            onFormatChanged: (format) {
-              setState(() {
-                _calendarFormat = format;
-              });
-            },
-            focusedDay: _selectedDay,
-            firstDay: DateTime.now(),
-            lastDay: DateTime.now().add(Duration(days: 10)),
-            selectedDayPredicate: (day) {
-              return isSameDay(_selectedDay, day);
-            },
-            onDaySelected: (selectedDay, focusedDay) {
-              setState(() {
-                _selectedDay = selectedDay;
-              });
-              fetchAvailableTimeSlots();
-            },
-            calendarStyle: CalendarStyle(
-              todayTextStyle: TextStyle(color: Colors.black),
-              todayDecoration: BoxDecoration(
-                color: Colors.transparent,
-                border: Border.all(color: Colors.teal),
-              ),
-              selectedTextStyle: TextStyle(color: Colors.white),
-              selectedDecoration: BoxDecoration(
-                color: Colors.teal,
-              ),
-              weekendTextStyle: TextStyle(color: Colors.black),
-              outsideTextStyle: TextStyle(color: Colors.black),
-              defaultTextStyle: TextStyle(color: Colors.black),
-            ),
-          ),
-          SizedBox(height: 20),
-          Expanded(
-            child: _isLoading
+            SizedBox(height: 20),
+            _isLoading
                 ? Center(child: CircularProgressIndicator())
                 : (_events[_selectedDay] == null ||
                         _events[_selectedDay]!.isEmpty)
                     ? Center(
                         child: Container(
                         padding: EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.red),
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white),
-                        child: Text(
-                          "لا تتوفر أوقات متاحة لهذا اليوم, الرجاء اختيار يوم آخر",
-                          style: TextStyle(
-                            color: Colors.red,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        // decoration: BoxDecoration(
+                        //     border: Border.all(color: Colors.red),
+                        //     borderRadius: BorderRadius.circular(10),
+                        //     color: Colors.white),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/images/calendar.png',
+                              width: 100, // Set the desired width
+                              height: 100, // Set the desired height
+                            ),
+                            SizedBox(
+                                height: 16), // Add space between icon and text
+                            Text(
+                              'لا تتوفر أوقات متاحة لهذا اليوم، يرجى اختيار يوم اخر  ',
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 188, 84, 52),
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
+                        // child: Text(
+                        //   "لا تتوفر أوقات متاحة لهذا اليوم, الرجاء اختيار يوم آخر",
+                        //   style: TextStyle(
+                        //     color: Colors.red,
+                        //     fontSize: 16,
+                        //     fontWeight: FontWeight.bold,
+                        //   ),
+                        // ),
                       ))
-                    : GridView.builder(
-                        padding: EdgeInsets.all(10),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
-                        ),
-                        itemCount: _events[_selectedDay]!.length,
-                        itemBuilder: (context, index) {
-                          String timeSlot = _events[_selectedDay]![index];
-                          bool isSelected = timeSlot == _selectedTimeSlot;
+                    : Expanded(
+                        child: GridView.builder(
+                          padding: EdgeInsets.all(10),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10,
+                          ),
+                          itemCount: _events[_selectedDay]!.length,
+                          itemBuilder: (context, index) {
+                            String timeSlot = _events[_selectedDay]![index];
+                            bool isSelected = timeSlot == _selectedTimeSlot;
 
-                          return GestureDetector(
-                            onTap: () {
-                              selectTimeSlot(timeSlot);
-                              print(timeSlot);
-                            },
-                            child: Stack(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color:
-                                        isSelected ? Colors.teal : Colors.white,
-                                    border: Border.all(
+                            return GestureDetector(
+                              onTap: () {
+                                selectTimeSlot(timeSlot);
+                                print(timeSlot);
+                              },
+                              child: Stack(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
                                       color: isSelected
                                           ? Colors.teal
-                                          : Colors.teal,
-                                      width: 2,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      timeSlot,
-                                      style: TextStyle(
+                                          : Colors.white,
+                                      border: Border.all(
                                         color: isSelected
-                                            ? Colors.white
+                                            ? Colors.teal
                                             : Colors.teal,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
+                                        width: 2,
+                                      ),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        timeSlot,
+                                        style: TextStyle(
+                                          color: isSelected
+                                              ? Colors.white
+                                              : Colors.teal,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-          ),
-          Column(
-            children: [
-              IgnorePointer(
-                ignoring: _selectedTimeSlot.isEmpty,
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: 15, right: 10, left: 10),
-                  child: Opacity(
-                    opacity: _selectedTimeSlot.isEmpty ? 0.5 : 1.0,
-                    child: Expanded(
-                      child: Container(
-                        width: double.infinity,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            PaymentCubit.get(context).init(
-                                _selectedTimeSlot,
-                                widget.lawyer.price,
-                                _selectedDay,
-                                widget.lawyer.email);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    const PaymentScreen(), //pass 'String selectedTimeSlot'
+                                ],
                               ),
                             );
                           },
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.teal,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          child: Text(
-                            'الانتقال إلى الدفع',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                            ),
-                          ),
                         ),
+                      ),
+            Padding(
+              padding: EdgeInsets.only(bottom: 15, right: 10, left: 10),
+              child: Opacity(
+                opacity: _selectedTimeSlot.isEmpty ? 0.5 : 1.0,
+                child: Container(
+                  width: double.infinity,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      PaymentCubit.get(context).init(
+                          _selectedTimeSlot,
+                          widget.lawyer.price,
+                          _selectedDay,
+                          widget.lawyer.email);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const PaymentScreen(),
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.teal,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: Text(
+                      'الانتقال إلى الدفع',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
                       ),
                     ),
                   ),
                 ),
               ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }

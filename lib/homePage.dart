@@ -10,10 +10,14 @@ import 'package:qanuni/presentation/screens/client_signup_screen/view.dart';
 import 'package:qanuni/presentation/screens/home_screen/view.dart';
 import 'package:qanuni/presentation/screens/login_screen/view.dart';
 import 'package:qanuni/utils/colors.dart';
+import 'package:qanuni/viewLawyerProfilePage.dart';
 import 'package:qanuni/viewListOfLawyers.dart';
 import 'package:intl/intl.dart';
 import 'package:qanuni/ClientProfile.dart';
 import 'package:timezone/data/latest.dart' as tz;
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'dart:math' as math;
+
 class LogoutPage extends StatefulWidget {
   @override
   _LogoutPageState createState() => _LogoutPageState();
@@ -21,6 +25,7 @@ class LogoutPage extends StatefulWidget {
 
 class _LogoutPageState extends State<LogoutPage> {
   String? email = "";
+
   Future<void> getEmailAndUpdateToken() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
@@ -120,7 +125,7 @@ class _LogoutPageState extends State<LogoutPage> {
       ), //appbar
 
       //navigation bar
-      
+
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) => _navigateToScreen(context, index),
         items: [
@@ -133,13 +138,15 @@ class _LogoutPageState extends State<LogoutPage> {
             label: 'مواعيدي',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined, color: Colors.teal,),
+            icon: Icon(
+              Icons.home_outlined,
+              color: Colors.teal,
+            ),
             label: 'الصفحة الرئيسية',
           ),
         ],
-       unselectedItemColor: Colors.black,
+        unselectedItemColor: Colors.black,
         selectedItemColor: Colors.black,
-
       ),
       body: SingleChildScrollView(
         child: Stack(children: [
@@ -149,7 +156,7 @@ class _LogoutPageState extends State<LogoutPage> {
             child: Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 30, left: 30),
+                  padding: const EdgeInsets.only(top: 15, left: 30),
                   child: Container(
                     width: 337,
                     height: 200,
@@ -201,7 +208,7 @@ class _LogoutPageState extends State<LogoutPage> {
                           child: SizedBox(
                             width: 148,
                             child: Text(
-                              'محتار في تحديد نوع مشكلتك القانونية وتحتاج مساعدة؟ اسأل روبوت قانوني ',
+                              'محتار في تحديد نوع مشكلتك القانونية وتحتاج مساعدة؟    ',
                               textAlign: TextAlign.right,
                               style: TextStyle(
                                 color: Color(0xFF005159),
@@ -288,11 +295,23 @@ class _LogoutPageState extends State<LogoutPage> {
             ),
           ),
           //
+
           Column(
             children: [
               SizedBox(
-                height: 250,
+                height: 230,
               ),
+              Align(
+                alignment: Alignment.topRight,
+                child: Text(
+                  'المحامين الاعلى تقييمًا    ',
+                  style: TextStyle(
+                      fontSize: 19,
+                      fontWeight: FontWeight.w600,
+                      color: Color.fromARGB(255, 24, 21, 74)),
+                ),
+              ),
+              TopLawyersList(),
               Align(
                 alignment: Alignment.topRight,
                 child: Text(
@@ -330,7 +349,7 @@ class _LogoutPageState extends State<LogoutPage> {
                   ),
                 ),
               ]),
-              SizedBox(height: 20),
+              SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -450,7 +469,7 @@ class _LogoutPageState extends State<LogoutPage> {
                   ),
                 ],
               ),
-              SizedBox(height: 40),
+              SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -577,3 +596,301 @@ class _LogoutPageState extends State<LogoutPage> {
     );
   }
 }
+
+class TopLawyersList extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<QuerySnapshot>(
+      future: FirebaseFirestore.instance
+          .collection('lawyers')
+          .orderBy('AverageRating', descending: true)
+          .limit(3)
+          .get(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        }
+
+        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          return Container(); // Return an empty container if no lawyers found
+        }
+
+        var sortedList = snapshot.data!.docs.toList()
+          ..sort((a, b) {
+            var ratingA = double.tryParse(a['AverageRating'] ?? '0') ?? 0;
+            var ratingB = double.tryParse(b['AverageRating'] ?? '0') ?? 0;
+            return ratingB.compareTo(ratingA);
+          });
+
+        return Container(
+          height: 120,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            reverse: true, // Set reverse to true
+            itemCount: sortedList.length,
+            itemBuilder: (context, index) {
+              var lawyerData = sortedList[index].data() as Map<String, dynamic>;
+
+              // Convert AverageRating to double
+              double rating =
+                  double.tryParse(lawyerData['AverageRating'] ?? '0') ?? 0;
+
+              return GestureDetector(
+                onTap: () {
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => viewLawyerProfilePage(lawyer),
+                  //   ),
+                  // );
+                },
+                child: Container(
+                  margin: EdgeInsets.all(8),
+                  width: 170, // Adjust the width as needed
+                  child: Card(
+                    elevation: 6,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment:
+                          MainAxisAlignment.end, // Align from right to left
+                      children: [
+                        Flexible(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment
+                                .end, // Align text to the right
+                            children: [
+                              Text(
+                                '${lawyerData['firstName']} ${lawyerData['lastName']}',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              SizedBox(height: 4),
+                              // Display rating as stars here
+                              RatingBar.builder(
+                                initialRating: rating,
+                                minRating: 1,
+                                direction: Axis.horizontal,
+                                allowHalfRating: true,
+                                itemCount: 5,
+                                itemSize: 16,
+                                itemPadding:
+                                    EdgeInsets.symmetric(horizontal: 1.0),
+                                itemBuilder: (context, index) => Transform(
+                                  transform: Matrix4.rotationY(
+                                      math.pi), // Rotate the stars
+                                  alignment: Alignment.center,
+                                  child: Icon(
+                                    Icons.star,
+                                    color: Colors.amber,
+                                  ),
+                                ),
+                                onRatingUpdate: (rating) {
+                                  // Empty function, making the RatingBar non-editable
+                                },
+                                ignoreGestures:
+                                    true, // Make the RatingBar non-editable
+                              ),
+                            ],
+                          ),
+                        ),
+                        // Keep the padding for the image
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 8,
+                              right: 8), // Adjust the padding as needed
+                          child: ClipOval(
+                            child: Image.network(
+                              lawyerData['photoURL'],
+                              width: 50,
+                              height: 50,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Image.asset(
+                                  'assets/default_photo.jpg',
+                                  width: 50,
+                                  height: 50,
+                                  fit: BoxFit.cover,
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+}
+// Future<List<lawyer>> getLawyers() async {
+//   List<lawyer> lawyers = [];
+//   QuerySnapshot querySnapshot =
+//       await FirebaseFirestore.instance.collection('lawyers').get();
+
+//   for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+//     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+//     lawyers lawyer = lawyer.fromMap(data);
+//     lawyers.add(lawyer);
+//   }
+
+//   return lawyers;
+// }
+
+// class lawyer {
+//   final int ID;
+//   final String firstName;
+//   final String lastName;
+//   final List<String> specialties;
+//   final int consultationPrice;
+//   final String photoURL;
+//   final String bio; // URL to the lawyer's photo
+
+//   lawyer({
+//     required this.ID,
+//     required this.firstName,
+//     required this.lastName,
+//     required this.specialties,
+//     required this.consultationPrice,
+//     required this.photoURL,
+//     required this.bio,
+//   });
+
+//   factory lawyer.fromMap(Map<String, dynamic> map) {
+//     return lawyer(
+//       ID: map['ID'],
+//       firstName: map['firstName'],
+//       lastName: map['lastName'],
+//       specialties: List<String>.from(map['specialties']),
+//       consultationPrice: map['consultationPrice'],
+//       photoURL: map['photoURL'],
+//       bio: map['bio'],
+//     );
+//   }
+// }
+
+
+// class TopLawyersList extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return FutureBuilder<QuerySnapshot>(
+//       future: FirebaseFirestore.instance
+//           .collection('lawyers')
+//           .orderBy('AverageRating', descending: true)
+//           .limit(3)
+//           .get(),
+//       builder: (context, snapshot) {
+//         if (snapshot.connectionState == ConnectionState.waiting) {
+//           return Center(child: CircularProgressIndicator());
+//         }
+
+//         if (snapshot.hasError) {
+//           return Center(child: Text('Error: ${snapshot.error}'));
+//         }
+
+//         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+//           return Container(); // Return an empty container if no lawyers found
+//         }
+
+//         return Container(
+//           height: 120,
+//           child: ListView.builder(
+//             scrollDirection: Axis.horizontal,
+//             itemCount: snapshot.data!.docs.length,
+//             itemBuilder: (context, index) {
+//               var lawyerData =
+//                   snapshot.data!.docs[index].data() as Map<String, dynamic>;
+
+//               // Convert AverageRating to double
+//               double rating =
+//                   double.tryParse(lawyerData['AverageRating'] ?? '0') ?? 0;
+
+//               return GestureDetector(
+//                 onTap: () {
+//                   // Navigate to a new page with detailed information about the lawyer
+//                   // You can replace LawyerDetailPage with the actual page you want to navigate to
+//                   // Navigator.push(
+//                   //   context,
+//                   //   MaterialPageRoute(
+//                   //     builder: (context) => LawyerDetailPage(
+//                   //       // Pass necessary data to LawyerDetailPage
+//                   //       lawyerId: snapshot.data!.docs[index].id,
+//                   //       firstName: lawyerData['firstName'],
+//                   //       lastName: lawyerData['lastName'],
+//                   //       rating: rating,
+//                   //     ),
+//                   //   ),
+//                   // );
+//                 },
+//                 child: Container(
+//                   margin: EdgeInsets.all(8),
+//                   width: 100,
+//                   child: Column(
+//                     children: [
+//                       // Display lawyer's photo here if available
+//                       ClipOval(
+//                           child: Image.network(
+//                         lawyerData['photoURL'],
+//                         width: 60,
+//                         height: 60,
+//                         fit: BoxFit.cover,
+//                         errorBuilder: (context, error, stackTrace) {
+//                           return Image.asset(
+//                             'assets/default_photo.jpg',
+//                             width: 60,
+//                             height: 60,
+//                             fit: BoxFit.cover,
+//                           );
+//                         },
+//                       )),
+//                       SizedBox(height: 8),
+//                       Text(
+//                         '${lawyerData['firstName']} ${lawyerData['lastName']}',
+//                         style: TextStyle(fontSize: 12, color: Colors.black),
+//                         textAlign: TextAlign.center,
+//                       ),
+//                       SizedBox(height: 4),
+//                       // Display rating as stars here
+//                       RatingBar.builder(
+//                         initialRating: rating,
+//                         minRating: 1,
+//                         direction: Axis.horizontal,
+//                         allowHalfRating: true,
+//                         itemCount: 5,
+//                         itemSize: 12,
+//                         itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
+//                         itemBuilder: (context, _) => Icon(
+//                           Icons.star,
+//                           color: Colors.amber,
+//                         ),
+//                         onRatingUpdate: (rating) {
+//                           print(rating);
+//                         },
+//                       ),
+//                     ],
+//                   ),
+//                 ),
+//               );
+//             },
+//           ),
+//         );
+//       },
+//     );
+//   }
+//}

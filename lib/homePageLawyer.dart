@@ -248,7 +248,10 @@ class _LogoutPageLawyerState extends State<LogoutPageLawyer> {
             label: 'مواعيدي',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined, color: Colors.teal,),
+            icon: Icon(
+              Icons.home_outlined,
+              color: Colors.teal,
+            ),
             label: 'الصفحة الرئيسية',
           ),
         ],
