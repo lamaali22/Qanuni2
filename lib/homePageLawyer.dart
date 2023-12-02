@@ -178,25 +178,6 @@ class _LogoutPageLawyerState extends State<LogoutPageLawyer> {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Center(
-                //   child: IconButton(
-                //     icon: const Icon(
-                //       Icons.exit_to_app,
-                //       color: Colors.white,
-                //       size: 30,
-                //     ),
-                //     onPressed: () async {
-                //       Token().updateTokenInDB(email, false, "lawyers");
-                //       await _auth.signOut();
-                //       Navigator.pushReplacement(
-                //         context,
-                //         MaterialPageRoute(
-                //           builder: (context) => LoginScreen(),
-                //         ),
-                //       );
-                //     },
-                //   ),
-                // ),
                 const Expanded(
                   child: Text.rich(
                     TextSpan(
@@ -248,7 +229,10 @@ class _LogoutPageLawyerState extends State<LogoutPageLawyer> {
             label: 'مواعيدي',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined, color: Colors.teal,),
+            icon: Icon(
+              Icons.home_outlined,
+              color: Colors.teal,
+            ),
             label: 'الصفحة الرئيسية',
           ),
         ],

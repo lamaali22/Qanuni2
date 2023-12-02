@@ -747,26 +747,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         });
                                       },
                                     ),
-                                    // SizedBox(
-                                    //   width: 20,
-                                    // ),
-                                    // Text(
-                                    //   'جنائي',
-                                    //   style: TextStyle(fontSize: 13),
-                                    // ),
-                                    // // SizedBox(height: 10),
-                                    // Checkbox(
-                                    //   activeColor: Color(0xFF008080),
-                                    //   value: isChecked0,
-                                    //   onChanged: (value) {
-                                    //     setState(() {
-                                    //       isChecked0 = value!;
-                                    //     });
-                                    //   },
-                                    // ),
-                                    // SizedBox(
-                                    //   width: 20,
-                                    // ),
+
                                     Text(
                                       'مواريث',
                                       style: TextStyle(fontSize: 12),

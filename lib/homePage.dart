@@ -9,12 +9,15 @@ import 'package:qanuni/presentation/screens/boarding_screen/view.dart';
 import 'package:qanuni/presentation/screens/client_signup_screen/view.dart';
 import 'package:qanuni/presentation/screens/home_screen/view.dart';
 import 'package:qanuni/presentation/screens/login_screen/view.dart';
-import 'package:qanuni/presentation/widgets/lawyersListMain.dart';
 import 'package:qanuni/utils/colors.dart';
+import 'package:qanuni/viewLawyerProfilePage.dart';
 import 'package:qanuni/viewListOfLawyers.dart';
 import 'package:intl/intl.dart';
 import 'package:qanuni/ClientProfile.dart';
 import 'package:timezone/data/latest.dart' as tz;
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'dart:math' as math;
+
 class LogoutPage extends StatefulWidget {
   @override
   _LogoutPageState createState() => _LogoutPageState();
@@ -22,6 +25,7 @@ class LogoutPage extends StatefulWidget {
 
 class _LogoutPageState extends State<LogoutPage> {
   String? email = "";
+
   Future<void> getEmailAndUpdateToken() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
@@ -121,7 +125,7 @@ class _LogoutPageState extends State<LogoutPage> {
       ), //appbar
 
       //navigation bar
-      
+
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) => _navigateToScreen(context, index),
         items: [
@@ -134,840 +138,604 @@ class _LogoutPageState extends State<LogoutPage> {
             label: 'مواعيدي',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined, color: Colors.teal,),
+            icon: Icon(
+              Icons.home_outlined,
+              color: Colors.teal,
+            ),
             label: 'الصفحة الرئيسية',
           ),
         ],
-       unselectedItemColor: Colors.black,
+        unselectedItemColor: Colors.black,
         selectedItemColor: Colors.black,
-
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Column(
+        child: Stack(children: [
+          //
+          Align(
+            alignment: Alignment.topCenter,
+            child: Row(
               children: [
-                Stack(
-                  children: [
-                  // chatbot Box
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: Row(
+                Padding(
+                  padding: const EdgeInsets.only(top: 15, left: 30),
+                  child: Container(
+                    width: 337,
+                    height: 200,
+                    clipBehavior: Clip.antiAlias,
+                    decoration: ShapeDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment(
+                          4,
+                          1,
+                        ),
+                        end: Alignment(-0.85, -1),
+                        colors: [
+                          Color(0xFF33CCBE),
+                          Color(0xFF93E6DE),
+                          Colors.white.withOpacity(0)
+                        ],
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      shadows: [
+                        BoxShadow(
+                          color: Color(0x26008592),
+                          blurRadius: 20,
+                          offset: Offset(0, 10),
+                          spreadRadius: 0,
+                        )
+                      ],
+                    ),
+                    child: Stack(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 30, left: 30),
+                        Positioned(
+                          left: 80,
+                          top: 16,
+                          child: Text(
+                            '!دليلك القانوني للقرارات الصائبة',
+                            style: TextStyle(
+                              color: Color(0xFF006771),
+                              fontSize: 20,
+                              fontFamily: 'Cairo',
+                              fontWeight: FontWeight.w700,
+                              height: 0,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          left: 165,
+                          top: 49,
+                          child: SizedBox(
+                            width: 148,
+                            child: Text(
+                              'محتار في تحديد نوع مشكلتك القانونية وتحتاج مساعدة؟    ',
+                              textAlign: TextAlign.right,
+                              style: TextStyle(
+                                color: Color(0xFF005159),
+                                fontSize: 15,
+                                fontFamily: 'Cairo',
+                                fontWeight: FontWeight.w500,
+                                height: 0,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          left: 156,
+                          top: 150,
                           child: Container(
-                            width: 337,
-                            height: 200,
-                            clipBehavior: Clip.antiAlias,
-                            decoration: ShapeDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment(
-                                  4,
-                                  1,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 6),
+                              clipBehavior: Clip.antiAlias,
+                              decoration: ShapeDecoration(
+                                color: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15),
                                 ),
-                                end: Alignment(-0.85, -1),
-                                colors: [
-                                  Color(0xFF33CCBE),
-                                  Color(0xFF93E6DE),
-                                  Colors.white.withOpacity(0)
+                                shadows: [
+                                  BoxShadow(
+                                    color: Color(0x33005159),
+                                    blurRadius: 20,
+                                    offset: Offset(0, 10),
+                                    spreadRadius: 0,
+                                  )
                                 ],
                               ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => chatbotMain(),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'اسأل روبوت قانوني',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: Color(0xFF00616B),
+                                          fontSize: 12,
+                                          fontFamily: 'Cairo',
+                                          fontWeight: FontWeight.w800,
+                                          height: 0,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )),
+                        ),
+                        Positioned(
+                          left: 17,
+                          top: 49,
+                          child: Container(
+                            width: 130,
+                            height: 127,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage('assets/images/robot.png'),
+                                fit: BoxFit.fill,
                               ),
-                              shadows: [
-                                BoxShadow(
-                                  color: Color(0x26008592),
-                                  blurRadius: 20,
-                                  offset: Offset(0, 10),
-                                  spreadRadius: 0,
-                                )
-                              ],
-                            ),
-                            child: Stack(
-                              children: [
-                                Positioned(
-                                  left: 80,
-                                  top: 16,
-                                  child: Text(
-                                    '!دليلك القانوني للقرارات الصائبة',
-                                    style: TextStyle(
-                                      color: Color(0xFF006771),
-                                      fontSize: 20,
-                                      fontFamily: 'Cairo',
-                                      fontWeight: FontWeight.w700,
-                                      height: 0,
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  left: 165,
-                                  top: 49,
-                                  child: SizedBox(
-                                    width: 148,
-                                    child: Text(
-                                      'محتار في تحديد نوع مشكلتك القانونية وتحتاج مساعدة؟ اسأل روبوت قانوني ',
-                                      textAlign: TextAlign.right,
-                                      style: TextStyle(
-                                        color: Color(0xFF005159),
-                                        fontSize: 15,
-                                        fontFamily: 'Cairo',
-                                        fontWeight: FontWeight.w500,
-                                        height: 0,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  left: 156,
-                                  top: 150,
-                                  child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 6),
-                                      clipBehavior: Clip.antiAlias,
-                                      decoration: ShapeDecoration(
-                                        color: Colors.white,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(15),
-                                        ),
-                                        shadows: [
-                                          BoxShadow(
-                                            color: Color(0x33005159),
-                                            blurRadius: 20,
-                                            offset: Offset(0, 10),
-                                            spreadRadius: 0,
-                                          )
-                                        ],
-                                      ),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => chatbotMain(),
-                                            ),
-                                          );
-                                        },
-                                        child: Container(
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                'اسأل روبوت قانوني',
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  color: Color(0xFF00616B),
-                                                  fontSize: 12,
-                                                  fontFamily: 'Cairo',
-                                                  fontWeight: FontWeight.w800,
-                                                  height: 0,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      )),
-                                ),
-                                Positioned(
-                                  left: 17,
-                                  top: 49,
-                                  child: Container(
-                                    width: 130,
-                                    height: 127,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: AssetImage('assets/images/robot.png'),
-                                        fit: BoxFit.fill,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
                             ),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  //end chatbot Box
-
-                //specailities box
-                  Column(
-                    children: [
-                      SizedBox(
-                        height: 250,
-                      ),
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: Text(
-                          'التخصصات    ',
-                          style: TextStyle(
-                              fontSize: 19,
-                              fontWeight: FontWeight.w600,
-                              color: Color.fromARGB(255, 24, 21, 74)),
-                        ),
-                      ),
-                      Row(children: [
-                        SizedBox(
-                          width: 19,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => LawyersList("الكل"),
-                              ),
-                            );
-                          },
-                          child: Align(
-                            alignment: Alignment.bottomRight,
-                            child: Text(
-                              'جميع المحامين >',
-                              style: TextStyle(
-                                decoration: TextDecoration.underline,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: ColorConstants.primaryColor,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ]),
-                      SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            width: 1,
-                          ),
-                          InkWell(
-                            //القانون الدولي
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => LawyersList("القانون الدولي"),
-                                ),
-                              );
-                            },
-                            child: Column(
-                              children: [
-                                Image.asset(
-                                  'assets/images/Speciality4.png',
-                                  width: 75, // Set the desired width
-                                  height: 75, // Set the desired height
-                                ),
-                                Text(
-                                  '',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          InkWell(
-                            //القانون التجاري
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => LawyersList("القانون التجاري"),
-                                ),
-                              );
-                            },
-                            child: Column(
-                              children: [
-                                Image.asset(
-                                  'assets/images/Speciality3.png',
-                                  width: 75, // Set the desired width
-                                  height: 75, // Set the desired height
-                                ),
-                                Text(
-                                  '',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          InkWell(
-                            //قانون العمل
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => LawyersList("قانون العمل"),
-                                ),
-                              );
-                            },
-                            child: Column(
-                              children: [
-                                Image.asset(
-                                  'assets/images/Speciality2.png',
-                                  width: 75, // Set the desired width
-                                  height: 75, // Set the desired height
-                                ),
-                                Text(
-                                  '',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          InkWell(
-                            //مدني
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => LawyersList("القانون المدني"),
-                                ),
-                              );
-                            },
-                            child: Column(
-                              children: [
-                                Image.asset(
-                                  'assets/images/Speciality1.png',
-                                  width: 75, // Set the desired width
-                                  height: 75, // Set the desired height
-                                ),
-                                Text(
-                                  '',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            width: 1,
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 40),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            width: 1,
-                          ),
-                          InkWell(
-                            //القانون المالي
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => LawyersList("القانون المالي"),
-                                ),
-                              );
-                            },
-                            child: Column(
-                              children: [
-                                Image.asset(
-                                  'assets/images/Speciality5.png',
-                                  width: 75, // Set the desired width
-                                  height: 75, // Set the desired height
-                                ),
-                                Text(
-                                  '',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          InkWell(
-                            //القانون الجنائي
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => LawyersList("القانون الجنائي"),
-                                ),
-                              );
-                            },
-                            child: Column(
-                              children: [
-                                Image.asset(
-                                  'assets/images/Speciality6.png',
-                                  width: 75, // Set the desired width
-                                  height: 75, // Set the desired height
-                                ),
-                                Text(
-                                  '',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          InkWell(
-                            //مواريث
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => LawyersList("قانون المواريث"),
-                                ),
-                              );
-                            },
-                            child: Column(
-                              children: [
-                                Image.asset(
-                                  'assets/images/Speciality7.png',
-                                  width: 75, // Set the desired width
-                                  height: 75, // Set the desired height
-                                ),
-                                Text(
-                                  '',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          InkWell(
-                            //القانون الاداري
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => LawyersList("القانون الإداري"),
-                                ),
-                              );
-                            },
-                            child: Column(
-                              children: [
-                                Image.asset(
-                                  'assets/images/Speciality8.png',
-                                  width: 75, // Set the desired width
-                                  height: 75, // Set the desired height
-                                ),
-                                Text(
-                                  '',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            width: 1,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                   // highest lawyers box
-  
-//                 Column(
-//   children: [
-//     Expanded(
-//       child: SingleChildScrollView(
-//         scrollDirection: Axis.horizontal,
-//         child: Container(
-//           height: 200, // Set a specific height
-//           child: Row(
-//             children: [
-//               LawyerListWidget(),
-//             ],
-//           ),
-//         ),
-//       ),
-//     ),
-//   ],
-// ),
-// Container(
-//   width: 360,
-//   height: 220,
-//   padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 11),
-//   clipBehavior: Clip.antiAlias,
-//   decoration: BoxDecoration(),
-//   child: Row(
-//     mainAxisSize: MainAxisSize.min,
-//     mainAxisAlignment: MainAxisAlignment.start,
-//     crossAxisAlignment: CrossAxisAlignment.center,
-//     children: [
-//       Container(
-//         padding: const EdgeInsets.only(top: 9, left: 20, right: 21, bottom: 5),
-//         clipBehavior: Clip.antiAlias,
-//         decoration: ShapeDecoration(
-//           color: Colors.white,
-//           shape: RoundedRectangleBorder(
-//             side: BorderSide(width: 1, color: Color(0xFFF0F0F0)),
-//             borderRadius: BorderRadius.circular(15),
-//           ),
-//           shadows: [
-//             BoxShadow(
-//               color: Color(0x0C000000),
-//               blurRadius: 20,
-//               offset: Offset(0, 5),
-//               spreadRadius: 0,
-//             )
-//           ],
-//         ),
-//         child: Column(
-//           mainAxisSize: MainAxisSize.min,
-//           mainAxisAlignment: MainAxisAlignment.end,
-//           crossAxisAlignment: CrossAxisAlignment.center,
-//           children: [
-//             Container(
-//               width: 60,
-//               height: 61,
-//               decoration: ShapeDecoration(
-//                 image: DecorationImage(
-//                   image: NetworkImage("https://via.placeholder.com/60x61"),
-//                   fit: BoxFit.fill,
-//                 ),
-//                 shape: OvalBorder(),
-//               ),
-//             ),
-//             const SizedBox(height: 7),
-//             Text(
-//               'لين صالح',
-//               textAlign: TextAlign.right,
-//               style: TextStyle(
-//                 color: Colors.black,
-//                 fontSize: 12.31,
-//                 fontFamily: 'Manrope',
-//                 fontWeight: FontWeight.w600,
-//                 height: 0.08,
-//               ),
-//             ),
-//             const SizedBox(height: 7),
-//             Container(
-//               width: 35,
-//               height: 15,
-//               child: Stack(
-//                 children: [
-//                   Positioned(
-//                     left: 0,
-//                     top: 0,
-//                     child: Container(
-//                       width: 35,
-//                       height: 15,
-//                       decoration: ShapeDecoration(
-//                         color: Color(0x26FFC126),
-//                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-//                       ),
-//                     ),
-//                   ),
-//                   Positioned(
-//                     left: 17,
-//                     top: 2,
-//                     child: Text(
-//                       '4.8',
-//                       textAlign: TextAlign.right,
-//                       style: TextStyle(
-//                         color: Colors.black,
-//                         fontSize: 10.85,
-//                         fontFamily: 'Poppins',
-//                         fontWeight: FontWeight.w400,
-//                         height: 0.09,
-//                       ),
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//       const SizedBox(width: 15),
-//       Container(
-//         padding: const EdgeInsets.only(top: 9, left: 20, right: 21, bottom: 5),
-//         clipBehavior: Clip.antiAlias,
-//         decoration: ShapeDecoration(
-//           color: Colors.white,
-//           shape: RoundedRectangleBorder(
-//             side: BorderSide(width: 1, color: Color(0xFFF0F0F0)),
-//             borderRadius: BorderRadius.circular(15),
-//           ),
-//           shadows: [
-//             BoxShadow(
-//               color: Color(0x0C000000),
-//               blurRadius: 20,
-//               offset: Offset(0, 5),
-//               spreadRadius: 0,
-//             )
-//           ],
-//         ),
-//         child: Column(
-//           mainAxisSize: MainAxisSize.min,
-//           mainAxisAlignment: MainAxisAlignment.end,
-//           crossAxisAlignment: CrossAxisAlignment.center,
-//           children: [
-//             Container(
-//               width: 60,
-//               height: 61,
-//               decoration: ShapeDecoration(
-//                 image: DecorationImage(
-//                   image: NetworkImage("https://via.placeholder.com/60x61"),
-//                   fit: BoxFit.fill,
-//                 ),
-//                 shape: OvalBorder(),
-//               ),
-//             ),
-//             const SizedBox(height: 7),
-//             Text(
-//               'لين صالح',
-//               textAlign: TextAlign.right,
-//               style: TextStyle(
-//                 color: Colors.black,
-//                 fontSize: 12.31,
-//                 fontFamily: 'Manrope',
-//                 fontWeight: FontWeight.w600,
-//                 height: 0.08,
-//               ),
-//             ),
-//             const SizedBox(height: 7),
-//             Container(
-//               width: 35,
-//               height: 15,
-//               child: Stack(
-//                 children: [
-//                   Positioned(
-//                     left: 0,
-//                     top: 0,
-//                     child: Container(
-//                       width: 35,
-//                       height: 15,
-//                       decoration: ShapeDecoration(
-//                         color: Color(0x26FFC126),
-//                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-//                       ),
-//                     ),
-//                   ),
-//                   Positioned(
-//                     left: 17,
-//                     top: 2,
-//                     child: Text(
-//                       '4.8',
-//                       textAlign: TextAlign.right,
-//                       style: TextStyle(
-//                         color: Colors.black,
-//                         fontSize: 10.85,
-//                         fontFamily: 'Poppins',
-//                         fontWeight: FontWeight.w400,
-//                         height: 0.09,
-//                       ),
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//       const SizedBox(width: 15),
-//       Container(
-//         padding: const EdgeInsets.only(top: 9, left: 20, right: 21, bottom: 5),
-//         clipBehavior: Clip.antiAlias,
-//         decoration: ShapeDecoration(
-//           color: Colors.white,
-//           shape: RoundedRectangleBorder(
-//             side: BorderSide(width: 1, color: Color(0xFFF0F0F0)),
-//             borderRadius: BorderRadius.circular(15),
-//           ),
-//           shadows: [
-//             BoxShadow(
-//               color: Color(0x0C000000),
-//               blurRadius: 20,
-//               offset: Offset(0, 5),
-//               spreadRadius: 0,
-//             )
-//           ],
-//         ),
-//         child: Column(
-//           mainAxisSize: MainAxisSize.min,
-//           mainAxisAlignment: MainAxisAlignment.end,
-//           crossAxisAlignment: CrossAxisAlignment.center,
-//           children: [
-//             Container(
-//               width: 60,
-//               height: 61,
-//               decoration: ShapeDecoration(
-//                 image: DecorationImage(
-//                   image: NetworkImage("https://via.placeholder.com/60x61"),
-//                   fit: BoxFit.fill,
-//                 ),
-//                 shape: OvalBorder(),
-//               ),
-//             ),
-//             const SizedBox(height: 7),
-//             Text(
-//               'لين صالح',
-//               textAlign: TextAlign.right,
-//               style: TextStyle(
-//                 color: Colors.black,
-//                 fontSize: 12.31,
-//                 fontFamily: 'Manrope',
-//                 fontWeight: FontWeight.w600,
-//                 height: 0.08,
-//               ),
-//             ),
-//             const SizedBox(height: 7),
-//             Container(
-//               width: 35,
-//               height: 15,
-//               child: Stack(
-//                 children: [
-//                   Positioned(
-//                     left: 0,
-//                     top: 0,
-//                     child: Container(
-//                       width: 35,
-//                       height: 15,
-//                       decoration: ShapeDecoration(
-//                         color: Color(0x26FFC126),
-//                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-//                       ),
-//                     ),
-//                   ),
-//                   Positioned(
-//                     left: 17,
-//                     top: 2,
-//                     child: Text(
-//                       '4.8',
-//                       textAlign: TextAlign.right,
-//                       style: TextStyle(
-//                         color: Colors.black,
-//                         fontSize: 10.85,
-//                         fontFamily: 'Poppins',
-//                         fontWeight: FontWeight.w400,
-//                         height: 0.09,
-//                       ),
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//       const SizedBox(width: 15),
-//       Container(
-//         padding: const EdgeInsets.only(top: 9, left: 20, right: 21, bottom: 5),
-//         clipBehavior: Clip.antiAlias,
-//         decoration: ShapeDecoration(
-//           color: Colors.white,
-//           shape: RoundedRectangleBorder(
-//             side: BorderSide(width: 1, color: Color(0xFFF0F0F0)),
-//             borderRadius: BorderRadius.circular(15),
-//           ),
-//           shadows: [
-//             BoxShadow(
-//               color: Color(0x0C000000),
-//               blurRadius: 20,
-//               offset: Offset(0, 10),
-//               spreadRadius: 0,
-//             )
-//           ],
-//         ),
-//         child: Column(
-//           mainAxisSize: MainAxisSize.min,
-//           mainAxisAlignment: MainAxisAlignment.end,
-//           crossAxisAlignment: CrossAxisAlignment.center,
-//           children: [
-//             Container(
-//               width: 60,
-//               height: 61,
-//               decoration: ShapeDecoration(
-//                 image: DecorationImage(
-//                   image: NetworkImage("https://via.placeholder.com/60x61"),
-//                   fit: BoxFit.fill,
-//                 ),
-//                 shape: OvalBorder(),
-//               ),
-//             ),
-//             const SizedBox(height: 7),
-//             Text(
-//               'لين صالح',
-//               textAlign: TextAlign.right,
-//               style: TextStyle(
-//                 color: Colors.black,
-//                 fontSize: 12.31,
-//                 fontFamily: 'Manrope',
-//                 fontWeight: FontWeight.w600,
-//                 height: 0.08,
-//               ),
-//             ),
-//             const SizedBox(height: 7),
-//             Container(
-//               width: 35,
-//               height: 15,
-//               child: Stack(
-//                 children: [
-//                   Positioned(
-//                     left: 0,
-//                     top: 0,
-//                     child: Container(
-//                       width: 35,
-//                       height: 15,
-//                       decoration: ShapeDecoration(
-//                         color: Color(0x26FFC126),
-//                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-//                       ),
-//                     ),
-//                   ),
-//                   Positioned(
-//                     left: 17,
-//                     top: 2,
-//                     child: Text(
-//                       '4.8',
-//                       textAlign: TextAlign.right,
-//                       style: TextStyle(
-//                         color: Colors.black,
-//                         fontSize: 10.85,
-//                         fontFamily: 'Poppins',
-//                         fontWeight: FontWeight.w400,
-//                         height: 0.09,
-//                       ),
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     ],
-//   ),
-// )
-
-
-                //end highest lawyers box
-                ]
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+          //
+
+          Column(
+            children: [
+              SizedBox(
+                height: 230,
+              ),
+              Align(
+                alignment: Alignment.topRight,
+                child: Text(
+                  'المحامين الاعلى تقييمًا    ',
+                  style: TextStyle(
+                      fontSize: 19,
+                      fontWeight: FontWeight.w600,
+                      color: Color.fromARGB(255, 24, 21, 74)),
+                ),
+              ),
+              TopLawyersList(),
+              Align(
+                alignment: Alignment.topRight,
+                child: Text(
+                  'التخصصات    ',
+                  style: TextStyle(
+                      fontSize: 19,
+                      fontWeight: FontWeight.w600,
+                      color: Color.fromARGB(255, 24, 21, 74)),
+                ),
+              ),
+              Row(children: [
+                SizedBox(
+                  width: 19,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LawyersList("الكل"),
+                      ),
+                    );
+                  },
+                  child: Align(
+                    alignment: Alignment.bottomRight,
+                    child: Text(
+                      'جميع المحامين >',
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: ColorConstants.primaryColor,
+                      ),
+                    ),
+                  ),
+                ),
+              ]),
+              SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: 1,
+                  ),
+                  InkWell(
+                    //القانون الدولي
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LawyersList("القانون الدولي"),
+                        ),
+                      );
+                    },
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          'assets/images/Speciality4.png',
+                          width: 75, // Set the desired width
+                          height: 75, // Set the desired height
+                        ),
+                        Text(
+                          '',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  InkWell(
+                    //القانون التجاري
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LawyersList("القانون التجاري"),
+                        ),
+                      );
+                    },
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          'assets/images/Speciality3.png',
+                          width: 75, // Set the desired width
+                          height: 75, // Set the desired height
+                        ),
+                        Text(
+                          '',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  InkWell(
+                    //قانون العمل
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LawyersList("قانون العمل"),
+                        ),
+                      );
+                    },
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          'assets/images/Speciality2.png',
+                          width: 75, // Set the desired width
+                          height: 75, // Set the desired height
+                        ),
+                        Text(
+                          '',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  InkWell(
+                    //مدني
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LawyersList("القانون المدني"),
+                        ),
+                      );
+                    },
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          'assets/images/Speciality1.png',
+                          width: 75, // Set the desired width
+                          height: 75, // Set the desired height
+                        ),
+                        Text(
+                          '',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: 1,
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: 1,
+                  ),
+                  InkWell(
+                    //القانون المالي
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LawyersList("القانون المالي"),
+                        ),
+                      );
+                    },
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          'assets/images/Speciality5.png',
+                          width: 75, // Set the desired width
+                          height: 75, // Set the desired height
+                        ),
+                        Text(
+                          '',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  InkWell(
+                    //القانون الجنائي
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LawyersList("القانون الجنائي"),
+                        ),
+                      );
+                    },
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          'assets/images/Speciality6.png',
+                          width: 75, // Set the desired width
+                          height: 75, // Set the desired height
+                        ),
+                        Text(
+                          '',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  InkWell(
+                    //مواريث
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LawyersList("قانون المواريث"),
+                        ),
+                      );
+                    },
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          'assets/images/Speciality7.png',
+                          width: 75, // Set the desired width
+                          height: 75, // Set the desired height
+                        ),
+                        Text(
+                          '',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  InkWell(
+                    //القانون الاداري
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LawyersList("القانون الإداري"),
+                        ),
+                      );
+                    },
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          'assets/images/Speciality8.png',
+                          width: 75, // Set the desired width
+                          height: 75, // Set the desired height
+                        ),
+                        Text(
+                          '',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: 1,
+                  ),
+                ],
+              ),
+            ],
+          )
+        ]),
       ),
     );
   }
 }
 
+class TopLawyersList extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<QuerySnapshot>(
+      future: FirebaseFirestore.instance
+          .collection('lawyers')
+          .orderBy('AverageRating', descending: true)
+          .limit(3)
+          .get(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
 
+        if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        }
+
+        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          return Container(); // Return an empty container if no lawyers found
+        }
+
+        var sortedList = snapshot.data!.docs.toList()
+          ..sort((a, b) {
+            var ratingA = double.tryParse(a['AverageRating'] ?? '0') ?? 0;
+            var ratingB = double.tryParse(b['AverageRating'] ?? '0') ?? 0;
+            return ratingB.compareTo(ratingA);
+          });
+
+        return Container(
+          height: 120,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            reverse: true, // Set reverse to true
+            itemCount: sortedList.length,
+            itemBuilder: (context, index) {
+              var lawyerData = sortedList[index].data() as Map<String, dynamic>;
+
+              // Convert AverageRating to double
+              double rating =
+                  double.tryParse(lawyerData['AverageRating'] ?? '0') ?? 0;
+
+              return GestureDetector(
+                onTap: () {
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => viewLawyerProfilePage(lawyer),
+                  //   ),
+                  // );
+                },
+                child: Container(
+                  margin: EdgeInsets.all(8),
+                  width: 170, // Adjust the width as needed
+                  child: Card(
+                    elevation: 6,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment:
+                          MainAxisAlignment.end, // Align from right to left
+                      children: [
+                        Flexible(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment
+                                .end, // Align text to the right
+                            children: [
+                              Text(
+                                '${lawyerData['firstName']} ${lawyerData['lastName']}',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              SizedBox(height: 4),
+                              // Display rating as stars here
+                              RatingBar.builder(
+                                initialRating: rating,
+                                minRating: 1,
+                                direction: Axis.horizontal,
+                                allowHalfRating: true,
+                                itemCount: 5,
+                                itemSize: 16,
+                                itemPadding:
+                                    EdgeInsets.symmetric(horizontal: 1.0),
+                                itemBuilder: (context, index) => Transform(
+                                  transform: Matrix4.rotationY(
+                                      math.pi), // Rotate the stars
+                                  alignment: Alignment.center,
+                                  child: Icon(
+                                    Icons.star,
+                                    color: Colors.amber,
+                                  ),
+                                ),
+                                onRatingUpdate: (rating) {
+                                  // Empty function, making the RatingBar non-editable
+                                },
+                                ignoreGestures:
+                                    true, // Make the RatingBar non-editable
+                              ),
+                            ],
+                          ),
+                        ),
+                        // Keep the padding for the image
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 8,
+                              right: 8), // Adjust the padding as needed
+                          child: ClipOval(
+                            child: Image.network(
+                              lawyerData['photoURL'],
+                              width: 50,
+                              height: 50,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Image.asset(
+                                  'assets/default_photo.jpg',
+                                  width: 50,
+                                  height: 50,
+                                  fit: BoxFit.cover,
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+}
