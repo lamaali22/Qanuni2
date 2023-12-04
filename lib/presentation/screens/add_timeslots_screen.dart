@@ -3,7 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:qanuni/consultationLawyer.dart';
 import 'package:qanuni/homePageLawyer.dart';
+import 'package:qanuni/lawyerProfile.dart';
 
 void main() {
   runApp(MyApp());
@@ -68,14 +70,14 @@ class _TimeSlotScreenState extends State<TimeSlotScreen> {
       case 0:
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => LogoutPageLawyer()),
+          MaterialPageRoute(builder: (context) => ViewProfileLawyer()),
           (route) => false,
         );
         break;
       case 1:
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => LogoutPageLawyer()),
+          MaterialPageRoute(builder: (context) => BookingListScreen()),
           (route) => false,
         );
         break;
@@ -97,7 +99,7 @@ class _TimeSlotScreenState extends State<TimeSlotScreen> {
         backgroundColor: Color.fromARGB(255, 0, 128, 128),
         actions: [
           IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: Icon(Icons.arrow_forward),
             onPressed: () {
               // ... Your code to add the time slot ...
 
@@ -375,7 +377,7 @@ class _TimeSlotScreenState extends State<TimeSlotScreen> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Color(0x7F008080),
+        selectedItemColor: Colors.black,
         unselectedItemColor: Colors.black,
         showUnselectedLabels: true,
         onTap: (index) => _navigateToScreen(context, index),
@@ -385,7 +387,7 @@ class _TimeSlotScreenState extends State<TimeSlotScreen> {
             label: 'حسابي',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month_outlined),
+            icon: Icon(Icons.calendar_month_outlined, color: Colors.teal),
             label: 'مواعيدي',
           ),
           BottomNavigationBarItem(

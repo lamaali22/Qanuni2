@@ -1,16 +1,14 @@
-import 'dart:math';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:table_calendar/table_calendar.dart';
 import 'package:qanuni/homePage.dart';
 import 'package:qanuni/presentation/screens/payment_screen/view.dart';
 import 'package:qanuni/providers/auth/login/cubit/login_cubit.dart';
 import 'package:qanuni/providers/payment/cubit/payment_cubit.dart';
 import 'package:qanuni/viewListOfLawyers.dart';
-import 'package:table_calendar/table_calendar.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class BookingPage extends StatefulWidget {
   final Lawyer lawyer;
@@ -43,8 +41,7 @@ class _BookingPageState extends State<BookingPage> {
       _isLoading = true;
     });
 
-    DateTime startOfDay =
-        DateTime(_selectedDay.year, _selectedDay.month, _selectedDay.day);
+    DateTime startOfDay = DateTime(_selectedDay.year, _selectedDay.month, _selectedDay.day);
     DateTime endOfDay = startOfDay.add(Duration(days: 1));
 
     try {
@@ -99,8 +96,7 @@ class _BookingPageState extends State<BookingPage> {
     // Get the client's email from LoginCubit
     //  String clientEmail = LoginCubit.get(context).email;
 
-    DateTime endTime =
-        startTime.add(Duration(hours: 1)); // Assuming each session is 1 hour
+    DateTime endTime = startTime.add(Duration(hours: 1)); // Assuming each session is 1 hour
 
     // Add a new document to 'bookings' collection
     FirebaseFirestore.instance.collection('bookings').add({
@@ -203,8 +199,7 @@ class _BookingPageState extends State<BookingPage> {
             SizedBox(height: 20),
             _isLoading
                 ? Center(child: CircularProgressIndicator())
-                : (_events[_selectedDay] == null ||
-                        _events[_selectedDay]!.isEmpty)
+                : (_events[_selectedDay] == null || _events[_selectedDay]!.isEmpty)
                     ? Center(
                         child: Container(
                         padding: EdgeInsets.all(16),
@@ -216,10 +211,9 @@ class _BookingPageState extends State<BookingPage> {
                               width: 100, // Set the desired width
                               height: 100, // Set the desired height
                             ),
-                            SizedBox(
-                                height: 16), // Add space between icon and text
+                            SizedBox(height: 16),
                             Text(
-                              'لا تتوفر أوقات متاحة لهذا اليوم، يرجى اختيار يوم اخر  ',
+                              'لا تتوفر أوقات متاحة لهذا اليوم، يرجى اختيار يوم اخر',
                               style: TextStyle(
                                 color: Color.fromARGB(255, 188, 84, 52),
                                 fontSize: 14,
@@ -229,58 +223,56 @@ class _BookingPageState extends State<BookingPage> {
                           ],
                         ),
                       ))
-                    : Expanded(
-                        child: GridView.builder(
-                          padding: EdgeInsets.all(10),
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 10,
-                          ),
-                          itemCount: _events[_selectedDay]!.length,
-                          itemBuilder: (context, index) {
-                            String timeSlot = _events[_selectedDay]![index];
-                            bool isSelected = timeSlot == _selectedTimeSlot;
+                    : GridView.builder(
+                        shrinkWrap: true,
+                        padding: EdgeInsets.all(10),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                        ),
+                        itemCount: _events[_selectedDay]!.length,
+                        itemBuilder: (context, index) {
+                          String timeSlot = _events[_selectedDay]![index];
+                          bool isSelected = timeSlot == _selectedTimeSlot;
 
-                            return GestureDetector(
-                              onTap: () {
-                                selectTimeSlot(timeSlot);
-                                print(timeSlot);
-                              },
-                              child: Stack(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
+                          return GestureDetector(
+                            onTap: () {
+                              selectTimeSlot(timeSlot);
+                              print(timeSlot);
+                            },
+                            child: Stack(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: isSelected
+                                        ? Colors.teal
+                                        : Colors.white,
+                                    border: Border.all(
                                       color: isSelected
                                           ? Colors.teal
-                                          : Colors.white,
-                                      border: Border.all(
-                                        color: isSelected
-                                            ? Colors.teal
-                                            : Colors.teal,
-                                        width: 2,
-                                      ),
-                                      borderRadius: BorderRadius.circular(10),
+                                          : Colors.teal,
+                                      width: 2,
                                     ),
-                                    child: Center(
-                                      child: Text(
-                                        timeSlot,
-                                        style: TextStyle(
-                                          color: isSelected
-                                              ? Colors.white
-                                              : Colors.teal,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      timeSlot,
+                                      style: TextStyle(
+                                        color: isSelected
+                                            ? Colors.white
+                                            : Colors.teal,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
                       ),
             Padding(
               padding: EdgeInsets.only(bottom: 15, right: 10, left: 10),
